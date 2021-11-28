@@ -96,22 +96,12 @@ public class BaseDrive extends OpMode{
         UpdateTelemetry();
     }
     void UpdatePlayer1(){
-        gamepad1Mode = SetCapMode(gamepad1Mode);
-        if (gamepad1Mode % 2 == 0){
-            double drivePower = DriveTrainSpeed();
-            DriveTrainBase(drivePower);
-            DriveTrainSpeed();
-            Capping();
-            DriveMicroAdjust(0.3);
-        }
-        else{
-            double drivePower = DriveTrainSpeed();
-            DriveTrainBase(drivePower);
-            DriveTrainSpeed();
-            Capping();
-            DriveMicroAdjust(0.2);
-            DriveMicroTurn();
-        }
+        double drivePower = DriveTrainSpeed();
+
+        DriveTrainBase(drivePower);
+        DriveTrainSpeed();
+        Capping();
+        DriveMicroAdjust(0.3);
     }
 
     void UpdatePlayer2(){
@@ -179,21 +169,6 @@ public class BaseDrive extends OpMode{
         }
     }
 
-    void DriveMicroTurn(){
-        if (gamepad1.left_trigger == 1){
-            robot.lf.setPower(0.2);
-            robot.lb.setPower(0.2);
-            robot.rf.setPower(-0.2);
-            robot.rb.setPower(-0.2);
-        }
-        if (gamepad1.right_trigger == 1){
-            robot.lf.setPower(-0.2);
-            robot.lb.setPower(-0.2);
-            robot.rf.setPower(0.2);
-            robot.rb.setPower(0.2);
-        }
-    }
-
     double DriveTrainSpeed(){
         double drivePower = 0.75;
 
@@ -249,12 +224,6 @@ public class BaseDrive extends OpMode{
         if (capDropButton.is(Button.State.DOUBLE_TAP))
             robot.cap.setPosition(constants.capDrop);
 
-    }
-
-    int SetCapMode(int number){
-        if (setCapMode.is(Button.State.TAP))
-            gamepad1Mode = number + 1;
-        return gamepad1Mode;
     }
 
     void SpinIntake(){

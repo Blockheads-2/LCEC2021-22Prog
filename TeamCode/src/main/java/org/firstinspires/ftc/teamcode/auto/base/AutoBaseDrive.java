@@ -111,10 +111,7 @@ public class AutoBaseDrive extends LinearOpMode {
         waitForStart();
 
         //Test Paths Start
-        constantHeading(0.5,10,0,2);
-        constantHeading(0.5,10,45,2);
-        constantHeading(0.5,10,75,3);
-        constantHeading(0.5,10,90,2);
+        //...
 
         //End of Path
         telemetry.update();

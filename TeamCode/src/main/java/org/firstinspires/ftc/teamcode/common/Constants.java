@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.common;
 public class Constants {
     //Elevator Motor Positions
     public int elevatorPositionDown = 0; //Rest
-    public int elevatorPositionTop = 6000; //Extended
-    public int elevatorPositionMid = 4000;
+    public int elevatorPositionTop = 3600; //Extended
+    public int elevatorPositionMid = 2000;
     public int elevatorPositionBottom = 2000;
 
     //Capping Servo Positions

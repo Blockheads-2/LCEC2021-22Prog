@@ -16,10 +16,6 @@ public class Constants {
     //Drive Train Constants
     public double maxVelocityDT = 2700;
 
-    //Servo Positioning Intake
-    public double sanjithIsCool = 0;
-
-
     //Degrees Per Inch Auto
     public double degree = 23.47/90;
 }

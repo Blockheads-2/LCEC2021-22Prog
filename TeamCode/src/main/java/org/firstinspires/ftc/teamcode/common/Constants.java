@@ -15,9 +15,7 @@ public class Constants {
 
     //Drive Train Constants
     public double maxVelocityDT = 2700;
-
-   //umungus bungus
-
+    
     //Degrees Per Inch Auto
     public double degree = 23.47/90;
 }

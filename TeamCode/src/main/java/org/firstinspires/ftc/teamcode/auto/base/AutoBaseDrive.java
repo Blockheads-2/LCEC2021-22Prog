@@ -68,8 +68,6 @@ import org.firstinspires.ftc.teamcode.common.Constants;
 @Autonomous(name="Auto Base Drive", group="Robot Base Drive")
 
 //Start of Class
-
-//@Disabled
 public class AutoBaseDrive extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -113,6 +111,10 @@ public class AutoBaseDrive extends LinearOpMode {
         waitForStart();
 
         //Test Paths Start
+        constantHeading(0.5,10,0,2);
+        constantHeading(0.5,10,45,2);
+        constantHeading(0.5,10,75,3);
+        constantHeading(0.5,10,90,2);
 
         //End of Path
         telemetry.update();
@@ -211,14 +213,14 @@ public class AutoBaseDrive extends LinearOpMode {
         double radianAngle = Math.toRadians(angle);
 
         int addPose = (int) (distance * (Math.sin(radianAngle) + Math.cos(radianAngle)) * COUNTS_PER_INCH);
-        int subtractPose = (int) (distance * (Math.sin(radianAngle) - Math.cos(radianAngle)) * COUNTS_PER_INCH);
+        int subtractPose = (int) (distance * (Math.cos(radianAngle) - Math.sin(radianAngle)) * COUNTS_PER_INCH);
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
             // Determine new target position, and pass to motor controller
             newLeftFrontTarget = robot.lf.getCurrentPosition() + addPose;
-            newRightFrontTarget = robot.rf.getCurrentPosition() - subtractPose;
-            newLeftBackTarget = robot.lb.getCurrentPosition() - subtractPose;
+            newRightFrontTarget = robot.rf.getCurrentPosition() + subtractPose;
+            newLeftBackTarget = robot.lb.getCurrentPosition() + subtractPose;
             newRightBackTarget = robot.rb.getCurrentPosition() + addPose;
 
             robot.lf.setTargetPosition(newLeftFrontTarget);

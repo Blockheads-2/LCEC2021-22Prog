@@ -338,14 +338,14 @@ public class BlueCarouselAuto extends LinearOpMode {
         double radianAngle = Math.toRadians(angle);
 
         int addPose = (int) (distance * (Math.sin(radianAngle) + Math.cos(radianAngle)) * COUNTS_PER_INCH);
-        int subtractPose = (int) (distance * (Math.sin(radianAngle) - Math.cos(radianAngle)) * COUNTS_PER_INCH);
+        int subtractPose = (int) (distance * (Math.cos(radianAngle) - Math.sin(radianAngle)) * COUNTS_PER_INCH);
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
             // Determine new target position, and pass to motor controller
             newLeftFrontTarget = robot.lf.getCurrentPosition() + addPose;
-            newRightFrontTarget = robot.rf.getCurrentPosition() - subtractPose;
-            newLeftBackTarget = robot.lb.getCurrentPosition() - subtractPose;
+            newRightFrontTarget = robot.rf.getCurrentPosition() + subtractPose;
+            newLeftBackTarget = robot.lb.getCurrentPosition() + subtractPose;
             newRightBackTarget = robot.rb.getCurrentPosition() + addPose;
 
             robot.lf.setTargetPosition(newLeftFrontTarget);

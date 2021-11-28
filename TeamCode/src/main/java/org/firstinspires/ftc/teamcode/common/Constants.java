@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.common;
 public class Constants {
     //Elevator Motor Positions
     public int elevatorPositionDown = 0; //Rest
-    public int elevatorPositionTop = 6800; //Extended
-    public int elevatorPositionMid = 5000;
+    public int elevatorPositionTop = 6000; //Extended
+    public int elevatorPositionMid = 4000;
     public int elevatorPositionBottom = 2000;
 
     //Capping Servo Positions
@@ -15,7 +15,7 @@ public class Constants {
 
     //Drive Train Constants
     public double maxVelocityDT = 2700;
-    
+
     //Degrees Per Inch Auto
     public double degree = 23.47/90;
 }

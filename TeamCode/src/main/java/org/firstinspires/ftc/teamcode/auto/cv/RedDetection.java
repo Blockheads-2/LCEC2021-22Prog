@@ -20,12 +20,12 @@ public class RedDetection extends OpenCvPipeline {
     }
     private Location location;
 
-    static final Rect LEFT_ROI = new Rect(
-            new Point(450, 200),
-            new Point(700, 500));
     static final Rect MID_ROI = new Rect(
+            new Point(450, 200),
+            new Point(700, 480));
+    static final Rect LEFT_ROI = new Rect(
             new Point(1000,200),
-            new Point(1280,500));
+            new Point(1280,480));
 
 
     static double PERCENT_COLOR_THRESHOLD = 0.4;

@@ -20,15 +20,15 @@ public class BlueDetection extends OpenCvPipeline {
     }
     private Location location;
 
-    static final Rect LEFT_ROI = new Rect(
-            new Point(0, 200),
-            new Point(150, 500));
-    static final Rect MID_ROI = new Rect(
-            new Point(350, 200),
-            new Point(650, 500));
     static final Rect RIGHT_ROI = new Rect(
-            new Point(950,200),
-            new Point(1250,500));
+            new Point(50, 180),
+            new Point(250, 420));
+    static final Rect MID_ROI = new Rect(
+            new Point(450, 180),
+            new Point(700, 420));
+    static final Rect LEFT_ROI = new Rect(
+            new Point(1000,180),
+            new Point(1150,420));
 
 
     static double PERCENT_COLOR_THRESHOLD = 0.4;
@@ -72,8 +72,8 @@ public class BlueDetection extends OpenCvPipeline {
             telemetry.addData("Duck Location", "right");
         }
         else{
-            location = Location.NOT_FOUND;
-            telemetry.addData("Duck Location", "not found");
+            location = Location.RIGHT;
+            telemetry.addData("Duck Location", "right");
         }
         telemetry.update();
 

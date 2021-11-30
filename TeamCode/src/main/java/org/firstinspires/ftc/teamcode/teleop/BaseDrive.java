@@ -130,9 +130,9 @@ public class BaseDrive extends OpMode{
     }
 
     void DriveTrainBase(double drivePower){
-        double directionX = Math.pow(gamepad1.left_stick_x, 1);
-        double directionY = -Math.pow(gamepad1.left_stick_y, 1);
-        double directionR = Math.pow(gamepad1.right_stick_x, 1);
+        double directionX = Math.pow(gamepad1.left_stick_x, 1); //Strafe
+        double directionY = -Math.pow(gamepad1.left_stick_y, 1); //Forward
+        double directionR = Math.pow(gamepad1.right_stick_x, 1); //Turn
 
 
         robot.lf.setPower((directionY + directionR + directionX) * drivePower);

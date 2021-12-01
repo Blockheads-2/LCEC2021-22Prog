@@ -114,6 +114,7 @@ public class RedCarouselAuto extends LinearOpMode {
         switch (detector.getLocation()) {
             case LEFT: {
                 //...
+                constantHeading(0.5,20,0,2);
                 telemetry.addLine("Path: Left");
                 break;
             }

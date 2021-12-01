@@ -246,6 +246,7 @@ public class BlueCarouselAuto extends LinearOpMode {
         telemetry.update();
     }
 
+
     //Functions for Moving
     public void variableHeading(double speed, double leftInches, double rightInches, double timeoutS) {
         int newLeftFrontTarget;
@@ -347,6 +348,15 @@ public class BlueCarouselAuto extends LinearOpMode {
             newRightFrontTarget = robot.rf.getCurrentPosition() + subtractPose;
             newLeftBackTarget = robot.lb.getCurrentPosition() + subtractPose;
             newRightBackTarget = robot.rb.getCurrentPosition() + addPose;
+
+
+
+
+
+
+
+
+
 
             robot.lf.setTargetPosition(newLeftFrontTarget);
             robot.rf.setTargetPosition(newRightFrontTarget);

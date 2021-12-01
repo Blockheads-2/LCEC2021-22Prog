@@ -70,6 +70,7 @@ public class BaseDrive extends OpMode{
     Button carouselButton = new Button();
     Button carouselButtonInverted = new Button();
     Button lifterButton = new Button();
+    Button lifterBottomButton = new Button();
 
     @Override
     public void init() {
@@ -127,6 +128,7 @@ public class BaseDrive extends OpMode{
         carouselButton.update(gamepad2.a);
         carouselButtonInverted.update(gamepad2.b);
         lifterButton.update(gamepad2.y);
+        lifterBottomButton.update(gamepad2.x);
     }
 
     void DriveTrainBase(double drivePower){
@@ -185,22 +187,33 @@ public class BaseDrive extends OpMode{
             if (position >= (constants.elevatorPositionTop - 10)) {
                 robot.lifter.setTargetPosition(constants.elevatorPositionDown);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(1);
+                robot.lifter.setPower(0.9);
             } else {
                 robot.lifter.setTargetPosition(constants.elevatorPositionTop);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(1);
+                robot.lifter.setPower(0.9);
             }
+        }
+        if (lifterBottomButton.is(Button.State.TAP)){
+                if (position >= (constants.elevatorPositionBottom - 10)) {
+                    robot.lifter.setTargetPosition(constants.elevatorPositionDown);
+                    robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.lifter.setPower(0.9);
+                } else {
+                    robot.lifter.setTargetPosition(constants.elevatorPositionBottom);
+                    robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.lifter.setPower(0.9);
+                }
         }
         if (gamepad2.left_bumper) {
             robot.lifter.setTargetPosition(position - 50);
             robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.lifter.setPower(1);
+            robot.lifter.setPower(0.25);
         }
         if (gamepad2.right_bumper) {
             robot.lifter.setTargetPosition(position + 50);
             robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.lifter.setPower(-1);
+            robot.lifter.setPower(-0.25);
         }
     }
 
@@ -229,7 +242,7 @@ public class BaseDrive extends OpMode{
     void SpinIntake(){
         //Turn On
         if (gamepad2.dpad_up) // Spin Out
-            robot.spin.setPower(-0.5);
+            robot.spin.setPower(-0.3);
         else if (gamepad2.dpad_down) // Spin In
             robot.spin.setPower(1);
         else

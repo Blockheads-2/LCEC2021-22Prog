@@ -169,6 +169,19 @@ public class BaseDrive extends OpMode{
             robot.lb.setPower(power);
             robot.rb.setPower(-power);
         }
+
+        if (gamepad1.left_trigger == 1){
+            robot.lf.setPower(-power);
+            robot.rf.setPower(power);
+            robot.lb.setPower(-power);
+            robot.rb.setPower(power);
+        }
+        else if (gamepad1.right_trigger == 1){
+            robot.lf.setPower(power);
+            robot.rf.setPower(-power);
+            robot.lb.setPower(power);
+            robot.rb.setPower(-power);
+        }
     }
 
     double DriveTrainSpeed(){
@@ -219,10 +232,10 @@ public class BaseDrive extends OpMode{
 
     void Carousel(){
         if (carouselButton.is(Button.State.HELD)) {
-            robot.duckWheel.setVelocity(-1800);
+            robot.duckWheel.setPower(0.9);
         }
         else if (carouselButtonInverted.is(Button.State.HELD)) {
-            robot.duckWheel.setVelocity(1800);
+            robot.duckWheel.setPower(-0.9);
         }
         robot.duckWheel.setPower(0);
     }

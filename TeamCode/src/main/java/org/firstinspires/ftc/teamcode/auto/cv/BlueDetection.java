@@ -20,9 +20,12 @@ public class BlueDetection extends OpenCvPipeline {
     }
     private Location location;
 
+    /*
     static final Rect RIGHT_ROI = new Rect(
             new Point(50, 180),
             new Point(250, 420));
+    */
+
     static final Rect MID_ROI = new Rect(
             new Point(450, 180),
             new Point(700, 420));
@@ -44,19 +47,15 @@ public class BlueDetection extends OpenCvPipeline {
         Core.inRange(mat, lowHSV, highHSV, mat);
 
         Mat left = mat.submat(LEFT_ROI);
-        Mat right = mat.submat(RIGHT_ROI);
         Mat mid = mat.submat(MID_ROI);
 
         double leftValue = Core.sumElems(left).val[0] / LEFT_ROI.area() / 255;
-        double rightValue = Core.sumElems(right).val[0] / RIGHT_ROI.area() / 255;
         double midValue = Core.sumElems(mid).val[0] / MID_ROI.area() / 255;
 
         left.release();
-        right.release();
         mid.release();
 
         boolean stoneLeft = leftValue > PERCENT_COLOR_THRESHOLD;
-        boolean stoneRight = rightValue > PERCENT_COLOR_THRESHOLD;
         boolean stoneMid = midValue > PERCENT_COLOR_THRESHOLD;
 
         if (stoneMid) {
@@ -66,10 +65,6 @@ public class BlueDetection extends OpenCvPipeline {
         else if (stoneLeft) {
             location = Location.LEFT;
             telemetry.addData("Duck Location", "left");
-        }
-        else if (stoneRight) {
-            location = Location.RIGHT;
-            telemetry.addData("Duck Location", "right");
         }
         else{
             location = Location.RIGHT;
@@ -84,7 +79,6 @@ public class BlueDetection extends OpenCvPipeline {
         Scalar colorDuck = new Scalar(0,0,255);
 
         Imgproc.rectangle(mat, LEFT_ROI, location == Location.LEFT? colorSkystone:colorStone);
-        Imgproc.rectangle(mat, RIGHT_ROI, location == Location.RIGHT? colorSkystone:colorStone);
         Imgproc.rectangle(mat, MID_ROI, location == Location.MID? colorDuck:colorDuck);
 
         return mat;

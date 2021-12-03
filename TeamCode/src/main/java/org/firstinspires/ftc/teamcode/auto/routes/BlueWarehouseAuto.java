@@ -34,7 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.teamcode.auto.cv.RedDetection;
+import org.firstinspires.ftc.teamcode.auto.cv.BlueDetection;
 import org.firstinspires.ftc.teamcode.common.Constants;
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -43,10 +43,10 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name="Red Park Right Auto", group="Routes")
+@Autonomous(name="Blue Warehouse Auto", group="Routes")
 
 //@Disabled
-public class RedParkRightAuto extends LinearOpMode {
+public class BlueWarehouseAuto extends LinearOpMode {
 
     /* Declare OpMode members. */
     OpenCvCamera phoneCam;
@@ -80,15 +80,17 @@ public class RedParkRightAuto extends LinearOpMode {
         robot.rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.lifter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId","id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-        RedDetection detector = new RedDetection(telemetry);
+        BlueDetection detector = new BlueDetection(telemetry);
         phoneCam.setPipeline(detector);
 
         phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
@@ -116,14 +118,39 @@ public class RedParkRightAuto extends LinearOpMode {
                 telemetry.addLine("Path: Left");
                 break;
             }
+            case RIGHT: {
+                //power on lift
+                robot.lifter.setTargetPosition(constants.elevatorPositionTop);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(1);
+
+                // spline
+                variableHeading(0.3,12,5,2);
+
+                //out-take
+                robot.spin.setPower(-0.3);
+                sleep(1000);
+                robot.spin.setPower(0);
+
+                //lift down
+                robot.lifter.setTargetPosition(constants.elevatorPositionBottom);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(1);
+
+                //spline to park
+                variableHeading(0.5,12,12,3);
+
+                robot.lifter.setTargetPosition(constants.elevatorPositionDown);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(1);
+                constantHeading(0.5,10,0,3);
+
+                telemetry.addLine("Path: Right");
+                break;
+            }
             case MID: {
                 //...
                 telemetry.addLine("Path: Mid");
-                break;
-            }
-            case RIGHT:{
-                //...
-                telemetry.addLine("Path: Right");
                 break;
             }
         }
@@ -461,4 +488,5 @@ public class RedParkRightAuto extends LinearOpMode {
             sleep(250);   // optional pause after each move
         }
     }
+
 }

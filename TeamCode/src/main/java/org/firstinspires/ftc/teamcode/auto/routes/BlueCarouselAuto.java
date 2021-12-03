@@ -80,11 +80,13 @@ public class BlueCarouselAuto extends LinearOpMode {
         robot.rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.lifter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId","id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
@@ -112,35 +114,7 @@ public class BlueCarouselAuto extends LinearOpMode {
 
         switch (detector.getLocation()) {
             case LEFT: {
-                variableHeading(0.3,12,5,2);
-                sleep(100);
-
-                constantHeading(0.3,20,90,3);
-                sleep(100);
-
-                robot.duckWheel.setVelocity(1700);
-                sleep(2300);
-                robot.duckWheel.setPower(0);
-
-                robot.lifter.setTargetPosition(constants.elevatorPositionBottom);
-                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(1);
-
-                variableHeading(0.5,5,25,3);
-                sleep(1000);
-                constantHeading(0.5,15,0,3);
-
-                robot.spin.setPower(-1);
-                sleep(1000);
-
-                variableHeading(0.5,-20,-5,3);
-                constantHeading(0.5,-20,0,3);
-
-                robot.lifter.setTargetPosition(constants.elevatorPositionDown);
-                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(1);
-                sleep(3000);
-                robot.lifter.setPower(0);
+                //...
                 break;
             }
             case RIGHT: {
@@ -150,86 +124,21 @@ public class BlueCarouselAuto extends LinearOpMode {
                 constantHeading(0.3,20,90,3);
                 sleep(100);
 
-                robot.duckWheel.setVelocity(1700);
+                robot.duckWheel.setPower(0.7);
                 sleep(2300);
                 robot.duckWheel.setPower(0);
-
                 robot.lifter.setTargetPosition(constants.elevatorPositionTop);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.lifter.setPower(1);
 
-                variableHeading(0.5,5,25,3);
+                variableHeading(0.5,5,38,3);
                 sleep(1000);
-                constantHeading(0.5,15,0,3);
+                constantHeading(0.5,19,0,3);
 
                 robot.spin.setPower(-1);
                 sleep(1000);
 
-                variableHeading(0.5,-20,-5,3);
-                constantHeading(0.5,-20,0,3);
-
-                robot.lifter.setTargetPosition(constants.elevatorPositionDown);
-                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(1);
-                sleep(3000);
-                robot.lifter.setPower(0);
-                break;
-            }
-            case MID: {
-                variableHeading(0.3,12,5,2);
-                sleep(100);
-
-                constantHeading(0.3,20,90,3);
-                sleep(100);
-
-                robot.duckWheel.setVelocity(1700);
-                sleep(2300);
-                robot.duckWheel.setPower(0);
-
-                robot.lifter.setTargetPosition(constants.elevatorPositionMid);
-                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(1);
-
-                variableHeading(0.5,5,25,3);
-                sleep(1000);
-                constantHeading(0.5,15,0,3);
-
-                robot.spin.setPower(-1);
-                sleep(1000);
-
-                variableHeading(0.5,-20,-5,3);
-                constantHeading(0.5,-20,0,3);
-
-                robot.lifter.setTargetPosition(constants.elevatorPositionDown);
-                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(1);
-                sleep(3000);
-                robot.lifter.setPower(0);
-                break;
-            }
-            case NOT_FOUND: {
-
-                variableHeading(0.3,12,5,2);
-                sleep(100);
-
-                constantHeading(0.3,20,90,3);
-                sleep(100);
-
-                robot.duckWheel.setVelocity(1700);
-                sleep(2300);
-                robot.duckWheel.setPower(0);
-                robot.lifter.setTargetPosition(constants.elevatorPositionBottom);
-                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(1);
-
-                variableHeading(0.5,5,25,3);
-                sleep(1000);
-                constantHeading(0.5,15,0,3);
-
-                robot.spin.setPower(-1);
-                sleep(1000);
-
-                variableHeading(0.5,-20,-5,3);
+                variableHeading(0.5,-15,-5,3);
                 constantHeading(0.5,-20,0,3);
 
                 robot.lifter.setTargetPosition(constants.elevatorPositionDown);
@@ -240,6 +149,11 @@ public class BlueCarouselAuto extends LinearOpMode {
                 telemetry.addData("Path Finished:","None Detected");
                 break;
             }
+            case MID: {
+                //...
+                break;
+            }
+
         }
 
         phoneCam.stopStreaming();

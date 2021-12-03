@@ -64,7 +64,7 @@ import org.firstinspires.ftc.teamcode.common.Constants;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-//@Disabled
+@Disabled
 @Autonomous(name="Auto Base Drive", group="Robot Base Drive")
 
 //Start of Class
@@ -114,37 +114,8 @@ public class AutoBaseDrive extends LinearOpMode {
         waitForStart();
 
         //Test Paths Start
+
         //...
-        variableHeading(0.3,12,5,2);
-        sleep(100);
-
-        constantHeading(0.3,20,90,3);
-        sleep(100);
-
-        robot.duckWheel.setPower(0.7);
-        sleep(2300);
-        robot.duckWheel.setPower(0);
-        robot.lifter.setTargetPosition(constants.elevatorPositionBottom);
-        robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.lifter.setPower(1);
-
-        variableHeading(0.5,5,38,3);
-        sleep(1000);
-        constantHeading(0.5,19,0,3);
-
-        robot.spin.setPower(-1);
-        sleep(1000);
-
-        variableHeading(0.5,-15,-5,3);
-        constantHeading(0.5,-20,0,3);
-
-        robot.lifter.setTargetPosition(constants.elevatorPositionDown);
-        robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.lifter.setPower(1);
-        sleep(3000);
-        robot.lifter.setPower(0);
-        telemetry.addData("Path Finished:","None Detected");
-
 
         //End of Path
         telemetry.update();

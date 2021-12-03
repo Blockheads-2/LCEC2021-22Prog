@@ -81,11 +81,13 @@ public class RedCarouselAuto extends LinearOpMode {
         robot.rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.lifter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId","id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
@@ -114,17 +116,6 @@ public class RedCarouselAuto extends LinearOpMode {
         switch (detector.getLocation()) {
             case LEFT: {
                 //...
-                constantHeading(0.5,14,0,1);
-                constantHeading(.5,18,270,3);
-                TurnRight(.5,45,1);
-                constantHeading(.5, -12, 0, 3);
-
-                robot.duckWheel.setPower(0.7);
-                sleep(2000);
-
-                TurnLeft(.5,45,1);
-                constantHeading(.5,5,0,2);
-
                 telemetry.addLine("Path: Left");
                 break;
             }
@@ -134,7 +125,36 @@ public class RedCarouselAuto extends LinearOpMode {
                 break;
             }
             case RIGHT:{
-                //...
+
+                //power on lift
+                robot.lifter.setTargetPosition(constants.elevatorPositionTop);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(1);
+
+                // spline to drop
+                variableHeading(0.3,12,5,2);
+
+                //out-take
+                robot.spin.setPower(-0.3);
+                sleep(1000);
+                robot.spin.setPower(0);
+
+                //lift down
+                robot.lifter.setTargetPosition(constants.elevatorPositionDown);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(1);
+
+                //spline to carousel
+                variableHeading(0.5,12,12,3);
+
+                //spin
+                robot.duckWheel.setPower(0.7);
+                sleep(2300);
+                robot.duckWheel.setPower(0);
+
+                //move to park
+                variableHeading(0.5,10,10,20);
+
                 telemetry.addLine("Path: Right");
                 break;
             }

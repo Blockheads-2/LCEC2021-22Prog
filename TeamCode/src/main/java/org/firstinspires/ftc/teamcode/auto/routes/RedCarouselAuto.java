@@ -114,7 +114,17 @@ public class RedCarouselAuto extends LinearOpMode {
         switch (detector.getLocation()) {
             case LEFT: {
                 //...
-                constantHeading(0.5,20,0,2);
+                constantHeading(0.5,14,0,1);
+                constantHeading(.5,18,270,3);
+                TurnRight(.5,45,1);
+                constantHeading(.5, -12, 0, 3);
+
+                robot.duckWheel.setPower(0.7);
+                sleep(2000);
+
+                TurnLeft(.5,45,1);
+                constantHeading(.5,5,0,2);
+
                 telemetry.addLine("Path: Left");
                 break;
             }

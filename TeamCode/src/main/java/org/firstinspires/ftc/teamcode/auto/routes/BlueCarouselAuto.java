@@ -208,6 +208,7 @@ public class BlueCarouselAuto extends LinearOpMode {
                 break;
             }
             case NOT_FOUND: {
+
                 variableHeading(0.3,12,5,2);
                 sleep(100);
 
@@ -217,7 +218,6 @@ public class BlueCarouselAuto extends LinearOpMode {
                 robot.duckWheel.setVelocity(1700);
                 sleep(2300);
                 robot.duckWheel.setPower(0);
-
                 robot.lifter.setTargetPosition(constants.elevatorPositionBottom);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.lifter.setPower(1);

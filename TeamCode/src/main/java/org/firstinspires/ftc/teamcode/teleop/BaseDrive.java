@@ -232,10 +232,10 @@ public class BaseDrive extends OpMode{
 
     void Carousel(){
         if (carouselButton.is(Button.State.HELD)) {
-            robot.duckWheel.setPower(0.9);
+            robot.duckWheel.setPower(1);
         }
         else if (carouselButtonInverted.is(Button.State.HELD)) {
-            robot.duckWheel.setPower(-0.9);
+            robot.duckWheel.setPower(-1);
         }
         robot.duckWheel.setPower(0);
     }

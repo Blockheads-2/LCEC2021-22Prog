@@ -115,9 +115,41 @@ public class RedCarouselAuto extends LinearOpMode {
 
         switch (detector.getLocation()) {
             case LEFT: {
-                //...
+
+                //power on lift
+                robot.lifter.setTargetPosition(constants.elevatorPositionTop);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(1);
+
+                // move to drop
+                constantHeading(0.5,28,0,2);
+                TurnRight(0.8, 45, 1.5);
+
+                //out-take
+                robot.spin.setPower(-0.3);
+                sleep(1000);
+                robot.spin.setPower(0);
+
+                //lift down
+                robot.lifter.setTargetPosition(constants.elevatorPositionDown);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(1);
+
+                //spline to carousel
+                constantHeading(0.8, 24, 180, 2.5);
+                variableHeading(0.5,12,12,3);
+
+                //spin
+                robot.duckWheel.setPower(0.7);
+                sleep(2300);
+                robot.duckWheel.setPower(0);
+
+                //move to park
+                constantHeading(0.5, 18, 270, 2);
+
                 telemetry.addLine("Path: Left");
                 break;
+
             }
             case MID: {
                 //...
@@ -131,8 +163,9 @@ public class RedCarouselAuto extends LinearOpMode {
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.lifter.setPower(1);
 
-                // spline to drop
-                variableHeading(0.3,12,5,2);
+                // move to drop
+                constantHeading(0.5,28,0,2);
+                TurnRight(0.8, 45, 1.5);
 
                 //out-take
                 robot.spin.setPower(-0.3);
@@ -145,6 +178,7 @@ public class RedCarouselAuto extends LinearOpMode {
                 robot.lifter.setPower(1);
 
                 //spline to carousel
+                constantHeading(0.8, 24, 180, 2.5);
                 variableHeading(0.5,12,12,3);
 
                 //spin
@@ -153,7 +187,7 @@ public class RedCarouselAuto extends LinearOpMode {
                 robot.duckWheel.setPower(0);
 
                 //move to park
-                variableHeading(0.5,10,10,20);
+                constantHeading(0.5, 18, 270, 2);
 
                 telemetry.addLine("Path: Right");
                 break;

@@ -201,6 +201,15 @@ public class BaseDrive extends OpMode{
                 robot.lifter.setTargetPosition(constants.elevatorPositionDown);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.lifter.setPower(0.9);
+
+                /* --- Uncomment out when implement touch sensor --
+
+                if (robot.touchSensor.getState()) {
+                    robot.lifter.setPower(0);
+                    robot.lifter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                }
+
+                 */
             } else {
                 robot.lifter.setTargetPosition(constants.elevatorPositionTop);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);

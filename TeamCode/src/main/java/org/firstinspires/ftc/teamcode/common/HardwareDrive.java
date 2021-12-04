@@ -29,9 +29,12 @@
 
 package org.firstinspires.ftc.teamcode.common;
 
+import android.hardware.Sensor;
+
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -68,6 +71,13 @@ public class HardwareDrive
     public Servo cap = null;
     public CRServo spin = null;
 
+    //Sensor
+    /* --- Uncomment out when implement touch sensor --
+
+    public DigitalChannel touchSensor;
+
+     */
+
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
@@ -91,6 +101,13 @@ public class HardwareDrive
 
         duckWheel = hwMap.get(DcMotorEx.class, "carousel");
         lifter = hwMap.get(DcMotorEx.class, "lifter");
+
+        /* --- Uncomment out when implement touch sensor --
+        touchSensor = hwMap.get(DigitalChannel.class, "touch");
+
+        touchSensor.setMode(DigitalChannel.Mode.INPUT);
+
+         */
 
         //Define and Initialize Servos
         cap  = hwMap.get(Servo.class, "cap");

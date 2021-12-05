@@ -122,7 +122,7 @@ public class RedCarouselAuto extends LinearOpMode {
                 robot.lifter.setPower(1);
 
                 // move to drop
-                constantHeading(0.5,28,0,2);
+                constantHeading(0.5,26,5,2);
                 TurnRight(0.8, 45, 1.5);
 
                 //out-take
@@ -130,14 +130,20 @@ public class RedCarouselAuto extends LinearOpMode {
                 sleep(1000);
                 robot.spin.setPower(0);
 
+
+
+                //spline to carousel
+                constantHeading(0.8, 24, 180, 2.5);
+
                 //lift down
                 robot.lifter.setTargetPosition(constants.elevatorPositionDown);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.lifter.setPower(1);
 
-                //spline to carousel
-                constantHeading(0.8, 24, 180, 2.5);
-                variableHeading(0.5,12,12,3);
+                //move to carousel
+                variableHeading(0.5,-5,-15,3);
+
+                robot.lifter.setPower(0);
 
                 //spin
                 robot.duckWheel.setPower(0.7);
@@ -164,7 +170,7 @@ public class RedCarouselAuto extends LinearOpMode {
                 robot.lifter.setPower(1);
 
                 // move to drop
-                constantHeading(0.5,28,0,2);
+                constantHeading(0.5,26,5,2);
                 TurnRight(0.8, 45, 1.5);
 
                 //out-take
@@ -172,22 +178,30 @@ public class RedCarouselAuto extends LinearOpMode {
                 sleep(1000);
                 robot.spin.setPower(0);
 
+
+
+                //spline to carousel
+                constantHeading(0.8, 24, 180, 2.5);
+
                 //lift down
                 robot.lifter.setTargetPosition(constants.elevatorPositionDown);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.lifter.setPower(1);
 
-                //spline to carousel
-                constantHeading(0.8, 24, 180, 2.5);
-                variableHeading(0.5,12,12,3);
+                //move to carousel
+                variableHeading(0.5,-5,-15,3);
+                constantHeading(0.7,3.25,90,2);
+
+
+                robot.lifter.setPower(0);
 
                 //spin
-                robot.duckWheel.setPower(0.7);
+                robot.duckWheel.setPower(-0.5);
                 sleep(2300);
                 robot.duckWheel.setPower(0);
 
                 //move to park
-                constantHeading(0.5, 18, 270, 2);
+                constantHeading(0.5, 19.5, 270, 2);
 
                 telemetry.addLine("Path: Right");
                 break;

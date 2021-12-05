@@ -23,4 +23,8 @@ public class Constants {
 
     //Degrees Per Inch Auto
     public double degree = 23.47/90;
+
+    //Distance Between Odo and Center
+    public double horizontalDistanceOdo = 5.5;
+    public double midDistanceOdo = 3.0;
 }

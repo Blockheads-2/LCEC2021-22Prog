@@ -64,11 +64,11 @@ import org.firstinspires.ftc.teamcode.common.Constants;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Disabled
-@Autonomous(name="Auto Base Drive", group="Robot Base Drive")
+//@Disabled
+@Autonomous(name="Odometry Auto Drive", group="Robot Base Drive")
 
 //Start of Class
-public class AutoBaseDrive extends LinearOpMode {
+public class OdoAutoDrive extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareDrive robot = new HardwareDrive();   // Use a Pushbot's hardware
@@ -116,6 +116,7 @@ public class AutoBaseDrive extends LinearOpMode {
         //Test Paths Start
 
         //...
+        variableHeading(0.5,10,10,3);
 
         //End of Path
         telemetry.update();
@@ -123,74 +124,117 @@ public class AutoBaseDrive extends LinearOpMode {
 
 
     //Functions for Moving
-    public void variableHeading(double speed, double leftInches, double rightInches, double timeoutS) {
-        int newLeftFrontTarget;
-        int newRightFrontTarget;
-        int newLeftBackTarget;
-        int newRightBackTarget;
+    public void variableHeading(double speed, double xPose, double yPose, double timeoutS) {
+        int leftEncoderTarget;
+        int rightEncoderTarget;
 
+        double leftDistance;
+        double rightDistance;
         double fractionBetweenLeftAndRight;
         double reducedSpeed;
+
+        double radius;
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
 
             speed = speed * MAX_VELOCITY_DT;
 
-            if (Math.abs(leftInches) > Math.abs(rightInches))
-                fractionBetweenLeftAndRight = rightInches / leftInches;
-            else if (Math.abs(leftInches) < Math.abs(rightInches))
-                fractionBetweenLeftAndRight = leftInches / rightInches;
+            radius = Math.min(Math.abs(xPose), Math.abs(yPose));
+
+            if (xPose > 0){
+                leftDistance = (2 * Math.PI * (radius + constants.horizontalDistanceOdo))/(Math.acos((xPose * xPose) + (yPose * yPose) ) * COUNTS_PER_INCH);
+                rightDistance = (2 * Math.PI * (radius - constants.horizontalDistanceOdo))/(Math.acos((xPose * xPose) + (yPose * yPose) ) * COUNTS_PER_INCH);
+            }
+            else{
+                leftDistance = (2 * Math.PI * (radius - constants.horizontalDistanceOdo))/(Math.acos((xPose * xPose) + (yPose * yPose) ) * COUNTS_PER_INCH);
+                rightDistance = (2 * Math.PI * (radius + constants.horizontalDistanceOdo))/(Math.acos((xPose * xPose) + (yPose * yPose) ) * COUNTS_PER_INCH);
+            }
+
+            if (rightDistance > leftDistance)
+                fractionBetweenLeftAndRight = leftDistance/rightDistance;
             else
-                fractionBetweenLeftAndRight = 1;
+                fractionBetweenLeftAndRight = rightDistance/leftDistance;
 
-            reducedSpeed = speed * fractionBetweenLeftAndRight;
+            reducedSpeed = fractionBetweenLeftAndRight * speed;
 
-            // Determine new target position, and pass to motor controller
-            newLeftFrontTarget = robot.lf.getCurrentPosition() + (int) (leftInches * COUNTS_PER_INCH);
-            newRightFrontTarget = robot.rf.getCurrentPosition() + (int) (rightInches * COUNTS_PER_INCH);
-            newLeftBackTarget = robot.lb.getCurrentPosition() + (int) (leftInches * COUNTS_PER_INCH);
-            newRightBackTarget = robot.rb.getCurrentPosition() + (int) (rightInches * COUNTS_PER_INCH);
+            if (yPose > 0){
+                leftEncoderTarget = robot.lf.getCurrentPosition() + (int) leftDistance;
+                rightEncoderTarget = robot.rf.getCurrentPosition() + (int) rightDistance;
+            }
+            else {
+                leftEncoderTarget = robot.lf.getCurrentPosition() - (int) leftDistance;
+                rightEncoderTarget = robot.rf.getCurrentPosition() - (int) rightDistance;
+            }
 
-            robot.lf.setTargetPosition(newLeftFrontTarget);
-            robot.rf.setTargetPosition(newRightFrontTarget);
-            robot.lb.setTargetPosition(newLeftBackTarget);
-            robot.rb.setTargetPosition(newRightBackTarget);
+            robot.lf.setTargetPosition(leftEncoderTarget);
+            robot.rf.setTargetPosition(rightEncoderTarget);
 
             // Turn On RUN_TO_POSITION
             robot.lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
             runtime.reset();
 
-            if (Math.abs(leftInches) > Math.abs(rightInches)) {
+
+            if (xPose > 0){
                 robot.lf.setVelocity(speed);
                 robot.rf.setVelocity(reducedSpeed);
                 robot.lb.setVelocity(speed);
                 robot.rb.setVelocity(reducedSpeed);
-            } else if (Math.abs(leftInches) == Math.abs(rightInches)) {
-                robot.lf.setVelocity(speed);
-                robot.lb.setVelocity(speed);
-                robot.rf.setVelocity(speed);
-                robot.rb.setVelocity(speed);
-            } else {
+            }
+            else {
                 robot.lf.setVelocity(reducedSpeed);
                 robot.rf.setVelocity(speed);
                 robot.lb.setVelocity(reducedSpeed);
                 robot.rb.setVelocity(speed);
             }
 
-            while (opModeIsActive() && (runtime.seconds() < timeoutS) && robot.lf.isBusy() && robot.rf.isBusy()
-                    && robot.lb.isBusy() && robot.rb.isBusy()) {
+            while (opModeIsActive() && (runtime.seconds() < timeoutS) && Math.abs(robot.lf.getCurrentPosition()) < Math.abs(leftEncoderTarget)
+                    && Math.abs(robot.rf.getCurrentPosition()) < Math.abs(rightEncoderTarget)) {
 
                 // Display it for the driver.
                 telemetry.addData("Left Velocity: ", robot.lf.getVelocity());
                 telemetry.addData("Right Velocity: ", robot.rf.getVelocity());
                 telemetry.update();
             }
+
+            /*
+            double straightDistance = (Math.max(Math.abs(xPose), Math.abs(yPose)) - Math.min(Math.abs(xPose), Math.abs(yPose)) * COUNTS_PER_INCH);
+            if (xPose > 0){
+                leftEncoderTarget = robot.lf.getCurrentPosition() + (int) straightDistance;
+                rightEncoderTarget = robot.lf.getCurrentPosition() + (int) straightDistance;
+            }
+            else {
+                leftEncoderTarget = robot.lf.getCurrentPosition() - (int) straightDistance;
+                rightEncoderTarget = robot.lf.getCurrentPosition() - (int) straightDistance;
+            }
+            robot.lf.setTargetPosition(leftEncoderTarget);
+            robot.rf.setTargetPosition(rightEncoderTarget);
+
+            robot.lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+
+            robot.lf.setVelocity(speed);
+            robot.rf.setVelocity(speed);
+            robot.lb.setVelocity(speed);
+            robot.rb.setVelocity(speed);
+
+            while (opModeIsActive() && (runtime.seconds() < timeoutS) && Math.abs(robot.lf.getCurrentPosition()) < Math.abs(leftEncoderTarget)
+                    && Math.abs(robot.rf.getCurrentPosition()) < Math.abs(rightEncoderTarget)) {
+
+                // Display it for the driver.
+                telemetry.addData("Left Velocity: ", robot.lf.getVelocity());
+                telemetry.addData("Right Velocity: ", robot.rf.getVelocity());
+                telemetry.update();
+            }
+
+
+             */
 
             // Stop all motion;
             robot.lf.setPower(0);
@@ -206,28 +250,28 @@ public class AutoBaseDrive extends LinearOpMode {
         }
     }
     public void constantHeading(double speed, double distance, double angle, double timeoutS) {
-        int newLeftFrontTarget;
-        int newRightFrontTarget;
-        int newLeftBackTarget;
-        int newRightBackTarget;
+        int leftEncoderTarget;
+        int rightEncoderTarget;
+        int midEncoderTarget;
 
         double radianAngle = Math.toRadians(angle);
 
         int addPose = (int) (distance * (Math.sin(radianAngle) + Math.cos(radianAngle)) * COUNTS_PER_INCH);
         int subtractPose = (int) (distance * (Math.cos(radianAngle) - Math.sin(radianAngle)) * COUNTS_PER_INCH);
 
+        int horizontalDistance = (int) (distance * Math.cos(radianAngle) * COUNTS_PER_INCH);
+        int middleDistance = (int) (distance * Math.sin(radianAngle) * COUNTS_PER_INCH);
+
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
             // Determine new target position, and pass to motor controller
-            newLeftFrontTarget = robot.lf.getCurrentPosition() + addPose;
-            newRightFrontTarget = robot.rf.getCurrentPosition() + subtractPose;
-            newLeftBackTarget = robot.lb.getCurrentPosition() + subtractPose;
-            newRightBackTarget = robot.rb.getCurrentPosition() + addPose;
+            leftEncoderTarget = robot.lf.getCurrentPosition() + addPose;
+            rightEncoderTarget = robot.rf.getCurrentPosition() + subtractPose;
+            midEncoderTarget = robot.lb.getCurrentPosition() + middleDistance;
 
-            robot.lf.setTargetPosition(newLeftFrontTarget);
-            robot.rf.setTargetPosition(newRightFrontTarget);
-            robot.lb.setTargetPosition(newLeftBackTarget);
-            robot.rb.setTargetPosition(newRightBackTarget);
+            robot.lf.setTargetPosition(leftEncoderTarget);
+            robot.rf.setTargetPosition(rightEncoderTarget);
+
 
             // Turn On RUN_TO_POSITION
             robot.lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -244,7 +288,8 @@ public class AutoBaseDrive extends LinearOpMode {
             robot.lb.setVelocity(speed * constants.maxVelocityDT * 0.9);
             robot.rb.setVelocity(speed * constants.maxVelocityDT * 0.9);
 
-            while (opModeIsActive() && (runtime.seconds() < timeoutS)) {
+            while (opModeIsActive() && (runtime.seconds() < timeoutS) && midEncoderTarget > robot.lb.getCurrentPosition()
+            && horizontalDistance > robot.rf.getCurrentPosition() && robot.lf.getCurrentPosition() < horizontalDistance) {
                 // Display it for the driver.
                 telemetry.addData("Left Velocity: ", robot.lb.getVelocity());
                 telemetry.addData("Right Velocity: ", robot.rb.getVelocity());

@@ -71,12 +71,13 @@ public class HardwareDrive
     public Servo cap = null;
     public CRServo spin = null;
 
+    public DcMotorEx testSpin = null;
+    public CRServo succ = null;
+
     //Sensor
-    /* --- Uncomment out when implement touch sensor --
+   // public DigitalChannel touchSensor;
 
-    public DigitalChannel touchSensor;
 
-     */
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
@@ -102,12 +103,21 @@ public class HardwareDrive
         duckWheel = hwMap.get(DcMotorEx.class, "carousel");
         lifter = hwMap.get(DcMotorEx.class, "lifter");
 
-        /* --- Uncomment out when implement touch sensor --
-        touchSensor = hwMap.get(DigitalChannel.class, "touch");
 
+        //Pyll String Test Opmode
+        testSpin = hwMap.get(DcMotorEx.class, "string");
+        succ = hwMap.get(CRServo.class,"string");
+        succ.setPower(0);
+
+      /*
+      touchSensor = hwMap.get(DigitalChannel.class, "touch");
         touchSensor.setMode(DigitalChannel.Mode.INPUT);
 
-         */
+
+       */
+
+
+
 
         //Define and Initialize Servos
         cap  = hwMap.get(Servo.class, "cap");
@@ -134,6 +144,7 @@ public class HardwareDrive
 
         duckWheel.setPower(0);
         lifter.setPower(0);
+        testSpin.setPower(0);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.

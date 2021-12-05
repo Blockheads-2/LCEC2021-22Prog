@@ -65,10 +65,10 @@ import org.firstinspires.ftc.teamcode.common.Constants;
  */
 
 @Disabled
-@Autonomous(name="Auto Base Drive", group="Robot Base Drive")
+@Autonomous(name="Encoder Auto Drive", group="Robot Base Drive")
 
 //Start of Class
-public class AutoBaseDrive extends LinearOpMode {
+public class EncoderAutoDrive extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareDrive robot = new HardwareDrive();   // Use a Pushbot's hardware
@@ -116,6 +116,7 @@ public class AutoBaseDrive extends LinearOpMode {
         //Test Paths Start
 
         //...
+        constantHeading(0.5,10,10,3);
 
         //End of Path
         telemetry.update();

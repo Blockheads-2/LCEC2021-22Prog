@@ -142,28 +142,24 @@ public class RedCarouselAuto extends LinearOpMode {
 
                 //move to carousel
                 variableHeading(0.5,-5,-15,3);
+                constantHeading(0.7,3.5,90,3);
+
 
                 robot.lifter.setPower(0);
 
                 //spin
-                robot.duckWheel.setPower(0.7);
-                sleep(2300);
+                robot.duckWheel.setPower(-0.3);
+                sleep(3500);
                 robot.duckWheel.setPower(0);
 
                 //move to park
-                constantHeading(0.5, 18, 270, 2);
+                constantHeading(0.5, 19.5, 270, 2);
 
                 telemetry.addLine("Path: Left");
                 break;
 
             }
             case MID: {
-                //...
-                telemetry.addLine("Path: Mid");
-                break;
-            }
-            case RIGHT:{
-
                 //power on lift
                 robot.lifter.setTargetPosition(constants.elevatorPositionTop);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -190,19 +186,64 @@ public class RedCarouselAuto extends LinearOpMode {
 
                 //move to carousel
                 variableHeading(0.5,-5,-15,3);
-                constantHeading(0.7,3.25,90,2);
+                constantHeading(0.7,3.5,90,3);
 
 
                 robot.lifter.setPower(0);
 
                 //spin
-                robot.duckWheel.setPower(-0.5);
-                sleep(2300);
+                robot.duckWheel.setPower(-0.3);
+                sleep(3500);
                 robot.duckWheel.setPower(0);
 
                 //move to park
                 constantHeading(0.5, 19.5, 270, 2);
 
+                telemetry.addLine("Path: Mid");
+                break;
+            }
+            case RIGHT:{
+
+                //power on lift
+                robot.lifter.setTargetPosition(constants.elevatorPositionTop);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(1);
+
+                // move to drop
+                constantHeading(0.5,18,270,1.5);
+                constantHeading(0.8, 24, 0, 1.5);
+                variableHeading(0.5,41,6,1.5);
+
+                //out-take
+                robot.spin.setPower(-0.2);
+                sleep(1000);
+                robot.spin.setPower(0);
+
+                /*
+
+                //spline to carousel
+                constantHeading(0.8, 24, 180, 2.5);
+
+                //lift down
+                robot.lifter.setTargetPosition(constants.elevatorPositionDown);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(1);
+
+                //move to carousel
+                variableHeading(0.5,-5,-15,3);
+                constantHeading(0.7,3.5,90,3);
+
+
+                robot.lifter.setPower(0);
+
+                //spin
+                robot.duckWheel.setPower(-0.3);
+                sleep(3500);
+                robot.duckWheel.setPower(0);
+
+                //move to park
+                constantHeading(0.5, 19.5, 270, 2);
+                */
                 telemetry.addLine("Path: Right");
                 break;
             }

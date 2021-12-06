@@ -139,7 +139,7 @@ public class OdoAutoDrive extends LinearOpMode {
         if (opModeIsActive()) {
 
             speed = speed * MAX_VELOCITY_DT;
-            
+
             radius = Math.min(Math.abs(xPose), Math.abs(yPose));
 
             if (xPose > 0){
@@ -158,7 +158,6 @@ public class OdoAutoDrive extends LinearOpMode {
 
             reducedSpeed = Math.abs(fractionBetweenLeftAndRight * speed);
 
-            /*
             if (yPose > 0){
                 leftEncoderTarget = robot.lf.getCurrentPosition() + (int) leftDistance;
                 rightEncoderTarget = robot.rf.getCurrentPosition() + (int) rightDistance;
@@ -167,8 +166,6 @@ public class OdoAutoDrive extends LinearOpMode {
                 leftEncoderTarget = robot.lf.getCurrentPosition() - (int) leftDistance;
                 rightEncoderTarget = robot.rf.getCurrentPosition() - (int) rightDistance;
             }
-
-
 
             robot.lf.setTargetPosition(leftEncoderTarget);
             robot.lb.setTargetPosition(leftEncoderTarget);
@@ -180,17 +177,6 @@ public class OdoAutoDrive extends LinearOpMode {
             robot.rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
-             */
-
-
-
-
-
-            // reset the timeout time and start motion.
-            runtime.reset();
-
 
             if (xPose > 0){
                 robot.lf.setVelocity(speed);
@@ -204,6 +190,9 @@ public class OdoAutoDrive extends LinearOpMode {
                 robot.lb.setVelocity(reducedSpeed); //reduced
                 robot.rb.setVelocity(speed);
             }
+
+            // reset the timeout time and start motion.
+            runtime.reset();
 
             while (opModeIsActive() && (runtime.seconds() < timeoutS)) {
 

@@ -1,22 +1,22 @@
 package org.firstinspires.ftc.teamcode.common;
 
 public class MathSpline {
-    private double alpha; //final x
-    private double beta; //final y
-    private double theta; //angle of arc
-    private double dLeft; //arc length left
-    private double dRight; //arc length right
-    private double radius; //radius of robot's COM
-    private double pLeft; //power of left wheel
-    private double pRight; //power of right wheel
+    double alpha = 0; //final x
+    double beta = 0; //final y
+    double theta = 0; //angle of arc
+    double dLeft = 0; //arc length left
+    double dRight = 0; //arc length right
+    double radius = 0; //radius of robot's COM
+    double pLeft = 0; //power of left wheel
+    double pRight = 0; //power of right wheel
 
     Constants constants = new Constants();
 
     //Variables for Math
-    private final double midD = constants.horizontalDistanceOdo;
-    private double insideAcos;
-    private double radiusLeft;
-    private double radiusRight;
+    double midD = constants.horizontalDistanceOdo;
+    double insideAcos = 0;
+    double radiusLeft = 0;
+    double radiusRight = 0;
 
     //Input the Final Position
     public void setFinalPose(double xPose, double yPose){
@@ -24,10 +24,9 @@ public class MathSpline {
         beta = yPose;
     }
 
-    
     //Calculate the needed variables
     public double returnRadius(){
-        radius = ((Math.pow(alpha,2) * beta) + Math.pow(beta,3)) / (2 * alpha * beta);
+        radius = ((alpha * alpha * beta) + (beta * beta * beta)) / (2 * alpha * beta);
         return radius;
     }
     public double returnLeftRadius(){
@@ -53,22 +52,51 @@ public class MathSpline {
     public double returnTheta(){
         radius = returnRadius();
 
-        insideAcos = (Math.pow(alpha,2) + Math.pow(beta,2)) / (2 * radius);
-        theta = Math.acos(-insideAcos + 1);
+        insideAcos = (-(alpha * alpha) - (beta * beta)) / (2 * radius);
+        theta = Math.acos(insideAcos + 1);
 
         return theta;
     }
 
     //Return Left and Right Distance for each "Side"
     public double returnLDistance(){
+        //radius
+        radius = ((alpha * alpha * beta) + (beta * beta * beta)) / (2 * alpha * beta);
+
+        //left radius
+          if (alpha > 0)
+            radiusLeft = radius + midD;
+         else
+            radiusLeft = radius - midD;
+
+        //theta
+        insideAcos = (-(alpha * alpha) - (beta * beta)) / (2 * radius * radius); //extra radius
+        double inside = insideAcos + 1;
+        theta = Math.acos(inside);
+
         dLeft = returnLeftRadius() * returnTheta();
 
-        return dLeft;
+        return dLeft; //dLeft
     }
     public double returnRDistance(){
+        //radius
+        radius = ((alpha * alpha * beta) + (beta * beta * beta)) / (2 * alpha * beta);
+
+        //left radius
+         if (alpha > 0)
+            radiusRight = radius - midD;
+         else
+            radiusRight = radius + midD;
+
+
+        //theta
+        insideAcos = (-(alpha * alpha) - (beta * beta)) / (2 * radius * radius); //extra radius
+        double inside = insideAcos + 1;
+        theta = Math.acos(inside);
+
         dRight = returnRightRadius() * returnTheta();
 
-        return dRight;
+        return dRight; //dRight
     }
     public double returnLPower(){
         dLeft = returnLDistance();

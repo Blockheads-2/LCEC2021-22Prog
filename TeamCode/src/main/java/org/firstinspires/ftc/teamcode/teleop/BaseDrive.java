@@ -102,7 +102,7 @@ public class BaseDrive extends OpMode{
         DriveTrainBase(drivePower);
         DriveTrainSpeed();
         Capping();
-        DriveMicroAdjust(0.3);
+        DriveMicroAdjust(0.4);
     }
 
     void UpdatePlayer2(){

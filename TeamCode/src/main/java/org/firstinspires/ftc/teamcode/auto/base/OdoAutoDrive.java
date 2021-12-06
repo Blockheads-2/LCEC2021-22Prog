@@ -33,6 +33,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import org.firstinspires.ftc.teamcode.common.MathSpline;
@@ -141,8 +143,8 @@ public class OdoAutoDrive extends LinearOpMode {
 
             mathSpline.setFinalPose(xPose,yPose);
 
-            leftDistance = mathSpline.returnLDistance();
-            rightDistance = mathSpline.returnRDistance();
+            leftDistance = mathSpline.returnLDistance() * COUNTS_PER_INCH;
+            rightDistance = mathSpline.returnRDistance() * COUNTS_PER_INCH;
 
             FleftEncoderTarget = robot.lf.getCurrentPosition() + (int) leftDistance;
             FrightEncoderTarget = robot.rf.getCurrentPosition() + (int) rightDistance;
@@ -181,6 +183,7 @@ public class OdoAutoDrive extends LinearOpMode {
                 // Display it for the driver.
                 telemetry.addData("Right Distance", mathSpline.returnRDistance());
                 telemetry.addData("Left Distance", mathSpline.returnLDistance());
+                telemetry.addData("Radius",mathSpline.returnRadius());
                 telemetry.update();
             }
 

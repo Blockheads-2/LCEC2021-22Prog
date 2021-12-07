@@ -119,7 +119,7 @@ public class OdoAutoDrive extends LinearOpMode {
         //Test Paths Start
 
         //...
-        variableHeading(0.5,10,10,3);
+        variableHeading(0.2,10,10,3);
 
         //End of Path
         telemetry.update();
@@ -163,10 +163,10 @@ public class OdoAutoDrive extends LinearOpMode {
             robot.lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            robot.lf.setVelocity(speed);
-            robot.rf.setVelocity(speed);
-            robot.lb.setVelocity(speed);
-            robot.rb.setVelocity(speed);
+            robot.lf.setVelocity(speed * mathSpline.returnLPower());
+            robot.rf.setVelocity(speed * mathSpline.returnRPower());
+            robot.lb.setVelocity(speed * mathSpline.returnLPower());
+            robot.rb.setVelocity(speed * mathSpline.returnRPower());
 
             /*
             robot.lf.setVelocity(speed * mathSpline.returnLPower());
@@ -178,12 +178,12 @@ public class OdoAutoDrive extends LinearOpMode {
             // reset the timeout time and start motion.
             runtime.reset();
 
-            while (opModeIsActive() && (runtime.seconds() < timeoutS)) {
+            while (opModeIsActive() && (runtime.seconds() < timeoutS) && robot.lf.isBusy() && robot.rf.isBusy()
+                    && robot.lb.isBusy() && robot.rb.isBusy()) {
 
                 // Display it for the driver.
                 telemetry.addData("Right Distance", mathSpline.returnRDistance());
                 telemetry.addData("Left Distance", mathSpline.returnLDistance());
-                telemetry.addData("Radius",mathSpline.returnRadius());
                 telemetry.update();
             }
 

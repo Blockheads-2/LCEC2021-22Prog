@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.common;
 
+import static java.lang.Math.*;
+
 public class MathSpline {
     double alpha = 0; //final x
     double beta = 0; //final y
@@ -25,56 +27,23 @@ public class MathSpline {
     }
 
     //Calculate the needed variables
-    public double returnRadius(){
-        radius = ((alpha * alpha * beta) + (beta * beta * beta)) / (2 * alpha * beta);
-        return radius;
-    }
-    public double returnLeftRadius(){
-        radius = returnRadius();
-
-        if (alpha > 0)
-            radiusLeft = radius + midD;
-        else
-            radiusLeft = radius - midD;
-
-        return radiusLeft;
-    }
-    public double returnRightRadius(){
-        radius = returnRadius();
-
-        if (alpha > 0)
-            radiusRight = radius - midD;
-        else
-            radiusRight = radius + midD;
-
-        return radiusRight;
-    }
-    public double returnTheta(){
-        radius = returnRadius();
-
-        insideAcos = (-(alpha * alpha) - (beta * beta)) / (2 * radius);
-        theta = Math.acos(insideAcos + 1);
-
-        return theta;
-    }
-
-    //Return Left and Right Distance for each "Side"
     public double returnLDistance(){
         //radius
         radius = ((alpha * alpha * beta) + (beta * beta * beta)) / (2 * alpha * beta);
 
         //left radius
-          if (alpha > 0)
+        if (alpha > 0)
             radiusLeft = radius + midD;
-         else
+        else
             radiusLeft = radius - midD;
 
         //theta
         insideAcos = (-(alpha * alpha) - (beta * beta)) / (2 * radius * radius); //extra radius
         double inside = insideAcos + 1;
+
         theta = Math.acos(inside);
 
-        dLeft = returnLeftRadius() * returnTheta();
+        dLeft = radiusLeft * theta * 2;
 
         return dLeft; //dLeft
     }
@@ -92,9 +61,10 @@ public class MathSpline {
         //theta
         insideAcos = (-(alpha * alpha) - (beta * beta)) / (2 * radius * radius); //extra radius
         double inside = insideAcos + 1;
+
         theta = Math.acos(inside);
 
-        dRight = returnRightRadius() * returnTheta();
+        dRight = radiusRight * theta;
 
         return dRight; //dRight
     }

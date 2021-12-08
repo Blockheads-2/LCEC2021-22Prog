@@ -27,6 +27,6 @@ public class Constants {
     public double degree = 23.47/90;
 
     //Distance Between Odo and Center
-    public double horizontalDistanceOdo = 6;
+    public double horizontalDistanceOdo = 7;
     public double midDistanceOdo = 3.0;
 }

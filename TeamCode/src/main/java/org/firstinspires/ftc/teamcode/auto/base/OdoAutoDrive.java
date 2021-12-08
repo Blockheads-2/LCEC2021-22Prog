@@ -119,7 +119,7 @@ public class OdoAutoDrive extends LinearOpMode {
         //Test Paths Start
 
         //...
-        variableHeading(0.2,10,10,3);
+        variableHeading(0.5,10,10,3);
 
         //End of Path
         telemetry.update();
@@ -167,13 +167,6 @@ public class OdoAutoDrive extends LinearOpMode {
             robot.rf.setVelocity(speed * mathSpline.returnRPower());
             robot.lb.setVelocity(speed * mathSpline.returnLPower());
             robot.rb.setVelocity(speed * mathSpline.returnRPower());
-
-            /*
-            robot.lf.setVelocity(speed * mathSpline.returnLPower());
-            robot.rf.setVelocity(speed * mathSpline.returnRPower());
-            robot.lb.setVelocity(speed * mathSpline.returnLPower());
-            robot.rb.setVelocity(speed * mathSpline.returnRPower());
-             */
 
             // reset the timeout time and start motion.
             runtime.reset();
@@ -339,10 +332,17 @@ public class OdoAutoDrive extends LinearOpMode {
             }
 
             // Stop all motion;
-            robot.lf.setVelocity(0);
-            robot.rf.setVelocity(0);
-            robot.lb.setVelocity(0);
-            robot.rb.setVelocity(0);
+            robot.lf.setPower(-0.25);
+            robot.rf.setPower(-0.25);
+            robot.lb.setPower(-0.25);
+            robot.rb.setPower(-0.25);
+
+            sleep(100);
+
+            robot.lf.setPower(0);
+            robot.rf.setPower(0);
+            robot.lb.setPower(0);
+            robot.rb.setPower(0);
 
             // Turn off RUN_TO_POSITION
             robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

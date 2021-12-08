@@ -22,44 +22,44 @@ public class MathSpline {
 
     //Input the Final Position
     public void setFinalPose(double xPose, double yPose){
-        alpha = xPose;
-        beta = yPose;
+        alpha = xPose; //X Final Position
+        beta = yPose; //Y Final Position
     }
 
     //Calculate the needed variables
     public double returnLDistance(){
         //radius
-        radius = ((alpha * alpha * beta) + (beta * beta * beta)) / (2 * alpha * beta);
+        radius = ((alpha * alpha) + (beta * beta)) / (2 * alpha);
 
         //left radius
         if (alpha > 0)
-            radiusLeft = radius + midD;
+            radiusLeft =  (1.8 * radius) + midD;
         else
-            radiusLeft = radius - midD;
+            radiusLeft =  (0.75 * radius) - midD;
 
         //theta
-        insideAcos = (-(alpha * alpha) - (beta * beta)) / (2 * radius * radius); //extra radius
+        insideAcos = (-(alpha * alpha) - (beta * beta)) / (2 * radius * radius);
         double inside = insideAcos + 1;
 
         theta = Math.acos(inside);
 
-        dLeft = radiusLeft * theta * 2;
+        dLeft = radiusLeft * theta;
 
         return dLeft; //dLeft
     }
     public double returnRDistance(){
         //radius
-        radius = ((alpha * alpha * beta) + (beta * beta * beta)) / (2 * alpha * beta);
+        radius = ((alpha * alpha ) + (beta * beta )) / (2 * alpha );
 
         //left radius
          if (alpha > 0)
-            radiusRight = radius - midD;
+            radiusRight = (0.75 * radius) - midD;
          else
-            radiusRight = radius + midD;
+            radiusRight = (1.8 * radius) + midD;
 
 
         //theta
-        insideAcos = (-(alpha * alpha) - (beta * beta)) / (2 * radius * radius); //extra radius
+        insideAcos = (-(alpha * alpha) - (beta * beta)) / (2 * radius * radius);
         double inside = insideAcos + 1;
 
         theta = Math.acos(inside);

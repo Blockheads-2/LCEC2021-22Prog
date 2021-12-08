@@ -214,10 +214,9 @@ public class RedCarouselAuto extends LinearOpMode {
                 // move to drop
                 constantHeading(0.4,18,270,1.5);
                 robot.spin.setPower(0.2);
-                constantHeading(0.8, 24, 0, 1.5);
-                variableHeading(0.6,21,3,0.9);
-                variableHeading(0.3,21.5,3,1.1);
-
+                constantHeading(0.8, 16, 0, 1.5);
+                variableHeading(0.6,30,90,1.5);
+/*
                 //out-take
                 robot.spin.setPower(-0.175);
                 sleep(1300);
@@ -237,7 +236,7 @@ public class RedCarouselAuto extends LinearOpMode {
 
                 //move to carousel
                 constantHeading(0.7,15,90,3);
-/*
+
 
                 robot.lifter.setPower(0);
 

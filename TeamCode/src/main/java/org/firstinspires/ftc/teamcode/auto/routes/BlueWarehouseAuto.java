@@ -229,28 +229,28 @@ public class BlueWarehouseAuto extends LinearOpMode {
         }
     }
     public void constantHeading(double speed, double distance, double angle, double timeoutS) {
-        int leftEncoderTarget;
-        int rightEncoderTarget;
-        int midEncoderTarget;
+        int newLeftFrontTarget;
+        int newRightFrontTarget;
+        int newLeftBackTarget;
+        int newRightBackTarget;
 
         double radianAngle = Math.toRadians(angle);
 
         int addPose = (int) (distance * (Math.sin(radianAngle) + Math.cos(radianAngle)) * COUNTS_PER_INCH);
         int subtractPose = (int) (distance * (Math.cos(radianAngle) - Math.sin(radianAngle)) * COUNTS_PER_INCH);
 
-        int horizontalDistance = (int) (distance * Math.cos(radianAngle) * COUNTS_PER_INCH);
-        int middleDistance = (int) (distance * Math.sin(radianAngle) * COUNTS_PER_INCH);
-
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
             // Determine new target position, and pass to motor controller
-            leftEncoderTarget = robot.lf.getCurrentPosition() + addPose;
-            rightEncoderTarget = robot.rf.getCurrentPosition() + subtractPose;
-            midEncoderTarget = robot.lb.getCurrentPosition() + middleDistance;
+            newLeftFrontTarget = robot.lf.getCurrentPosition() + addPose;
+            newRightFrontTarget = robot.rf.getCurrentPosition() + subtractPose;
+            newLeftBackTarget = robot.lb.getCurrentPosition() + subtractPose;
+            newRightBackTarget = robot.rb.getCurrentPosition() + addPose;
 
-            robot.lf.setTargetPosition(leftEncoderTarget);
-            robot.rf.setTargetPosition(rightEncoderTarget);
-
+            robot.lf.setTargetPosition(newLeftFrontTarget);
+            robot.rf.setTargetPosition(newRightFrontTarget);
+            robot.lb.setTargetPosition(newLeftBackTarget);
+            robot.rb.setTargetPosition(newRightBackTarget);
 
             // Turn On RUN_TO_POSITION
             robot.lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -267,8 +267,7 @@ public class BlueWarehouseAuto extends LinearOpMode {
             robot.lb.setVelocity(speed * constants.maxVelocityDT * 0.9);
             robot.rb.setVelocity(speed * constants.maxVelocityDT * 0.9);
 
-            while (opModeIsActive() && (runtime.seconds() < timeoutS) && midEncoderTarget > robot.lb.getCurrentPosition()
-                    && horizontalDistance > robot.rf.getCurrentPosition() && robot.lf.getCurrentPosition() < horizontalDistance) {
+            while (opModeIsActive() && (runtime.seconds() < timeoutS)) {
                 // Display it for the driver.
                 telemetry.addData("Left Velocity: ", robot.lb.getVelocity());
                 telemetry.addData("Right Velocity: ", robot.rb.getVelocity());

@@ -8,7 +8,7 @@ public class MathSpline {
     double theta = 0; //angle of arc
     double dLeft = 0; //arc length left
     double dRight = 0; //arc length right
-    double radius = 0; //radius of robot's COM
+    double radius = 0; //radius of robot's COR
     double pLeft = 0; //power of left wheel
     double pRight = 0; //power of right wheel
 

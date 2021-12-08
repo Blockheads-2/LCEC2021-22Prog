@@ -38,6 +38,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import org.firstinspires.ftc.teamcode.auto.cv.RedDetection;
 import org.firstinspires.ftc.teamcode.common.Constants;
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
+import org.firstinspires.ftc.teamcode.common.MathSpline;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -54,6 +55,7 @@ public class RedCarouselAuto extends LinearOpMode {
     HardwareDrive         robot   = new HardwareDrive();   // Use a Pushbot's hardware
     private ElapsedTime     runtime = new ElapsedTime();
     Constants constants = new Constants();
+    MathSpline mathSpline = new MathSpline();
 
     double degreeConversion = constants.degree;
 
@@ -256,40 +258,36 @@ public class RedCarouselAuto extends LinearOpMode {
         telemetry.update();
     }
 
-    //Functions for Moving
-    public void variableHeading(double speed, double leftInches, double rightInches, double timeoutS) {
-        int newLeftFrontTarget;
-        int newRightFrontTarget;
-        int newLeftBackTarget;
-        int newRightBackTarget;
+    //Functions for
+    public void variableHeading(double speed, double xPose, double yPose, double timeoutS) {
+        int FleftEncoderTarget;
+        int FrightEncoderTarget;
+        int BleftEncoderTarget;
+        int BrightEncoderTarget;
 
-        double fractionBetweenLeftAndRight;
-        double reducedSpeed;
+        double leftDistance;
+        double rightDistance;
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
 
             speed = speed * MAX_VELOCITY_DT;
 
-            if (Math.abs(leftInches) > Math.abs(rightInches))
-                fractionBetweenLeftAndRight = rightInches / leftInches;
-            else if (Math.abs(leftInches) < Math.abs(rightInches))
-                fractionBetweenLeftAndRight = leftInches / rightInches;
-            else
-                fractionBetweenLeftAndRight = 1;
+            mathSpline.setFinalPose(xPose,yPose);
 
-            reducedSpeed = speed * fractionBetweenLeftAndRight;
+            leftDistance = mathSpline.returnLDistance() * COUNTS_PER_INCH;
+            rightDistance = mathSpline.returnRDistance() * COUNTS_PER_INCH;
 
-            // Determine new target position, and pass to motor controller
-            newLeftFrontTarget = robot.lf.getCurrentPosition() + (int) (leftInches * COUNTS_PER_INCH);
-            newRightFrontTarget = robot.rf.getCurrentPosition() + (int) (rightInches * COUNTS_PER_INCH);
-            newLeftBackTarget = robot.lb.getCurrentPosition() + (int) (leftInches * COUNTS_PER_INCH);
-            newRightBackTarget = robot.rb.getCurrentPosition() + (int) (rightInches * COUNTS_PER_INCH);
+            FleftEncoderTarget = robot.lf.getCurrentPosition() + (int) leftDistance;
+            FrightEncoderTarget = robot.rf.getCurrentPosition() + (int) rightDistance;
+            BleftEncoderTarget = robot.lb.getCurrentPosition() + (int) leftDistance;
+            BrightEncoderTarget = robot.rb.getCurrentPosition() + (int) rightDistance;
 
-            robot.lf.setTargetPosition(newLeftFrontTarget);
-            robot.rf.setTargetPosition(newRightFrontTarget);
-            robot.lb.setTargetPosition(newLeftBackTarget);
-            robot.rb.setTargetPosition(newRightBackTarget);
+
+            robot.lf.setTargetPosition(FleftEncoderTarget);
+            robot.lb.setTargetPosition(BleftEncoderTarget);
+            robot.rf.setTargetPosition(FrightEncoderTarget);
+            robot.rb.setTargetPosition(BrightEncoderTarget);
 
             // Turn On RUN_TO_POSITION
             robot.lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -297,32 +295,20 @@ public class RedCarouselAuto extends LinearOpMode {
             robot.lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+            robot.lf.setVelocity(speed * mathSpline.returnLPower());
+            robot.rf.setVelocity(speed * mathSpline.returnRPower());
+            robot.lb.setVelocity(speed * mathSpline.returnLPower());
+            robot.rb.setVelocity(speed * mathSpline.returnRPower());
+
             // reset the timeout time and start motion.
             runtime.reset();
-
-            if (Math.abs(leftInches) > Math.abs(rightInches)) {
-                robot.lf.setVelocity(speed);
-                robot.rf.setVelocity(reducedSpeed);
-                robot.lb.setVelocity(speed);
-                robot.rb.setVelocity(reducedSpeed);
-            } else if (Math.abs(leftInches) == Math.abs(rightInches)) {
-                robot.lf.setVelocity(speed);
-                robot.lb.setVelocity(speed);
-                robot.rf.setVelocity(speed);
-                robot.rb.setVelocity(speed);
-            } else {
-                robot.lf.setVelocity(reducedSpeed);
-                robot.rf.setVelocity(speed);
-                robot.lb.setVelocity(reducedSpeed);
-                robot.rb.setVelocity(speed);
-            }
 
             while (opModeIsActive() && (runtime.seconds() < timeoutS) && robot.lf.isBusy() && robot.rf.isBusy()
                     && robot.lb.isBusy() && robot.rb.isBusy()) {
 
                 // Display it for the driver.
-                telemetry.addData("Left Velocity: ", robot.lf.getVelocity());
-                telemetry.addData("Right Velocity: ", robot.rf.getVelocity());
+                telemetry.addData("Right Distance", mathSpline.returnRDistance());
+                telemetry.addData("Left Distance", mathSpline.returnLDistance());
                 telemetry.update();
             }
 
@@ -340,28 +326,28 @@ public class RedCarouselAuto extends LinearOpMode {
         }
     }
     public void constantHeading(double speed, double distance, double angle, double timeoutS) {
-        int newLeftFrontTarget;
-        int newRightFrontTarget;
-        int newLeftBackTarget;
-        int newRightBackTarget;
+        int leftEncoderTarget;
+        int rightEncoderTarget;
+        int midEncoderTarget;
 
         double radianAngle = Math.toRadians(angle);
 
         int addPose = (int) (distance * (Math.sin(radianAngle) + Math.cos(radianAngle)) * COUNTS_PER_INCH);
         int subtractPose = (int) (distance * (Math.cos(radianAngle) - Math.sin(radianAngle)) * COUNTS_PER_INCH);
 
+        int horizontalDistance = (int) (distance * Math.cos(radianAngle) * COUNTS_PER_INCH);
+        int middleDistance = (int) (distance * Math.sin(radianAngle) * COUNTS_PER_INCH);
+
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
             // Determine new target position, and pass to motor controller
-            newLeftFrontTarget = robot.lf.getCurrentPosition() + addPose;
-            newRightFrontTarget = robot.rf.getCurrentPosition() + subtractPose;
-            newLeftBackTarget = robot.lb.getCurrentPosition() + subtractPose;
-            newRightBackTarget = robot.rb.getCurrentPosition() + addPose;
+            leftEncoderTarget = robot.lf.getCurrentPosition() + addPose;
+            rightEncoderTarget = robot.rf.getCurrentPosition() + subtractPose;
+            midEncoderTarget = robot.lb.getCurrentPosition() + middleDistance;
 
-            robot.lf.setTargetPosition(newLeftFrontTarget);
-            robot.rf.setTargetPosition(newRightFrontTarget);
-            robot.lb.setTargetPosition(newLeftBackTarget);
-            robot.rb.setTargetPosition(newRightBackTarget);
+            robot.lf.setTargetPosition(leftEncoderTarget);
+            robot.rf.setTargetPosition(rightEncoderTarget);
+
 
             // Turn On RUN_TO_POSITION
             robot.lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -378,7 +364,8 @@ public class RedCarouselAuto extends LinearOpMode {
             robot.lb.setVelocity(speed * constants.maxVelocityDT * 0.9);
             robot.rb.setVelocity(speed * constants.maxVelocityDT * 0.9);
 
-            while (opModeIsActive() && (runtime.seconds() < timeoutS)) {
+            while (opModeIsActive() && (runtime.seconds() < timeoutS) && midEncoderTarget > robot.lb.getCurrentPosition()
+                    && horizontalDistance > robot.rf.getCurrentPosition() && robot.lf.getCurrentPosition() < horizontalDistance) {
                 // Display it for the driver.
                 telemetry.addData("Left Velocity: ", robot.lb.getVelocity());
                 telemetry.addData("Right Velocity: ", robot.rb.getVelocity());
@@ -477,10 +464,17 @@ public class RedCarouselAuto extends LinearOpMode {
             }
 
             // Stop all motion;
-            robot.lf.setVelocity(0);
-            robot.rf.setVelocity(0);
-            robot.lb.setVelocity(0);
-            robot.rb.setVelocity(0);
+            robot.lf.setPower(-0.25);
+            robot.rf.setPower(-0.25);
+            robot.lb.setPower(-0.25);
+            robot.rb.setPower(-0.25);
+
+            sleep(100);
+
+            robot.lf.setPower(0);
+            robot.rf.setPower(0);
+            robot.lb.setPower(0);
+            robot.rb.setPower(0);
 
             // Turn off RUN_TO_POSITION
             robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -585,5 +579,4 @@ public class RedCarouselAuto extends LinearOpMode {
             sleep(250);   // optional pause after each move
         }
     }
-
 }

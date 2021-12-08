@@ -119,7 +119,7 @@ public class OdoAutoDrive extends LinearOpMode {
         //Test Paths Start
 
         //...
-        variableHeading(0.5,10,10,3);
+        variableHeading(0.5,30,30,3);
 
         //End of Path
         telemetry.update();

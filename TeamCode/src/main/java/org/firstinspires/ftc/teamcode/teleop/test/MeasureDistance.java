@@ -27,11 +27,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.teleop;
+package org.firstinspires.ftc.teamcode.teleop.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 
 import org.firstinspires.ftc.teamcode.common.Button;
 import org.firstinspires.ftc.teamcode.common.Constants;
@@ -53,19 +55,13 @@ import org.firstinspires.ftc.teamcode.common.HardwareDrive;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Pull String", group="Test")
-//@Disabled
-public class PullString extends OpMode{
+@TeleOp(name="Measure Distance", group="Test")
+@Disabled
+public class MeasureDistance extends OpMode{
 
     /* Declare OpMode members. */
     HardwareDrive robot = new HardwareDrive();
     Constants constants = new Constants();
-
-    Button spinMotorIn = new Button();
-    Button spinMotorOut = new Button();
-
-    Button spinServoIn = new Button();
-    Button spinServoOut = new Button();
 
     @Override
     public void init() {
@@ -80,49 +76,25 @@ public class PullString extends OpMode{
 
     @Override
     public void start() {
+        robot.lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.rb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
     }
 
     @Override
     public void loop() {
-        UpdatePlayer1();
-        UpdateButton();
         UpdateTelemetry();
-    }
-    void UpdatePlayer1(){
-        SpinMotor();
-        SpinServo();
     }
 
     void UpdateTelemetry(){
-
-        telemetry.addData("lifter position", robot.lifter.getCurrentPosition());
-        telemetry.addData("Carousel Velocity", robot.duckWheel.getVelocity());
+        telemetry.addData("LF", robot.lf.getCurrentPosition() * constants.clicksPerInch);
+        telemetry.addData("LB", robot.lb.getCurrentPosition() * constants.clicksPerInch);
+        telemetry.addData("RF", robot.rf.getCurrentPosition() * constants.clicksPerInch);
+        telemetry.addData("RB", robot.rb.getCurrentPosition() * constants.clicksPerInch);
         telemetry.update();
-    }
-
-    void UpdateButton(){
-        spinMotorIn.update(gamepad1.b);
-        spinMotorOut.update(gamepad1.a);
-        spinServoIn.update(gamepad1.x);
-        spinServoOut.update(gamepad1.y);
-    }
-
-    void SpinMotor(){
-        if (spinMotorIn.is(Button.State.HELD))
-            robot.testSpin.setPower(0.2);
-        else if (spinMotorOut.is(Button.State.HELD))
-            robot.testSpin.setPower(-0.2);
-        else
-            robot.testSpin.setPower(0);
-    }
-
-    void SpinServo(){
-        if (spinServoIn.is(Button.State.HELD))
-            robot.succ.setPower(1);
-        else if (spinServoOut.is(Button.State.HELD))
-            robot.succ.setPower(-1);
-        else
-            robot.succ.setPower(0);
     }
 
     @Override

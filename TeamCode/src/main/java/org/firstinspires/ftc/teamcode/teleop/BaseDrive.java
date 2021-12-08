@@ -53,7 +53,7 @@ import org.firstinspires.ftc.teamcode.common.HardwareDrive;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Base Drive", group="Harold")
+@TeleOp(name="Base Drive", group="Drive")
 //@Disabled
 public class BaseDrive extends OpMode{
 

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.common;
 
 public class Constants {
+
     //Elevator Motor Positions
 
     // distance moved
@@ -20,6 +21,7 @@ public class Constants {
 
     //Drive Train Constants
     public double maxVelocityDT = 2700;
+    public double clicksPerInch = 45.285;
 
     //Degrees Per Inch Auto
     public double degree = 23.47/90;

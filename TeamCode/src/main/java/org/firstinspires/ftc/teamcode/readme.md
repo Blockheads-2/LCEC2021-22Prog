@@ -1,4 +1,4 @@
-## teamcode Module
+## TeamCode Module
 
 This folder contains 3 subgroups: auto, teleop, and commmon. In every group, there is a base and test folder. The base folder will contain the OpModes used during the competition, and the test folder will contain OpModes used to test the robot, and its functions.
 

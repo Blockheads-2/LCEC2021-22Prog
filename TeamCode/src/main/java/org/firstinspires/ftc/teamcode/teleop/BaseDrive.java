@@ -267,12 +267,14 @@ public class BaseDrive extends OpMode{
 
     void SpinIntake(){
         //Turn On
-        if (gamepad2.dpad_up) // Spin Out
-            robot.spin.setPower(-0.25);
-        else if (gamepad2.dpad_down) // Spin In
+        if (gamepad2.dpad_down) // Spin In
             robot.spin.setPower(1);
-        else if (gamepad2.left_trigger == 1)
+        else if (gamepad2.left_trigger == 1) //Spin Out Slow
             robot.spin.setPower(-0.2);
+        else if (gamepad2.dpad_up) // Spin Out Med
+            robot.spin.setPower(-0.25);
+        else if (gamepad2.right_trigger == 1) //Spin Out Fast
+            robot.spin.setPower(-0.3);
         else
             robot.spin.setPower(0);
     }

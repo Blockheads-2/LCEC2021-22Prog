@@ -56,7 +56,7 @@ import org.firstinspires.ftc.teamcode.common.HardwareDrive;
  */
 
 @TeleOp(name="Measure Distance", group="Test")
-//@Disabled
+@Disabled
 public class MeasureDistance extends OpMode{
 
     /* Declare OpMode members. */

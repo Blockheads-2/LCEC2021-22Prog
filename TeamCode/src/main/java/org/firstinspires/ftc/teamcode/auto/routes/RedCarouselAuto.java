@@ -312,6 +312,14 @@ public class RedCarouselAuto extends LinearOpMode {
             }
 
             // Stop all motion;
+            robot.lf.setPower(-0.25);
+            robot.rf.setPower(-0.25);
+            robot.lb.setPower(-0.25);
+            robot.rb.setPower(-0.25);
+
+            sleep(100);
+
+            // Stop all motion;
             robot.lf.setPower(0);
             robot.rf.setPower(0);
             robot.lb.setPower(0);

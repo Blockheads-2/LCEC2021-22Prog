@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.common;
 
+
 public class MathConstHead {
     double psi = 0; //final x
     double omega = 0; //final y
@@ -11,12 +12,15 @@ public class MathConstHead {
     double psiOverOmega = 0;
 
     Constants constants = new Constants();
+    AbsPose absPose = new AbsPose();
 
 
     //Input the Final Position
     public void setFinalPose(double xPose, double yPose){
-        psi = xPose; //X Final Position
-        omega = yPose; //Y Final Position
+        absPose.setAbsDistance(xPose,yPose);
+
+        psi = absPose.returnDistanceX();
+        omega = absPose.returnDistanceY();
     }
 
     public double returnDistance(){

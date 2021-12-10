@@ -13,6 +13,7 @@ public class MathSpline {
     double pRight = 0; //power of right wheel
 
     Constants constants = new Constants();
+    AbsPose absPose = new AbsPose();
 
     //Variables for Math
     double midD = constants.horizontalDistanceOdo;
@@ -22,8 +23,10 @@ public class MathSpline {
 
     //Input the Final Position
     public void setFinalPose(double xPose, double yPose){
-        alpha = xPose; //X Final Position
-        beta = yPose; //Y Final Position
+        absPose.setAbsDistance(xPose,yPose);
+
+        alpha = absPose.returnDistanceX();
+        beta = absPose.returnDistanceY();
     }
 
     //Calculate the needed variables

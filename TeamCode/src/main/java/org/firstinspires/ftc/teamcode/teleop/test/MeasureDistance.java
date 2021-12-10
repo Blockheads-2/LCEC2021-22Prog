@@ -90,10 +90,10 @@ public class MeasureDistance extends OpMode{
     }
 
     void UpdateTelemetry(){
-        telemetry.addData("LF", robot.lf.getCurrentPosition() * constants.clicksPerInch);
-        telemetry.addData("LB", robot.lb.getCurrentPosition() * constants.clicksPerInch);
-        telemetry.addData("RF", robot.rf.getCurrentPosition() * constants.clicksPerInch);
-        telemetry.addData("RB", robot.rb.getCurrentPosition() * constants.clicksPerInch);
+        telemetry.addData("LF", robot.lf.getCurrentPosition() / constants.clicksPerInch);
+        telemetry.addData("LB", robot.lb.getCurrentPosition() / constants.clicksPerInch);
+        telemetry.addData("RF", robot.rf.getCurrentPosition() / constants.clicksPerInch);
+        telemetry.addData("RB", robot.rb.getCurrentPosition() / constants.clicksPerInch);
         telemetry.update();
     }
 

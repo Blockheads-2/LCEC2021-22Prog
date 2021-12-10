@@ -22,11 +22,19 @@ public class MathSpline {
     double radiusRight = 0;
 
     //Input the Final Position
+
+    /* ---Implement once finsihed dev AbsPose----
     public void setFinalPose(double xPose, double yPose){
         absPose.setAbsDistance(xPose,yPose);
 
         alpha = absPose.returnDistanceX();
         beta = absPose.returnDistanceY();
+    }
+     */
+
+    public void setFinalPose(double xPose, double yPose){
+        alpha = xPose;
+        beta = yPose;
     }
 
     //Calculate the needed variables

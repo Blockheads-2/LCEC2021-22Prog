@@ -16,11 +16,19 @@ public class MathConstHead {
 
 
     //Input the Final Position
+
+    /* ----Implement once finish abs pose----
     public void setFinalPose(double xPose, double yPose){
         absPose.setAbsDistance(xPose,yPose);
 
         psi = absPose.returnDistanceX();
         omega = absPose.returnDistanceY();
+    }
+     */
+
+    public void setFinalPose(double xPose, double yPose){
+        psi = xPose;
+        omega = yPose;
     }
 
     public double returnDistance(){

@@ -37,6 +37,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
+import org.firstinspires.ftc.teamcode.common.MathConstHead;
 import org.firstinspires.ftc.teamcode.common.MathSpline;
 import org.firstinspires.ftc.teamcode.common.Constants;
 
@@ -78,6 +80,7 @@ public class OdoAutoDrive extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     Constants constants = new Constants();
     MathSpline mathSpline = new MathSpline();
+    MathConstHead mathConstHead = new MathConstHead();
 
     int MAX_VELOCITY_DT = 2700;
 
@@ -119,7 +122,7 @@ public class OdoAutoDrive extends LinearOpMode {
         //Test Paths Start
 
         //...
-        variableHeading(0.5,30,30,3);
+        constantHeading(0.5,10,0,3);
 
         //End of Path
         telemetry.update();
@@ -201,7 +204,13 @@ public class OdoAutoDrive extends LinearOpMode {
             robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
-    public void constantHeading(double speed, double distance, double angle, double timeoutS) {
+    public void constantHeading(double speed, double xPose, double yPose, double timeoutS) {
+
+        mathConstHead.setFinalPose(xPose,yPose);
+
+        double distance = mathConstHead.returnDistance();
+        double angle = mathConstHead.returnAngle();
+
         int newLeftFrontTarget;
         int newRightFrontTarget;
         int newLeftBackTarget;

@@ -69,7 +69,7 @@ import org.firstinspires.ftc.teamcode.common.Constants;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Disabled
+//@Disabled
 @Autonomous(name="Odometry Auto Drive", group="Robot Base Drive")
 
 //Start of Class
@@ -122,7 +122,7 @@ public class OdoAutoDrive extends LinearOpMode {
         //Test Paths Start
 
         //...
-        constantHeading(0.5,10,0,3);
+        constantHeading(0.5,10,10,3);
 
         //End of Path
         telemetry.update();
@@ -209,14 +209,12 @@ public class OdoAutoDrive extends LinearOpMode {
         mathConstHead.setFinalPose(xPose,yPose);
 
         double distance = mathConstHead.returnDistance();
-        double angle = mathConstHead.returnAngle();
+        double radianAngle = mathConstHead.returnAngle();
 
         int newLeftFrontTarget;
         int newRightFrontTarget;
         int newLeftBackTarget;
         int newRightBackTarget;
-
-        double radianAngle = Math.toRadians(angle);
 
         int addPose = (int) (distance * (Math.sin(radianAngle) + Math.cos(radianAngle)) * COUNTS_PER_INCH);
         int subtractPose = (int) (distance * (Math.cos(radianAngle) - Math.sin(radianAngle)) * COUNTS_PER_INCH);

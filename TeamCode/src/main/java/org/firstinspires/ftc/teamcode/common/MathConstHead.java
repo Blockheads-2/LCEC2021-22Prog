@@ -43,9 +43,8 @@ public class MathConstHead {
     }
 
     public double returnAngle(){
-        psiOverOmega = omega/psi;
 
-        angle = Math.atan(psiOverOmega);
+        angle = Math.atan2(omega,psi);
 
         return angle;
     }

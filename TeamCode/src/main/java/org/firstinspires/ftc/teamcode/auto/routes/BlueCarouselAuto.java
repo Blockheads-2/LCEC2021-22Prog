@@ -37,6 +37,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import org.firstinspires.ftc.teamcode.auto.cv.BlueDetection;
 import org.firstinspires.ftc.teamcode.common.Constants;
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
+import org.firstinspires.ftc.teamcode.common.MathConstHead;
 import org.firstinspires.ftc.teamcode.common.MathSpline;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -55,6 +56,7 @@ public class BlueCarouselAuto extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
     Constants constants = new Constants();
     MathSpline mathSpline = new MathSpline();
+    MathConstHead mathConstHead = new MathConstHead();
 
     double degreeConversion = constants.degree;
 
@@ -246,13 +248,17 @@ public class BlueCarouselAuto extends LinearOpMode {
             robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
-    public void constantHeading(double speed, double distance, double angle, double timeoutS) {
+    public void constantHeading(double speed, double xPose, double yPose, double timeoutS) {
+
+        mathConstHead.setFinalPose(xPose,yPose);
+
+        double distance = mathConstHead.returnDistance();
+        double radianAngle = mathConstHead.returnAngle();
+
         int newLeftFrontTarget;
         int newRightFrontTarget;
         int newLeftBackTarget;
         int newRightBackTarget;
-
-        double radianAngle = Math.toRadians(angle);
 
         int addPose = (int) (distance * (Math.sin(radianAngle) + Math.cos(radianAngle)) * COUNTS_PER_INCH);
         int subtractPose = (int) (distance * (Math.cos(radianAngle) - Math.sin(radianAngle)) * COUNTS_PER_INCH);

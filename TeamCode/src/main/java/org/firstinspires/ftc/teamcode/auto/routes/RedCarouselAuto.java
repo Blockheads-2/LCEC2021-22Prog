@@ -501,7 +501,7 @@ public class RedCarouselAuto extends LinearOpMode {
     }
 
     void turnToPID(double targetAngle) {
-        TurnPIDController pid = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
+        TurnPIDController pid = new TurnPIDController(-targetAngle, 0.01, 0, 0.003);
         telemetry.setMsTransmissionInterval(50);
         // Checking lastSlope to make sure that it's not oscillating when it quits
         while (Math.abs(targetAngle - getAbsoluteAngle()) > 0.5 || pid.getLastSlope() > 0.75) {

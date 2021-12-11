@@ -138,15 +138,16 @@ public class RedCarouselAuto extends LinearOpMode {
                 variableHeading(0.6,10,20,1.5);
 
                 //out-take
-                robot.spin.setPower(-0.7);
+                constantHeading(0.5,1,0,0.4);
+                robot.spin.setPower(-0.75);
                 sleep(2000);
                 robot.spin.setPower(0);
-
+                constantHeading(0.5,1,180,0.4);
 
 
                 //to carousel
                 constantHeading(0.5,10,180,1.2);
-                turnToPID(45);
+                turnPID(45);
                 constantHeading(0.5,30,180,1.2);
 
                 //move to carousel

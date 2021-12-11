@@ -84,7 +84,7 @@ public class MathSpline {
         dLeft = returnLDistance();
         dRight = returnRDistance();
 
-        if (dLeft > dRight && alpha > 0)
+        if (dLeft > dRight)
             pLeft = 1;
         else
             pLeft = dLeft/dRight;
@@ -96,7 +96,7 @@ public class MathSpline {
         dRight = returnRDistance();
 
 
-        if (dRight > dLeft && alpha > 0)
+        if (dRight > dLeft)
             pRight = 1;
         else
             pRight = dRight/dLeft;

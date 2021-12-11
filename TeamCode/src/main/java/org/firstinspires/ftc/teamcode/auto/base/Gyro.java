@@ -98,23 +98,6 @@ public class Gyro extends LinearOpMode{
         robot.rb.setPower(0);
 
     }
-
-    public void turnTo(double degrees){
-
-        Orientation orientation = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        System.out.println(orientation.firstAngle);
-        double error = degrees - orientation.firstAngle;
-
-        if (error > 180) {
-            error -= 360;
-        } else if (error < -180) {
-            error += 360;
-        }
-
-        turn(error);
-    }
-
     public double getAbsoluteAngle() {
         return robot.imu.getAngularOrientation(
                 AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES

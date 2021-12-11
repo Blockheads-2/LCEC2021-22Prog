@@ -127,20 +127,22 @@ public class RedCarouselAuto extends LinearOpMode {
                 //constantHeading(0.4,40,310,3);
                 robot.spin.setPower(0.2);
                 constantHeading(0.5,10,90,0.5);
-                variableHeading(0.6,10,90,1.5);
+                variableHeading(0.6,10,20,1.5);
 
                 //out-take
-                robot.spin.setPower(-0.5);
+                robot.spin.setPower(-0.7);
                 sleep(2000);
                 robot.spin.setPower(0);
 
 
 
                 //to carousel
-                variableHeading(0.5,10,-24,1.5);
-   /*
+                constantHeading(0.5,10,180,1.2);
+                TurnRight(1,45,1);
+                constantHeading(0.5,30,180,1.2);
+
                 //move to carousel
-                constantHeading(0.7,17.75,90,1.5);
+                constantHeading(0.7,9,90,1);
 
                 //spin
                 robot.duckWheel.setPower(-0.5);
@@ -153,7 +155,7 @@ public class RedCarouselAuto extends LinearOpMode {
 
                 //move to park
                 constantHeading(0.5, 22, 270, 2);
-*/
+
                 telemetry.addLine("Path: Left");
                 break;
 

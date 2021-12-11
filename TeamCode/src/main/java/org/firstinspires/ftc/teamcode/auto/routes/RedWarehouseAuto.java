@@ -116,7 +116,29 @@ public class RedWarehouseAuto extends LinearOpMode {
 
         switch (detector.getLocation()) {
             case LEFT: {
-                //...
+                //Hit barrier
+                constantHeading(0.5,13,0,1);
+                constantHeading(0.5,12,90,1);
+
+                robot.spin.setPower(0.2);
+
+                //lift arm
+                robot.lifter.setTargetPosition(constants.elevatorPositionBottom);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(0.9);
+
+                //Move along barrier and toward wobble
+                constantHeading(0.5,24,7,1.3);
+                constantHeading(0.5,1,270,0.5);
+                TurnLeft(1,80,1.75);
+
+                robot.spin.setPower(0);
+
+                //outtake
+                robot.spin.setPower(-0.7);
+                sleep(3800);
+                robot.spin.setPower(0);
+
                 telemetry.addLine("Path: Left");
                 break;
             }

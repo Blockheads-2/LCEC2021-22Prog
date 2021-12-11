@@ -161,7 +161,7 @@ public class RedCarouselAuto extends LinearOpMode {
                     robot.lifter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                     robot.lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 }
-                
+
                 robot.duckWheel.setPower(0);
 
                 //move to park

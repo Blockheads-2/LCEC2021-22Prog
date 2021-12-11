@@ -9,7 +9,7 @@ public class Constants {
     //      80 mm
 
     public int elevatorPositionDown = 0; //Rest
-    public int elevatorPositionTop = 3400; //Extended
+    public int elevatorPositionTop = 3350; //Extended
     public int elevatorPositionMid = 2700;
     public int elevatorPositionBottom = 1500;
 

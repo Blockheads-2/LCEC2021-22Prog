@@ -215,7 +215,7 @@ public class BaseDrive extends OpMode{
             robot.lifter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            robot.lifter.setTargetPosition(10);
+            robot.lifter.setTargetPosition(5);
             robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.lifter.setPower(0.1);
         }

@@ -232,8 +232,10 @@ public class OdoAutoDrive extends LinearOpMode {
         int newLeftBackTarget;
         int newRightBackTarget;
 
-        int addPose = (int) ((Math.sin(radianAngle) + Math.cos(radianAngle)) * COUNTS_PER_INCH * distance);
-        int subtractPose = (int) ((Math.cos(radianAngle) - Math.sin(radianAngle)) * COUNTS_PER_INCH * distance);
+        double ratioAddPose = Math.cos(radianAngle) + Math.sin(radianAngle);
+        double ratioSubPose = Math.cos(radianAngle) - Math.sin(radianAngle);
+        int addPose = (int) (ratioAddPose * COUNTS_PER_INCH * distance);
+        int subtractPose = (int) (ratioSubPose * COUNTS_PER_INCH * distance);
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
@@ -258,10 +260,10 @@ public class OdoAutoDrive extends LinearOpMode {
             runtime.reset();
 
 
-            robot.lf.setVelocity(speed * constants.maxVelocityDT);
-            robot.rf.setVelocity(speed * constants.maxVelocityDT);
-            robot.lb.setVelocity(speed * constants.maxVelocityDT);
-            robot.rb.setVelocity(speed * constants.maxVelocityDT);
+            robot.lf.setVelocity(speed * constants.maxVelocityDT * ratioAddPose);
+            robot.rf.setVelocity(speed * constants.maxVelocityDT * ratioSubPose);
+            robot.lb.setVelocity(speed * constants.maxVelocityDT * ratioSubPose);
+            robot.rb.setVelocity(speed * constants.maxVelocityDT * ratioAddPose);
 
             while (opModeIsActive() && (runtime.seconds() < timeoutS)) {
                 // Display it for the driver.

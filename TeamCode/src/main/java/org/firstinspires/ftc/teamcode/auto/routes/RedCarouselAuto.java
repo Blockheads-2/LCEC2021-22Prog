@@ -35,10 +35,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.auto.cv.RedDetection;
 import org.firstinspires.ftc.teamcode.common.Constants;
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
 import org.firstinspires.ftc.teamcode.common.MathSpline;
+import org.firstinspires.ftc.teamcode.common.TurnPIDController;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -58,6 +63,9 @@ public class RedCarouselAuto extends LinearOpMode {
     MathSpline mathSpline = new MathSpline();
 
     double degreeConversion = constants.degree;
+
+    private Orientation lastAngles = new Orientation();
+    private double currAngle = 0.0;
 
     static final double     COUNTS_PER_MOTOR_REV    = 537.7;    // eg: TETRIX Motor Encoder
     static final double     MAX_VELOCITY_DT         = 2700;
@@ -138,7 +146,7 @@ public class RedCarouselAuto extends LinearOpMode {
 
                 //to carousel
                 constantHeading(0.5,10,180,1.2);
-                TurnRight(1,45,1);
+                turnToPID(45);
                 constantHeading(0.5,30,180,1.2);
 
                 //move to carousel
@@ -182,7 +190,7 @@ public class RedCarouselAuto extends LinearOpMode {
                 robot.spin.setPower(0.2);
                 constantHeading(0.8, 18, 0, 1);
                 variableHeading(0.6,19,14.825,1.5);
-                TurnRight(0.5,15,1);
+                turnToPID(15);
                 constantHeading(0.5,1.2,0,0.25);
 
                 //out-take
@@ -249,7 +257,7 @@ public class RedCarouselAuto extends LinearOpMode {
 
                 //spline to carousel
                 constantHeading(0.5,5,270,0.5);
-                TurnRight(0.5,10,1);
+                turnToPID(10);
                 constantHeading(0.2,3,180,0.5);
                 constantHeading(0.6, 36, 135, 2.0);
                 constantHeading(0.3,5,180,0.5);
@@ -289,7 +297,7 @@ public class RedCarouselAuto extends LinearOpMode {
         telemetry.update();
     }
 
-    //Functions for
+    //Functions for Movement
     public void variableHeading(double speed, double xPose, double yPose, double timeoutS) {
         int FleftEncoderTarget;
         int FrightEncoderTarget;
@@ -430,198 +438,88 @@ public class RedCarouselAuto extends LinearOpMode {
             robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
-    public void TurnLeft(double speed, double degrees, double timeoutS) {
 
-        double inches = degrees * constants.degree;
-
-        //Initial Target Position
-        int newLeftFrontTarget;
-        int newRightFrontTarget;
-        int newLeftBackTarget;
-        int newRightBackTarget;
-
-        //Ramp Down
-        int halfLeftFrontTarget;
-        int halfRightFrontTarget;
-        int halfLeftBackTarget;
-        int halfRightBackTarget;
-
-        //Current Motor Positions
-        int currentLeftFront;
-        int currentRightFront;
-        int currentLeftBack;
-        int currentRightBack;
-
-        speed = COUNTS_PER_MOTOR_REV * speed;
-
-        // Ensure that the opmode is still active
-        if (opModeIsActive()) {
-
-            // Determine new target position, and pass to motor controller
-            newLeftFrontTarget = robot.lf.getCurrentPosition() + (int) (-inches * COUNTS_PER_INCH);
-            newRightFrontTarget = robot.rf.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
-            newLeftBackTarget = robot.lb.getCurrentPosition() + (int) (-inches * COUNTS_PER_INCH);
-            newRightBackTarget = robot.rb.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
-
-            halfLeftFrontTarget = robot.lf.getCurrentPosition() + (int) (-inches / 2 * COUNTS_PER_INCH);
-            halfRightFrontTarget = robot.rf.getCurrentPosition() + (int) (inches / 2 * COUNTS_PER_INCH);
-            halfLeftBackTarget = robot.lb.getCurrentPosition() + (int) (-inches / 2 * COUNTS_PER_INCH);
-            halfRightBackTarget = robot.rb.getCurrentPosition() + (int) (inches / 2 * COUNTS_PER_INCH);
-
-            robot.lf.setTargetPosition(newLeftFrontTarget);
-            robot.rf.setTargetPosition(newRightFrontTarget);
-            robot.lb.setTargetPosition(newLeftBackTarget);
-            robot.rb.setTargetPosition(newRightBackTarget);
-
-            // Turn On RUN_TO_POSITION
-            robot.lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // reset the timeout time and start motion.
-            runtime.reset();
-            robot.lf.setVelocity(Math.abs(speed));
-            robot.rf.setVelocity(Math.abs(speed));
-            robot.lb.setVelocity(Math.abs(speed));
-            robot.rb.setVelocity(Math.abs(speed));
-
-            while (opModeIsActive() &&
-                    (runtime.seconds() < timeoutS) &&
-                    (robot.lf.isBusy() && robot.rf.isBusy()) && robot.lb.isBusy() && robot.rb.isBusy()) {
-
-                currentLeftFront = robot.lf.getCurrentPosition();
-                currentRightFront = robot.rf.getCurrentPosition();
-                currentLeftBack = robot.lb.getCurrentPosition();
-                currentRightBack = robot.rb.getCurrentPosition();
-
-                if (currentLeftFront >= halfLeftFrontTarget && currentRightFront >= halfRightFrontTarget
-                        && currentLeftBack >= halfLeftBackTarget && currentRightBack >= halfRightBackTarget) {
-                    speed = speed * 0.95;
-                    if (speed <= 0.2) {
-                        speed = 0.2;
-                    }
-                }
-                robot.lf.setVelocity(Math.abs(speed));
-                robot.lb.setVelocity(Math.abs(speed));
-                robot.rf.setVelocity(Math.abs(speed));
-                robot.rb.setVelocity(Math.abs(speed));
-            }
-
-            // Stop all motion;
-            robot.lf.setPower(-0.25);
-            robot.rf.setPower(-0.25);
-            robot.lb.setPower(-0.25);
-            robot.rb.setPower(-0.25);
-
-            sleep(100);
-
-            robot.lf.setPower(0);
-            robot.rf.setPower(0);
-            robot.lb.setPower(0);
-            robot.rb.setPower(0);
-
-            // Turn off RUN_TO_POSITION
-            robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-
-        }
+    //Turn
+    public void resetAngle(){
+        lastAngles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        currAngle = 0;
     }
-    public void TurnRight(double speed, double degrees, double timeoutS) {
 
-        double inches = degrees * constants.degree;
+    public double getAngle() {
+        // Get current orientation
+        Orientation orientation = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        //Initial Target Position
-        int newLeftFrontTarget;
-        int newRightFrontTarget;
-        int newLeftBackTarget;
-        int newRightBackTarget;
+        // Change in angle = current angle - previous angle
+        double deltaAngle = orientation.firstAngle - lastAngles.firstAngle;
 
-        //Ramp Down
-        int halfLeftFrontTarget;
-        int halfRightFrontTarget;
-        int halfLeftBackTarget;
-        int halfRightBackTarget;
-
-        //Current Motor Positions
-        int currentLeftFront;
-        int currentRightFront;
-        int currentLeftBack;
-        int currentRightBack;
-
-        speed = COUNTS_PER_MOTOR_REV * speed;
-
-        // Ensure that the opmode is still active
-        if (opModeIsActive()) {
-
-            // Determine new target position, and pass to motor controller
-            newLeftFrontTarget = robot.lf.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
-            newRightFrontTarget = robot.rf.getCurrentPosition() + (int) (-inches * COUNTS_PER_INCH);
-            newLeftBackTarget = robot.lb.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
-            newRightBackTarget = robot.rb.getCurrentPosition() + (int) (-inches * COUNTS_PER_INCH);
-
-            halfLeftFrontTarget = robot.lf.getCurrentPosition() + (int) (inches / 2 * COUNTS_PER_INCH);
-            halfRightFrontTarget = robot.rf.getCurrentPosition() + (int) -(inches / 2 * COUNTS_PER_INCH);
-            halfLeftBackTarget = robot.lb.getCurrentPosition() + (int) (inches / 2 * COUNTS_PER_INCH);
-            halfRightBackTarget = robot.rb.getCurrentPosition() + (int) (-inches / 2 * COUNTS_PER_INCH);
-
-            robot.lf.setTargetPosition(newLeftFrontTarget);
-            robot.rf.setTargetPosition(newRightFrontTarget);
-            robot.lb.setTargetPosition(newLeftBackTarget);
-            robot.rb.setTargetPosition(newRightBackTarget);
-
-            // Turn On RUN_TO_POSITION
-            robot.lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // reset the timeout time and start motion.
-            runtime.reset();
-            robot.lf.setVelocity(Math.abs(speed));
-            robot.rf.setVelocity(Math.abs(speed));
-            robot.lb.setVelocity(Math.abs(speed));
-            robot.rb.setVelocity(Math.abs(speed));
-
-            while (opModeIsActive() &&
-                    (runtime.seconds() < timeoutS) &&
-                    (robot.lf.isBusy() && robot.rf.isBusy()) && robot.lb.isBusy() && robot.rb.isBusy()) {
-
-                currentLeftFront = robot.lf.getCurrentPosition();
-                currentRightFront = robot.rf.getCurrentPosition();
-                currentLeftBack = robot.lb.getCurrentPosition();
-                currentRightBack = robot.rb.getCurrentPosition();
-
-                if (currentLeftFront >= halfLeftFrontTarget && currentRightFront >= halfRightFrontTarget
-                        && currentLeftBack >= halfLeftBackTarget && currentRightBack >= halfRightBackTarget) {
-                    speed = speed * 0.95;
-                    if (speed <= 0.2) {
-                        speed = 0.2;
-                    }
-                }
-                robot.lf.setVelocity(Math.abs(speed));
-                robot.lb.setVelocity(Math.abs(speed));
-                robot.rf.setVelocity(Math.abs(speed));
-                robot.rb.setVelocity(Math.abs(speed));
-            }
-
-            // Stop all motion;
-            robot.lf.setVelocity(0);
-            robot.rf.setVelocity(0);
-            robot.lb.setVelocity(0);
-            robot.rb.setVelocity(0);
-
-            // Turn off RUN_TO_POSITION
-            robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-
-            sleep(250);   // optional pause after each move
+        // Gyro only ranges from -179 to 180
+        // If it turns -1 degree over from -179 to 180, subtract 360 from the 359 to get -1
+        if (deltaAngle < -180) {
+            deltaAngle += 360;
+        } else if (deltaAngle > 180) {
+            deltaAngle -= 360;
         }
+
+        // Add change in angle to current angle to get current angle
+        currAngle += deltaAngle;
+        lastAngles = orientation;
+        telemetry.addData("gyro", orientation.firstAngle);
+        return currAngle;
+    }
+
+    public void turn(double degrees){
+        resetAngle();
+
+        double error = degrees;
+
+        while (opModeIsActive() && Math.abs(error) > 2) {
+            double motorPower = (error < 0 ? -0.3 : 0.3);
+            robot.lf.setPower(-motorPower);
+            robot.rf.setPower(motorPower);
+            robot.lb.setPower(-motorPower);
+            robot.rb.setPower(motorPower);
+
+            error = degrees - getAngle();
+            telemetry.addData("error", error);
+            telemetry.update();
+        }
+
+        robot.lf.setPower(0);
+        robot.rf.setPower(0);
+        robot.lb.setPower(0);
+        robot.rb.setPower(0);
+
+    }
+    public double getAbsoluteAngle() {
+        return robot.imu.getAngularOrientation(
+                AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES
+        ).firstAngle;
+    }
+
+    public void turnPID(double degrees) {
+        turnToPID(degrees + getAbsoluteAngle());
+    }
+
+    void turnToPID(double targetAngle) {
+        TurnPIDController pid = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
+        telemetry.setMsTransmissionInterval(50);
+        // Checking lastSlope to make sure that it's not oscillating when it quits
+        while (Math.abs(targetAngle - getAbsoluteAngle()) > 0.5 || pid.getLastSlope() > 0.75) {
+            double motorPower = pid.update(getAbsoluteAngle());
+            robot.lf.setPower(-motorPower);
+            robot.rf.setPower(motorPower);
+            robot.lb.setPower(-motorPower);
+            robot.rb.setPower(motorPower);
+
+            telemetry.addData("Current Angle", getAbsoluteAngle());
+            telemetry.addData("Target Angle", targetAngle);
+            telemetry.addData("Slope", pid.getLastSlope());
+            telemetry.addData("Power", motorPower);
+            telemetry.update();
+        }
+        robot.lf.setPower(0);
+        robot.rf.setPower(0);
+        robot.lb.setPower(0);
+        robot.rb.setPower(0);
     }
 }

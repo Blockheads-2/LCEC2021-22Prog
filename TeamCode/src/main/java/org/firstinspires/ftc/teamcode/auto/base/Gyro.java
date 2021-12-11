@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.auto.base;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.teamcode.common.TurnPIDController;
 
 
 @Autonomous(name="Gyro", group="Test")
+@Disabled
 public class Gyro extends LinearOpMode{
 
     /* Declare OpMode members. */
@@ -46,14 +48,13 @@ public class Gyro extends LinearOpMode{
 
     }
 
-    // resets currAngle Value
-    public void resetAngle() {
+    //Turn
+    public void resetAngle(){
         lastAngles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         currAngle = 0;
     }
 
     public double getAngle() {
-
         // Get current orientation
         Orientation orientation = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 

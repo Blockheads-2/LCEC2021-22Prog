@@ -43,11 +43,9 @@ public class Gyro extends LinearOpMode{
         waitForStart();
 
         final int STAGE = 1;
-        if (STAGE == 1) {
-            turnTo(-90);
-        } else if (STAGE == 2) {
-            turnPID(90);
-        }
+        if (STAGE == 1)
+            turnPID(-90);
+
     }
 
     // resets currAngle Value

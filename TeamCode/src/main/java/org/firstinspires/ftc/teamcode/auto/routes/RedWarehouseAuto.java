@@ -126,32 +126,8 @@ public class RedWarehouseAuto extends LinearOpMode {
                 break;
             }
             case RIGHT:{
-                //power on lift
-                robot.lifter.setTargetPosition(constants.elevatorPositionTop);
-                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(1);
 
-                // spline
-                variableHeading(0.3,12,5,2);
-
-                //out-take
-                robot.spin.setPower(-0.3);
-                sleep(1000);
-                robot.spin.setPower(0);
-
-                //lift down
-                robot.lifter.setTargetPosition(constants.elevatorPositionBottom);
-                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(1);
-
-                //spline to park
-                variableHeading(0.5,12,12,3);
-
-                robot.lifter.setTargetPosition(constants.elevatorPositionDown);
-                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(1);
-                constantHeading(0.5,10,0,3);
-
+                constantHeading(0.5,22.3,333,1.5);
                 telemetry.addLine("Path: Right");
                 break;
             }

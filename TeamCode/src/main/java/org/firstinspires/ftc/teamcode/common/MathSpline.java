@@ -65,7 +65,7 @@ public class MathSpline {
         //left radius
          if (alpha > 0)
             radiusRight = (radius * 0.85) - midD;
-         else if (alpha <= 0)
+         else
             radiusRight = (radius * 0.9) + midD;
 
         //theta
@@ -85,11 +85,7 @@ public class MathSpline {
 
         if (dLeft > dRight && alpha > 0)
             pLeft = 1;
-        else if (dLeft > dRight && alpha <= 0)
-            pLeft = -1;
-        else if (dLeft < dRight && alpha <= 0)
-            pLeft = -dLeft/dRight;
-        else if (dLeft < dRight && alpha > 0)
+        else
             pLeft = dLeft/dRight;
 
         return pLeft;
@@ -101,11 +97,7 @@ public class MathSpline {
 
         if (dRight > dLeft && alpha > 0)
             pLeft = 1;
-        else if (dRight > dLeft && alpha <= 0)
-            pLeft = -1;
-        else if (dRight < dLeft && alpha <= 0)
-            pLeft = -dRight/dLeft;
-        else if (dRight < dLeft && alpha > 0)
+        else
             pLeft = dRight/dLeft;
 
         return pRight;

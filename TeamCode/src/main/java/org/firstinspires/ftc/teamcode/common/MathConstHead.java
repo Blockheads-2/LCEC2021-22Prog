@@ -32,12 +32,9 @@ public class MathConstHead {
     }
 
     public double returnDistance(){
-        psiSquared = psi * psi;
-        omegaSquared = omega * omega;
+        double addPoses = Math.pow(psi,2) + Math.pow(omega,2);
 
-        double addPoses = psiSquared + omegaSquared;
-
-        distance = Math.pow(addPoses,0.5);
+        distance = Math.sqrt(addPoses);
 
         return distance;
     }

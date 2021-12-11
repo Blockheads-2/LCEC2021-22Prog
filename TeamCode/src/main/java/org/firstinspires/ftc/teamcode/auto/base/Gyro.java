@@ -106,7 +106,7 @@ public class Gyro extends LinearOpMode{
     }
 
     public void turnPID(double degrees) {
-        turnToPID(degrees + getAbsoluteAngle());
+        turnToPID(-degrees + getAbsoluteAngle());
     }
 
     void turnToPID(double targetAngle) {

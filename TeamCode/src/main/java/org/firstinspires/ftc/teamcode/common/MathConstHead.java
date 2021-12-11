@@ -41,7 +41,7 @@ public class MathConstHead {
 
     public double returnAngle(){
 
-        angle = Math.atan2(omega,psi);
+        angle = Math.atan2(psi,omega);
 
         return angle;
     }

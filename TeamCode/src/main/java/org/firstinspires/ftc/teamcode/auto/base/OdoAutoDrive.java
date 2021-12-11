@@ -130,7 +130,7 @@ public class OdoAutoDrive extends LinearOpMode {
         //Test Paths Start
 
         //...
-        constantHeading(0.5,5,20,3);
+        constantHeading(0.5,10,20,3);
 
         turnToPID(90);
 
@@ -262,8 +262,8 @@ public class OdoAutoDrive extends LinearOpMode {
 
             robot.lf.setVelocity(speed * constants.maxVelocityDT * ratioAddPose);
             robot.rf.setVelocity(speed * constants.maxVelocityDT * ratioSubPose);
-            robot.lb.setVelocity(speed * constants.maxVelocityDT * ratioSubPose);
-            robot.rb.setVelocity(speed * constants.maxVelocityDT * ratioAddPose);
+            robot.lb.setVelocity(speed * constants.maxVelocityDT * ratioSubPose * 0.9);
+            robot.rb.setVelocity(speed * constants.maxVelocityDT * ratioAddPose * 0.9);
 
             while (opModeIsActive() && (runtime.seconds() < timeoutS)) {
                 // Display it for the driver.

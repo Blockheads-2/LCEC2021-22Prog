@@ -222,7 +222,6 @@ public class OdoAutoDrive extends LinearOpMode {
         }
     }
     public void constantHeading(double speed, double xPose, double yPose, double timeoutS) {
-
         mathConstHead.setFinalPose(xPose,yPose);
 
         double distance = mathConstHead.returnDistance();
@@ -261,8 +260,8 @@ public class OdoAutoDrive extends LinearOpMode {
 
             robot.lf.setVelocity(speed * constants.maxVelocityDT);
             robot.rf.setVelocity(speed * constants.maxVelocityDT);
-            robot.lb.setVelocity(speed * constants.maxVelocityDT * 0.9);
-            robot.rb.setVelocity(speed * constants.maxVelocityDT * 0.9);
+            robot.lb.setVelocity(speed * constants.maxVelocityDT);
+            robot.rb.setVelocity(speed * constants.maxVelocityDT);
 
             while (opModeIsActive() && (runtime.seconds() < timeoutS)) {
                 // Display it for the driver.

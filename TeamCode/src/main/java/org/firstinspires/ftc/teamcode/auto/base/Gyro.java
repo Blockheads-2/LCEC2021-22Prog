@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.common.HardwareDrive;
 import org.firstinspires.ftc.teamcode.common.TurnPIDController;
 
 
-@Autonomous(name="Kickoff Presentation: Gyro", group="Pushbot")
+@Autonomous(name="Gyro", group="Test")
 public class Gyro extends LinearOpMode{
 
     /* Declare OpMode members. */
@@ -44,8 +44,6 @@ public class Gyro extends LinearOpMode{
 
         final int STAGE = 1;
         if (STAGE == 1) {
-            turn(90);
-            sleep(3000);
             turnTo(-90);
         } else if (STAGE == 2) {
             turnPID(90);

@@ -124,7 +124,7 @@ public class OdoAutoDrive extends LinearOpMode {
         //Test Paths Start
 
         //...
-        constantHeading(0.5,10,10,3);
+        variableHeading(0.5,-20,-20,3);
 
         //End of Path
         telemetry.update();
@@ -151,11 +151,19 @@ public class OdoAutoDrive extends LinearOpMode {
             leftDistance = mathSpline.returnLDistance() * COUNTS_PER_INCH;
             rightDistance = mathSpline.returnRDistance() * COUNTS_PER_INCH;
 
-            FleftEncoderTarget = robot.lf.getCurrentPosition() + (int) leftDistance;
-            FrightEncoderTarget = robot.rf.getCurrentPosition() + (int) rightDistance;
-            BleftEncoderTarget = robot.lb.getCurrentPosition() + (int) leftDistance;
-            BrightEncoderTarget = robot.rb.getCurrentPosition() + (int) rightDistance;
+            if (yPose >= 0){
+                FleftEncoderTarget = robot.lf.getCurrentPosition() + (int) leftDistance;
+                FrightEncoderTarget = robot.rf.getCurrentPosition() + (int) rightDistance;
+                BleftEncoderTarget = robot.lb.getCurrentPosition() + (int) leftDistance;
+                BrightEncoderTarget = robot.rb.getCurrentPosition() + (int) rightDistance;
+            }
 
+            else {
+                FleftEncoderTarget = robot.lf.getCurrentPosition() - (int) leftDistance;
+                FrightEncoderTarget = robot.rf.getCurrentPosition() - (int) rightDistance;
+                BleftEncoderTarget = robot.lb.getCurrentPosition() - (int) leftDistance;
+                BrightEncoderTarget = robot.rb.getCurrentPosition() - (int) rightDistance;
+            }
 
             robot.lf.setTargetPosition(FleftEncoderTarget);
             robot.lb.setTargetPosition(BleftEncoderTarget);

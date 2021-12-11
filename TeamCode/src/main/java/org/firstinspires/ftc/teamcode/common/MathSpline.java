@@ -62,7 +62,7 @@ public class MathSpline {
         //radius
         radius = ((alpha * alpha ) + (beta * beta )) / (2 * alpha );
 
-        //left radius
+        //right radius
          if (alpha > 0)
             radiusRight = (radius * 0.85) - midD;
          else

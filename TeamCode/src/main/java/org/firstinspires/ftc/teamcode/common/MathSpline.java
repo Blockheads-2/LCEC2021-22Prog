@@ -45,9 +45,9 @@ public class MathSpline {
         //left radius
         if (alpha > 0)
             radiusLeft =  (radius * 0.9) + midD;
-        else
-            radiusLeft =  (radius * 0.85) - midD;
-
+        else {
+            radiusLeft = (radius * 0.85) - midD;
+        }
         //theta
         insideAcos = (-(alpha * alpha) - (beta * beta)) / (2 * radius * radius);
         double inside = insideAcos + 1;
@@ -63,10 +63,11 @@ public class MathSpline {
         radius = ((alpha * alpha ) + (beta * beta )) / (2 * alpha );
 
         //right radius
-         if (alpha > 0)
+        if (alpha > 0)
             radiusRight = (radius * 0.85) - midD;
-         else
+        else{
             radiusRight = (radius * 0.9) + midD;
+        }
 
         //theta
         insideAcos = (-(alpha * alpha) - (beta * beta)) / (2 * radius * radius);

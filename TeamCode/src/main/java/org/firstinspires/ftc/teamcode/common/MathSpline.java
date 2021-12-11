@@ -96,9 +96,9 @@ public class MathSpline {
 
 
         if (dRight > dLeft && alpha > 0)
-            pLeft = 1;
+            pRight = 1;
         else
-            pLeft = dRight/dLeft;
+            pRight = dRight/dLeft;
 
         return pRight;
     }

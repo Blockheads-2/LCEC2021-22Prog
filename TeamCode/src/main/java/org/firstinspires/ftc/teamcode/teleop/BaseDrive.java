@@ -56,9 +56,6 @@ import org.firstinspires.ftc.teamcode.common.HardwareDrive;
 @TeleOp(name="Base Drive", group="Drive")
 //@Disabled
 public class BaseDrive extends OpMode{
-
-    int gamepad1Mode = 0;
-
     /* Declare OpMode members. */
     HardwareDrive robot = new HardwareDrive();
     Constants constants = new Constants();
@@ -115,6 +112,7 @@ public class BaseDrive extends OpMode{
 
         telemetry.addData("lifter position", robot.lifter.getCurrentPosition());
         telemetry.addData("Carousel Velocity", robot.duckWheel.getVelocity());
+        telemetry.addData("Touch Sensor", robot.digitalTouch.getState());
         telemetry.update();
     }
 
@@ -202,24 +200,26 @@ public class BaseDrive extends OpMode{
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.lifter.setPower(0.9);
 
-                if (position <= constants.elevatorPositionDown + 500)
-                    robot.lifter.setPower(0.4);
-
-                /*
-                if (robot.touchSensor.getState() == true) {
-                    robot.lifter.setPower(0);
-                    robot.lifter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                    telemetry.addLine("Touch Sensor Presesd");
-                }
-
-                 */
-
             } else {
                 robot.lifter.setTargetPosition(constants.elevatorPositionTop);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.lifter.setPower(0.9);
             }
         }
+
+        if (robot.digitalTouch.getState() == false) {
+            //Stop
+            robot.lifter.setPower(0);
+
+            //Reset
+            robot.lifter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            robot.lifter.setTargetPosition(10);
+            robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.lifter.setPower(0.1);
+        }
+
         if (lifterBottomButton.is(Button.State.TAP)){
                 if (position >= (constants.elevatorPositionBottom - 10)) {
                     robot.lifter.setTargetPosition(constants.elevatorPositionDown);

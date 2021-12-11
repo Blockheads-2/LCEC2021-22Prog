@@ -39,6 +39,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 /**
  * This is NOT an opmode.
@@ -75,7 +76,7 @@ public class HardwareDrive
     public CRServo succ = null;
 
     //Sensor
-   // public DigitalChannel touchSensor;
+    public DigitalChannel digitalTouch;
 
 
 
@@ -109,12 +110,10 @@ public class HardwareDrive
         succ = hwMap.get(CRServo.class,"string");
         succ.setPower(0);
 
-      /*
-      touchSensor = hwMap.get(DigitalChannel.class, "touch");
-        touchSensor.setMode(DigitalChannel.Mode.INPUT);
 
-
-       */
+        //Digital Touch Sensor
+        digitalTouch = hwMap.get(DigitalChannel.class, "digital_touch");
+        digitalTouch.setMode(DigitalChannel.Mode.INPUT);
 
 
 

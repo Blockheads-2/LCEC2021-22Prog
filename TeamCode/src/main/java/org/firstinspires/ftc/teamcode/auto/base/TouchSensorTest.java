@@ -44,7 +44,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
  */
 @TeleOp(name = "Sensor: Digital touch", group = "Test")
-//@Disabled
+@Disabled
 public class TouchSensorTest extends LinearOpMode {
     /**
      * The REV Robotics Touch Sensor
@@ -62,7 +62,7 @@ public class TouchSensorTest extends LinearOpMode {
     public void runOpMode() {
 
         // get a reference to our digitalTouch object.
-        digitalTouch = hardwareMap.get(DigitalChannel.class, "touch");
+        digitalTouch = hardwareMap.get(DigitalChannel.class, "digital_touch");
 
         // set the digital channel to input.
         digitalTouch.setMode(DigitalChannel.Mode.INPUT);

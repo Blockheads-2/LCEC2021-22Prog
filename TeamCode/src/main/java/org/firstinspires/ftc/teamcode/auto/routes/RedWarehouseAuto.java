@@ -142,9 +142,12 @@ public class RedWarehouseAuto extends LinearOpMode {
                 sleep(3800);
                 robot.spin.setPower(0);
 
-                //flexing
-                constantHeading(0.8,36,45,1.7);
-                variableHeading(0.8,);
+                //park
+                constantHeading(0.8,6,180,1);
+                constantHeading(0.5,2,0,0.75);
+                TurnRight(1,90,1.75);
+                constantHeading(0.75,36,180,1.75);
+                
 
                 telemetry.addLine("Path: Left");
                 break;

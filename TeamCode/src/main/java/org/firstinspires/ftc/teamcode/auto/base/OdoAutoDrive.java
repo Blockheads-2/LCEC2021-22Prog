@@ -156,6 +156,20 @@ public class OdoAutoDrive extends LinearOpMode {
             BleftEncoderTarget = robot.lb.getCurrentPosition() + (int) leftDistance;
             BrightEncoderTarget = robot.rb.getCurrentPosition() + (int) rightDistance;
 
+            if (yPose >= 0 && xPose < 0){
+                FleftEncoderTarget = robot.lf.getCurrentPosition() - (int) leftDistance;
+                FrightEncoderTarget = robot.rf.getCurrentPosition() - (int) rightDistance;
+                BleftEncoderTarget = robot.lb.getCurrentPosition() - (int) leftDistance;
+                BrightEncoderTarget = robot.rb.getCurrentPosition() - (int) rightDistance;
+            }
+
+            if (yPose < 0 && xPose >= 0){
+                FleftEncoderTarget = robot.lf.getCurrentPosition() + (int) leftDistance;
+                FrightEncoderTarget = robot.rf.getCurrentPosition() + (int) rightDistance;
+                BleftEncoderTarget = robot.lb.getCurrentPosition() + (int) leftDistance;
+                BrightEncoderTarget = robot.rb.getCurrentPosition() + (int) rightDistance;
+            }
+
             robot.lf.setTargetPosition(FleftEncoderTarget);
             robot.lb.setTargetPosition(BleftEncoderTarget);
             robot.rf.setTargetPosition(FrightEncoderTarget);

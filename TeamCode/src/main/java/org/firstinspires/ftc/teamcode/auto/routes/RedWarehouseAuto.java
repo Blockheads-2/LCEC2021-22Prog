@@ -129,15 +129,22 @@ public class RedWarehouseAuto extends LinearOpMode {
 
                 //Move along barrier and toward wobble
                 constantHeading(0.5,24,7,1.3);
-                constantHeading(0.5,1,270,0.5);
-                TurnLeft(1,80,1.75);
-
+                constantHeading(0.5,2,270,0.5);
+                TurnLeft(1,70,1.75);
                 robot.spin.setPower(0);
+                constantHeading(0.5,2,180,0.5);
+                constantHeading(0.675,4,45,1);
+
+
 
                 //outtake
                 robot.spin.setPower(-0.7);
                 sleep(3800);
                 robot.spin.setPower(0);
+
+                //flexing
+                constantHeading(0.8,36,45,1.7);
+                variableHeading(0.8,);
 
                 telemetry.addLine("Path: Left");
                 break;

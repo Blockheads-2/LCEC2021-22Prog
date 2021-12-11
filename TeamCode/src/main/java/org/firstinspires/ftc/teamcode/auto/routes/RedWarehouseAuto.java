@@ -179,10 +179,18 @@ public class RedWarehouseAuto extends LinearOpMode {
             leftDistance = mathSpline.returnLDistance() * COUNTS_PER_INCH;
             rightDistance = mathSpline.returnRDistance() * COUNTS_PER_INCH;
 
-            FleftEncoderTarget = robot.lf.getCurrentPosition() + (int) leftDistance;
-            FrightEncoderTarget = robot.rf.getCurrentPosition() + (int) rightDistance;
-            BleftEncoderTarget = robot.lb.getCurrentPosition() + (int) leftDistance;
-            BrightEncoderTarget = robot.rb.getCurrentPosition() + (int) rightDistance;
+            if ((yPose >= 0 && xPose < 0) || (yPose < 0 && xPose >= 0)){
+                FleftEncoderTarget = robot.lf.getCurrentPosition() - (int) leftDistance;
+                FrightEncoderTarget = robot.rf.getCurrentPosition() - (int) rightDistance;
+                BleftEncoderTarget = robot.lb.getCurrentPosition() - (int) leftDistance;
+                BrightEncoderTarget = robot.rb.getCurrentPosition() - (int) rightDistance;
+            }
+            else {
+                FleftEncoderTarget = robot.lf.getCurrentPosition() + (int) leftDistance;
+                FrightEncoderTarget = robot.rf.getCurrentPosition() + (int) rightDistance;
+                BleftEncoderTarget = robot.lb.getCurrentPosition() + (int) leftDistance;
+                BrightEncoderTarget = robot.rb.getCurrentPosition() + (int) rightDistance;
+            }
 
 
             robot.lf.setTargetPosition(FleftEncoderTarget);

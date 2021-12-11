@@ -166,13 +166,73 @@ public class RedWarehouseAuto extends LinearOpMode {
                 break;
             }
             case MID: {
-                //...
+                //lift arm
+                robot.lifter.setTargetPosition(constants.elevatorPositionMid-400);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(0.9);
+                robot.spin.setPower(0.3);
+
+
+                //move to wobble
+                variableHeading(0.5,-6.1,16.75,1.5);
+                constantHeading(0.5,2.9,0,0.4);
+
+                //outtake
+                robot.spin.setPower(-1);
+                sleep(2300);
+
+                //park
+                constantHeading(0.5,2.9,180,0.4);
+                variableHeading(0.5,-6.25,-17,1.5);
+                robot.lifter.setTargetPosition(constants.elevatorPositionDown);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(0.9);
+                constantHeading(0.5,3,0,0.7);
+                TurnRight(1,70,2);
+                constantHeading(0.5,4,90,0.7);
+                robot.spin.setPower(1);
+                constantHeading(0.8,16.5,10,0.7);
+                constantHeading(0.8,16.7,10,0.7);
+                constantHeading(0.2,1.5,0,0.3);
+                constantHeading(0.35,3.5,280,0.75);
+                sleep(500);
+
+
+
                 telemetry.addLine("Path: Mid");
                 break;
             }
             case RIGHT:{
+                //lift arm
+                robot.lifter.setTargetPosition(constants.elevatorPositionTop);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(0.9);
+                robot.spin.setPower(0.3);
 
-                constantHeading(0.5,22.3,333,1.5);
+
+                //move to wobble
+                variableHeading(0.5,-6.25,17.1,1.5);
+                constantHeading(0.5,1.5,0,0.4);
+
+                //outtake
+                robot.spin.setPower(-1);
+                sleep(2300);
+
+                //park
+                constantHeading(0.5,1.5,180,0.4);
+                variableHeading(0.5,-6.25,-17.1,1.5);
+                robot.lifter.setTargetPosition(constants.elevatorPositionDown);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(0.9);
+                constantHeading(0.5,3,0,0.7);
+                TurnRight(1,70,2);
+                constantHeading(0.5,4,90,0.7);
+                robot.spin.setPower(1);
+                constantHeading(0.8,33,0,1.2);
+                constantHeading(0.2,1.5,0,0.3);
+                constantHeading(0.25,3,280,0.75);
+                sleep(1000);
+
                 telemetry.addLine("Path: Right");
                 break;
             }

@@ -257,7 +257,7 @@ public class RedCarouselAuto extends LinearOpMode {
 
                 //spline to carousel
                 constantHeading(0.5,5,270,0.5);
-                turnToPID(10);
+                turnPID(10);
                 constantHeading(0.2,3,180,0.5);
                 constantHeading(0.6, 36, 135, 2.0);
                 constantHeading(0.3,5,180,0.5);
@@ -497,7 +497,7 @@ public class RedCarouselAuto extends LinearOpMode {
     }
 
     public void turnPID(double degrees) {
-        turnToPID(degrees + getAbsoluteAngle());
+        turnToPID(-degrees + getAbsoluteAngle());
     }
 
     void turnToPID(double targetAngle) {

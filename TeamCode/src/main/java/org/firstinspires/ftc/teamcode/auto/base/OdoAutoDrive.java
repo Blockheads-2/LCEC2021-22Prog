@@ -232,8 +232,8 @@ public class OdoAutoDrive extends LinearOpMode {
         int newLeftBackTarget;
         int newRightBackTarget;
 
-        int addPose = (int) (distance * (Math.sin(radianAngle) + Math.cos(radianAngle)) * COUNTS_PER_INCH);
-        int subtractPose = (int) (distance * (Math.cos(radianAngle) - Math.sin(radianAngle)) * COUNTS_PER_INCH);
+        int addPose = (int) ((Math.sin(radianAngle) + Math.cos(radianAngle)) * COUNTS_PER_INCH * distance);
+        int subtractPose = (int) ((Math.cos(radianAngle) - Math.sin(radianAngle)) * COUNTS_PER_INCH * distance);
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {

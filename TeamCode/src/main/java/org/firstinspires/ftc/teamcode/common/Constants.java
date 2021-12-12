@@ -9,9 +9,10 @@ public class Constants {
     //      80 mm
 
     public int elevatorPositionDown = 0; //Rest
-    public int elevatorPositionTop = 3350; //Extended
+    public int elevatorPositionTop = 3410; //Extended
     public int elevatorPositionMid = 2700;
     public int elevatorPositionBottom = 1500;
+    public int elevatorAcrossDrop = 2500;
 
     //Capping Servo Positions
     public double capStart = 0.6; //Straight Up Vertical

@@ -42,6 +42,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.auto.cv.RedDetection;
 import org.firstinspires.ftc.teamcode.common.Constants;
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
+import org.firstinspires.ftc.teamcode.common.MathConstHead;
 import org.firstinspires.ftc.teamcode.common.MathSpline;
 import org.firstinspires.ftc.teamcode.common.TurnPIDController;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -61,6 +62,7 @@ public class RedCarouselAuto extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
     Constants constants = new Constants();
     MathSpline mathSpline = new MathSpline();
+    MathConstHead mathConstHead = new MathConstHead();
 
     double degreeConversion = constants.degree;
 
@@ -132,26 +134,23 @@ public class RedCarouselAuto extends LinearOpMode {
                 robot.lifter.setPower(1);
 
                 // move to drop
-                //constantHeading(0.4,40,310,3);
                 robot.spin.setPower(0.2);
-                constantHeading(0.5,10,90,0.5);
+                constantHeading(0.5,10,0,0.5);
                 variableHeading(0.6,10,20,1.5);
 
                 //out-take
-                constantHeading(0.5,1,0,0.4);
+                constantHeading(0.5,0,1,0.4);
                 robot.spin.setPower(-0.75);
                 sleep(2000);
                 robot.spin.setPower(0);
-                constantHeading(0.5,1,180,0.4);
+                constantHeading(0.5,0,-1,0.4);
 
 
                 //to carousel
-                constantHeading(0.5,10,180,1.2);
-                turnPID(45);
-                constantHeading(0.5,30,180,1.2);
+                variableHeading(0.5,-5,-30,1.2);
 
                 //move to carousel
-                constantHeading(0.7,9,90,1);
+                constantHeading(0.7,9,0,1);
 
                 //spin
                 robot.duckWheel.setPower(-0.5);
@@ -159,8 +158,9 @@ public class RedCarouselAuto extends LinearOpMode {
                 robot.lifter.setTargetPosition(constants.elevatorPositionDown);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.lifter.setPower(0.5);
-                constantHeading(0.1,2,90,4.1);
+                constantHeading(0.1,2,0,4.1);
 
+                /*
                 //Stop Elevator
                 if (robot.digitalTouch.getState() == false) {
                     //Stop
@@ -171,14 +171,15 @@ public class RedCarouselAuto extends LinearOpMode {
                     robot.lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 }
 
+                 */
+
                 robot.duckWheel.setPower(0);
 
                 //move to park
-                constantHeading(0.5, 22, 270, 2);
+                constantHeading(0.5, -22, 0, 2);
 
                 telemetry.addLine("Path: Left");
                 break;
-
             }
             case MID: {
                 //power on lift
@@ -187,29 +188,29 @@ public class RedCarouselAuto extends LinearOpMode {
                 robot.lifter.setPower(1);
 
                 // move to drop
-                constantHeading(0.4,12,270,1);
+                constantHeading(0.4,-12,0,1);
                 robot.spin.setPower(0.2);
-                constantHeading(0.8, 18, 0, 1);
+                constantHeading(0.8, 0, 18, 1);
                 variableHeading(0.6,19,14.825,1.5);
-                turnToPID(15);
-                constantHeading(0.5,1.2,0,0.25);
+                turnPID(15);
+                constantHeading(0.5,0,2,0.25);
 
                 //out-take
-                robot.spin.setPower(-0.65);
+                robot.spin.setPower(-1);
                 sleep(2000);
                 robot.spin.setPower(0);
 
 
 
                 //to carousel
-                constantHeading(0.5,5,270,0.5);
+                constantHeading(0.5,0,-5,0.5);
 
-                constantHeading(0.2,3,180,0.5);
-                constantHeading(0.6, 33, 135, 2.0);
-                constantHeading(0.3,5,180,0.5);
+                constantHeading(0.2,0,-3,0.5);
+                constantHeading(0.4, 24, -24, 3.0);
+                constantHeading(0.3,0,-5,0.5);
 
                 //move to carousel
-                constantHeading(0.7,17,90,1.5);
+                constantHeading(0.7,14,0,1.5);
 
                 //spin
                 robot.duckWheel.setPower(-0.4);
@@ -217,8 +218,11 @@ public class RedCarouselAuto extends LinearOpMode {
                 robot.lifter.setTargetPosition(constants.elevatorPositionDown);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.lifter.setPower(0.5);
-                constantHeading(0.1,2,90,4.1);
-                //Stop Elevator
+                constantHeading(0.1,2,0,4.1);
+
+                /*
+
+            //Stop Elevator
                 if (robot.digitalTouch.getState() == false) {
                     //Stop
                     robot.lifter.setPower(0);
@@ -228,10 +232,13 @@ public class RedCarouselAuto extends LinearOpMode {
                     robot.lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 }
 
+                 */
+
                 robot.duckWheel.setPower(0);
 
                 //move to park
-                constantHeading(0.5, 22, 270, 2);
+                constantHeading(0.5, -22, 0, 2);
+                constantHeading(0.5,0,-5,1);
 
                 telemetry.addLine("Path: Mid");
                 break;
@@ -244,9 +251,9 @@ public class RedCarouselAuto extends LinearOpMode {
                 robot.lifter.setPower(1);
 
                 // move to drop
-                constantHeading(0.4,8,270,1);
+                constantHeading(0.4,-8,0,1);
                 robot.spin.setPower(0.2);
-                constantHeading(0.8, 16, 0, 1);
+                constantHeading(0.8, 0, 16, 1);
                 variableHeading(0.6,19,14.825,1.5);
 
                 //out-take
@@ -257,14 +264,14 @@ public class RedCarouselAuto extends LinearOpMode {
 
 
                 //spline to carousel
-                constantHeading(0.5,5,270,0.5);
+                constantHeading(0.5,-5,0,0.5);
                 turnPID(10);
-                constantHeading(0.2,3,180,0.5);
-                constantHeading(0.6, 36, 135, 2.0);
-                constantHeading(0.3,5,180,0.5);
+                constantHeading(0.2,0,-3,0.5);
+                constantHeading(0.6, 26, -26, 2.0);
+                constantHeading(0.3,0,-5,0.5);
 
                 //move to carousel
-                constantHeading(0.7,14,90,1.5);
+                constantHeading(0.7,18,0,1.5);
 
                 //spin
                 robot.duckWheel.setPower(-0.4);
@@ -272,8 +279,9 @@ public class RedCarouselAuto extends LinearOpMode {
                 robot.lifter.setTargetPosition(constants.elevatorPositionDown);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.lifter.setPower(0.5);
-                constantHeading(0.1,2,90,4.1);
+                constantHeading(0.1,2,0,4.1);
 
+                /*
                 //Stop Elevator
                 if (robot.digitalTouch.getState() == false) {
                     //Stop
@@ -284,10 +292,12 @@ public class RedCarouselAuto extends LinearOpMode {
                     robot.lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 }
 
+                 */
+
                 robot.duckWheel.setPower(0);
 
                 //move to park
-                constantHeading(0.5, 20.5, 270, 2);
+                constantHeading(0.5, -21, 0, 2);
 
                 telemetry.addLine("Path: Right");
                 break;
@@ -380,16 +390,21 @@ public class RedCarouselAuto extends LinearOpMode {
             robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
-    public void constantHeading(double speed, double distance, double angle, double timeoutS) {
+    public void constantHeading(double speed, double xPose, double yPose, double timeoutS){
+        mathConstHead.setFinalPose(xPose,yPose);
+
+        double distance = mathConstHead.returnDistance();
+        double radianAngle = mathConstHead.returnAngle();
+
         int newLeftFrontTarget;
         int newRightFrontTarget;
         int newLeftBackTarget;
         int newRightBackTarget;
 
-        double radianAngle = Math.toRadians(angle);
-
-        int addPose = (int) (distance * (Math.sin(radianAngle) + Math.cos(radianAngle)) * COUNTS_PER_INCH);
-        int subtractPose = (int) (distance * (Math.cos(radianAngle) - Math.sin(radianAngle)) * COUNTS_PER_INCH);
+        double ratioAddPose = Math.cos(radianAngle) + Math.sin(radianAngle);
+        double ratioSubPose = Math.cos(radianAngle) - Math.sin(radianAngle);
+        int addPose = (int) (ratioAddPose * COUNTS_PER_INCH * distance);
+        int subtractPose = (int) (ratioSubPose * COUNTS_PER_INCH * distance);
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
@@ -414,10 +429,10 @@ public class RedCarouselAuto extends LinearOpMode {
             runtime.reset();
 
 
-            robot.lf.setVelocity(speed * constants.maxVelocityDT);
-            robot.rf.setVelocity(speed * constants.maxVelocityDT);
-            robot.lb.setVelocity(speed * constants.maxVelocityDT * 0.9);
-            robot.rb.setVelocity(speed * constants.maxVelocityDT * 0.9);
+            robot.lf.setVelocity(speed * constants.maxVelocityDT * ratioAddPose);
+            robot.rf.setVelocity(speed * constants.maxVelocityDT * ratioSubPose);
+            robot.lb.setVelocity(speed * constants.maxVelocityDT * ratioSubPose * 0.9);
+            robot.rb.setVelocity(speed * constants.maxVelocityDT * ratioAddPose * 0.9);
 
             while (opModeIsActive() && (runtime.seconds() < timeoutS)) {
                 // Display it for the driver.
@@ -445,7 +460,6 @@ public class RedCarouselAuto extends LinearOpMode {
         lastAngles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         currAngle = 0;
     }
-
     public double getAngle() {
         // Get current orientation
         Orientation orientation = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -467,7 +481,6 @@ public class RedCarouselAuto extends LinearOpMode {
         telemetry.addData("gyro", orientation.firstAngle);
         return currAngle;
     }
-
     public void turn(double degrees){
         resetAngle();
 
@@ -496,13 +509,14 @@ public class RedCarouselAuto extends LinearOpMode {
                 AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES
         ).firstAngle;
     }
-
     public void turnPID(double degrees) {
         turnToPID(-degrees + getAbsoluteAngle());
     }
-
+    public void turnAbsPID(double absDegrees){
+        turnToPID(-absDegrees);
+    }
     void turnToPID(double targetAngle) {
-        TurnPIDController pid = new TurnPIDController(-targetAngle, 0.01, 0, 0.003);
+        TurnPIDController pid = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
         telemetry.setMsTransmissionInterval(50);
         // Checking lastSlope to make sure that it's not oscillating when it quits
         while (Math.abs(targetAngle - getAbsoluteAngle()) > 0.5 || pid.getLastSlope() > 0.75) {

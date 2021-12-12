@@ -256,7 +256,6 @@ public class BlueCarouselAuto extends LinearOpMode {
         }
     }
     public void constantHeading(double speed, double xPose, double yPose, double timeoutS) {
-
         mathConstHead.setFinalPose(xPose,yPose);
 
         double distance = mathConstHead.returnDistance();
@@ -267,8 +266,10 @@ public class BlueCarouselAuto extends LinearOpMode {
         int newLeftBackTarget;
         int newRightBackTarget;
 
-        int addPose = (int) (distance * (Math.sin(radianAngle) + Math.cos(radianAngle)) * COUNTS_PER_INCH);
-        int subtractPose = (int) (distance * (Math.cos(radianAngle) - Math.sin(radianAngle)) * COUNTS_PER_INCH);
+        double ratioAddPose = Math.cos(radianAngle) + Math.sin(radianAngle);
+        double ratioSubPose = Math.cos(radianAngle) - Math.sin(radianAngle);
+        int addPose = (int) (ratioAddPose * COUNTS_PER_INCH * distance);
+        int subtractPose = (int) (ratioSubPose * COUNTS_PER_INCH * distance);
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
@@ -293,10 +294,10 @@ public class BlueCarouselAuto extends LinearOpMode {
             runtime.reset();
 
 
-            robot.lf.setVelocity(speed * constants.maxVelocityDT);
-            robot.rf.setVelocity(speed * constants.maxVelocityDT);
-            robot.lb.setVelocity(speed * constants.maxVelocityDT * 0.9);
-            robot.rb.setVelocity(speed * constants.maxVelocityDT * 0.9);
+            robot.lf.setVelocity(speed * constants.maxVelocityDT * ratioAddPose);
+            robot.rf.setVelocity(speed * constants.maxVelocityDT * ratioSubPose);
+            robot.lb.setVelocity(speed * constants.maxVelocityDT * ratioSubPose * 0.9);
+            robot.rb.setVelocity(speed * constants.maxVelocityDT * ratioAddPose * 0.9);
 
             while (opModeIsActive() && (runtime.seconds() < timeoutS)) {
                 // Display it for the driver.
@@ -324,7 +325,6 @@ public class BlueCarouselAuto extends LinearOpMode {
         lastAngles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         currAngle = 0;
     }
-
     public double getAngle() {
         // Get current orientation
         Orientation orientation = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -346,7 +346,6 @@ public class BlueCarouselAuto extends LinearOpMode {
         telemetry.addData("gyro", orientation.firstAngle);
         return currAngle;
     }
-
     public void turn(double degrees){
         resetAngle();
 
@@ -375,13 +374,14 @@ public class BlueCarouselAuto extends LinearOpMode {
                 AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES
         ).firstAngle;
     }
-
     public void turnPID(double degrees) {
         turnToPID(-degrees + getAbsoluteAngle());
     }
-
+    public void turnAbsPID(double absDegrees){
+        turnToPID(-absDegrees);
+    }
     void turnToPID(double targetAngle) {
-        TurnPIDController pid = new TurnPIDController(-targetAngle, 0.01, 0, 0.003);
+        TurnPIDController pid = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
         telemetry.setMsTransmissionInterval(50);
         // Checking lastSlope to make sure that it's not oscillating when it quits
         while (Math.abs(targetAngle - getAbsoluteAngle()) > 0.5 || pid.getLastSlope() > 0.75) {

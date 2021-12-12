@@ -130,9 +130,8 @@ public class OdoAutoDrive extends LinearOpMode {
         //Test Paths Start
 
         //...
-        constantHeading(0.5,10,20,3);
-
-        turnToPID(90);
+        variableHeading(0.5,20,20,3);
+        turnAbsPID(90);
 
         //End of Path
         telemetry.update();
@@ -285,12 +284,12 @@ public class OdoAutoDrive extends LinearOpMode {
             robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
+
     //Turn
     public void resetAngle(){
         lastAngles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         currAngle = 0;
     }
-
     public double getAngle() {
         // Get current orientation
         Orientation orientation = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -312,7 +311,6 @@ public class OdoAutoDrive extends LinearOpMode {
         telemetry.addData("gyro", orientation.firstAngle);
         return currAngle;
     }
-
     public void turn(double degrees){
         resetAngle();
 
@@ -341,13 +339,14 @@ public class OdoAutoDrive extends LinearOpMode {
                 AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES
         ).firstAngle;
     }
-
     public void turnPID(double degrees) {
         turnToPID(-degrees + getAbsoluteAngle());
     }
-
+    public void turnAbsPID(double absDegrees){
+        turnToPID(-absDegrees);
+    }
     void turnToPID(double targetAngle) {
-        TurnPIDController pid = new TurnPIDController(-targetAngle, 0.01, 0, 0.003);
+        TurnPIDController pid = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
         telemetry.setMsTransmissionInterval(50);
         // Checking lastSlope to make sure that it's not oscillating when it quits
         while (Math.abs(targetAngle - getAbsoluteAngle()) > 0.5 || pid.getLastSlope() > 0.75) {

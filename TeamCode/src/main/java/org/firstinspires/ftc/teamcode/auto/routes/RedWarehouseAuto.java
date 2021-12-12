@@ -37,6 +37,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import org.firstinspires.ftc.teamcode.auto.cv.RedDetection;
 import org.firstinspires.ftc.teamcode.common.Constants;
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
+import org.firstinspires.ftc.teamcode.common.MathConstHead;
 import org.firstinspires.ftc.teamcode.common.MathSpline;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -55,6 +56,7 @@ public class RedWarehouseAuto extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
     Constants constants = new Constants();
     MathSpline mathSpline = new MathSpline();
+    MathConstHead mathConstHead = new MathConstHead();
 
     double degreeConversion = constants.degree;
 
@@ -325,16 +327,21 @@ public class RedWarehouseAuto extends LinearOpMode {
             robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
-    public void constantHeading(double speed, double distance, double angle, double timeoutS) {
+    public void constantHeading(double speed, double xPose, double yPose, double timeoutS) {
+        mathConstHead.setFinalPose(xPose,yPose);
+
+        double distance = mathConstHead.returnDistance();
+        double radianAngle = mathConstHead.returnAngle();
+
         int newLeftFrontTarget;
         int newRightFrontTarget;
         int newLeftBackTarget;
         int newRightBackTarget;
 
-        double radianAngle = Math.toRadians(angle);
-
-        int addPose = (int) (distance * (Math.sin(radianAngle) + Math.cos(radianAngle)) * COUNTS_PER_INCH);
-        int subtractPose = (int) (distance * (Math.cos(radianAngle) - Math.sin(radianAngle)) * COUNTS_PER_INCH);
+        double ratioAddPose = Math.cos(radianAngle) + Math.sin(radianAngle);
+        double ratioSubPose = Math.cos(radianAngle) - Math.sin(radianAngle);
+        int addPose = (int) (ratioAddPose * COUNTS_PER_INCH * distance);
+        int subtractPose = (int) (ratioSubPose * COUNTS_PER_INCH * distance);
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
@@ -359,10 +366,10 @@ public class RedWarehouseAuto extends LinearOpMode {
             runtime.reset();
 
 
-            robot.lf.setVelocity(speed * constants.maxVelocityDT);
-            robot.rf.setVelocity(speed * constants.maxVelocityDT);
-            robot.lb.setVelocity(speed * constants.maxVelocityDT * 0.9);
-            robot.rb.setVelocity(speed * constants.maxVelocityDT * 0.9);
+            robot.lf.setVelocity(speed * constants.maxVelocityDT * ratioAddPose);
+            robot.rf.setVelocity(speed * constants.maxVelocityDT * ratioSubPose);
+            robot.lb.setVelocity(speed * constants.maxVelocityDT * ratioSubPose * 0.9);
+            robot.rb.setVelocity(speed * constants.maxVelocityDT * ratioAddPose * 0.9);
 
             while (opModeIsActive() && (runtime.seconds() < timeoutS)) {
                 // Display it for the driver.
@@ -384,6 +391,7 @@ public class RedWarehouseAuto extends LinearOpMode {
             robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
+
     public void TurnLeft(double speed, double degrees, double timeoutS) {
 
         double inches = degrees * constants.degree;

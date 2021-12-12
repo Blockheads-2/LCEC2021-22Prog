@@ -112,7 +112,7 @@ public class BaseDrive extends OpMode{
 
         telemetry.addData("lifter position", robot.lifter.getCurrentPosition());
         telemetry.addData("Carousel Velocity", robot.duckWheel.getVelocity());
-        telemetry.addData("Touch Sensor", robot.digitalTouch.getState());
+      //  telemetry.addData("Touch Sensor", robot.digitalTouch.getState());
         telemetry.update();
     }
 
@@ -198,14 +198,16 @@ public class BaseDrive extends OpMode{
             if (position >= (constants.elevatorPositionTop - 10)) {
                 robot.lifter.setTargetPosition(constants.elevatorPositionDown);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(0.9);
+                robot.lifter.setPower(1);
 
             } else {
                 robot.lifter.setTargetPosition(constants.elevatorPositionTop);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(0.9);
+                robot.lifter.setPower(1);
             }
         }
+
+        /*
 
         if (robot.digitalTouch.getState() == false) {
             //Stop
@@ -220,16 +222,25 @@ public class BaseDrive extends OpMode{
             robot.lifter.setPower(0.1);
         }
 
+         */
+
         if (lifterBottomButton.is(Button.State.TAP)){
                 if (position >= (constants.elevatorPositionBottom - 10)) {
                     robot.lifter.setTargetPosition(constants.elevatorPositionDown);
                     robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.lifter.setPower(0.9);
-                } else {
+                    robot.lifter.setPower(1);
+                }
+                else {
                     robot.lifter.setTargetPosition(constants.elevatorPositionBottom);
                     robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.lifter.setPower(0.9);
+                    robot.lifter.setPower(1);
                 }
+        }
+
+        if (lifterBottomButton.is(Button.State.DOUBLE_TAP)){
+            robot.lifter.setTargetPosition(constants.elevatorAcrossDrop);
+            robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.lifter.setPower(1);
         }
         if (gamepad2.left_bumper) {
             robot.lifter.setTargetPosition(position - 50);
@@ -245,10 +256,10 @@ public class BaseDrive extends OpMode{
 
     void Carousel(){
         if (carouselButton.is(Button.State.HELD)) {
-            robot.duckWheel.setPower(1);
+            robot.duckWheel.setVelocity(1700);
         }
         else if (carouselButtonInverted.is(Button.State.HELD)) {
-            robot.duckWheel.setPower(-1);
+            robot.duckWheel.setVelocity(-1700);
         }
         robot.duckWheel.setPower(0);
     }
@@ -274,7 +285,7 @@ public class BaseDrive extends OpMode{
         else if (gamepad2.dpad_up) // Spin Out Med
             robot.spin.setPower(-0.25);
         else if (gamepad2.right_trigger == 1) //Spin Out Fast
-            robot.spin.setPower(-0.3);
+            robot.spin.setPower(0.3);
         else
             robot.spin.setPower(0);
     }

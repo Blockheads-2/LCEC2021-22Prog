@@ -375,12 +375,12 @@ public class BlueCarouselAuto extends LinearOpMode {
         ).firstAngle;
     }
     public void turnPID(double degrees) {
-        turnToPID(-degrees + getAbsoluteAngle());
+        mathPID(-degrees + getAbsoluteAngle());
     }
     public void turnAbsPID(double absDegrees){
-        turnToPID(-absDegrees);
+        mathPID(-absDegrees);
     }
-    void turnToPID(double targetAngle) {
+    void mathPID(double targetAngle) {
         TurnPIDController pid = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
         telemetry.setMsTransmissionInterval(50);
         // Checking lastSlope to make sure that it's not oscillating when it quits

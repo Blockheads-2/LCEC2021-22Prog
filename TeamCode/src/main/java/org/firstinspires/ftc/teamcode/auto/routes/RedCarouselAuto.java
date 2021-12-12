@@ -147,10 +147,11 @@ public class RedCarouselAuto extends LinearOpMode {
 
 
                 //to carousel
-                variableHeading(0.5,-5,-30,1.2);
+                variableHeading(0.5,-20,-10,1.2);
 
                 //move to carousel
-                constantHeading(0.7,9,0,1);
+                constantHeading(0.4,0,-20,1.5);
+                constantHeading(0.4,10,0,1.5);
 
                 //spin
                 robot.duckWheel.setPower(-0.5);
@@ -177,6 +178,8 @@ public class RedCarouselAuto extends LinearOpMode {
 
                 //move to park
                 constantHeading(0.5, -22, 0, 2);
+                constantHeading(0.5, 0, -5, 2);
+
 
                 telemetry.addLine("Path: Left");
                 break;
@@ -271,7 +274,7 @@ public class RedCarouselAuto extends LinearOpMode {
                 constantHeading(0.3,0,-5,0.5);
 
                 //move to carousel
-                constantHeading(0.7,18,0,1.5);
+                constantHeading(0.7,20,0,1.5);
 
                 //spin
                 robot.duckWheel.setPower(-0.4);
@@ -510,12 +513,12 @@ public class RedCarouselAuto extends LinearOpMode {
         ).firstAngle;
     }
     public void turnPID(double degrees) {
-        turnToPID(-degrees + getAbsoluteAngle());
+        mathPID(-degrees + getAbsoluteAngle());
     }
     public void turnAbsPID(double absDegrees){
-        turnToPID(-absDegrees);
+        mathPID(-absDegrees);
     }
-    void turnToPID(double targetAngle) {
+    void mathPID(double targetAngle) {
         TurnPIDController pid = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
         telemetry.setMsTransmissionInterval(50);
         // Checking lastSlope to make sure that it's not oscillating when it quits

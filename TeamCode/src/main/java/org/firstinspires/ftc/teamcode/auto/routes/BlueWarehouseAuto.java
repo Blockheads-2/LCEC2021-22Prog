@@ -131,31 +131,34 @@ public class BlueWarehouseAuto extends LinearOpMode {
                 break;
             }
             case RIGHT: {
-                //power on lift
                 robot.lifter.setTargetPosition(constants.elevatorPositionTop);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(1);
+                robot.lifter.setPower(0.9);
+                robot.spin.setPower(0.3);
 
-                // spline
-                variableHeading(0.3,12,5,2);
 
-                //out-take
-                robot.spin.setPower(-0.3);
-                sleep(1000);
-                robot.spin.setPower(0);
+                //move to wobble
+                variableHeading(0.5,6.25,17.1,1.5);
+                constantHeading(0.5,0,1.5,0.4);
 
-                //lift down
-                robot.lifter.setTargetPosition(constants.elevatorPositionBottom);
-                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(1);
+                //outtake
+                robot.spin.setPower(-1);
+                sleep(2300);
 
-                //spline to park
-                variableHeading(0.5,12,12,3);
-
+                //park
+                constantHeading(0.5,0,-1.5,0.4);
+                variableHeading(0.5,6.25,-17.1,1.5);
                 robot.lifter.setTargetPosition(constants.elevatorPositionDown);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(1);
-                constantHeading(0.5,10,0,3);
+                robot.lifter.setPower(0.9);
+                constantHeading(0.5,0,3,0.7);
+                turnPID(100);
+                constantHeading(0.5,-4,0,0.7);
+                robot.spin.setPower(1);
+                constantHeading(0.8,0,33,1.2);
+                constantHeading(0.2,0,1.5,0.3);
+                constantHeading(0.25,3,2,0.75);
+                sleep(1000);
 
                 telemetry.addLine("Path: Right");
                 break;

@@ -233,7 +233,7 @@ public class BlueCarouselAuto extends LinearOpMode {
                 robot.lifter.setPower(0);
                 constantHeading(0.3,0,1,1);
                 turnAbsPID(0,1);
-                constantHeading(0.5,4,0,0.5x);
+                constantHeading(0.5,4,0,0.5);
                 constantHeading(0.45,10,-40,3.7);
 
                 robot.duckWheel.setVelocity(1600);

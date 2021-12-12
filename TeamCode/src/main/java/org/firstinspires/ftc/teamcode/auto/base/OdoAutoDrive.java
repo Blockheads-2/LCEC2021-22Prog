@@ -130,8 +130,8 @@ public class OdoAutoDrive extends LinearOpMode {
         //Test Paths Start
 
         //...
-        variableHeading(0.5,20,20,3);
-        turnAbsPID(90);
+        variableHeading(0.5,0,20,3);
+        turnAbsPID(-90,3);
 
         //End of Path
         telemetry.update();
@@ -339,17 +339,18 @@ public class OdoAutoDrive extends LinearOpMode {
                 AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES
         ).firstAngle;
     }
-    public void turnPID(double degrees) {
-        turnToPID(-degrees + getAbsoluteAngle());
+    public void turnPID(double degrees,double timeOut) {
+        turnToPID(-degrees + getAbsoluteAngle(), timeOut);
     }
-    public void turnAbsPID(double absDegrees){
-        turnToPID(-absDegrees);
+    public void turnAbsPID(double absDegrees, double timeOut){
+        turnToPID(-absDegrees, timeOut);
     }
-    void turnToPID(double targetAngle) {
+    void turnToPID(double targetAngle, double timeoutS) {
         TurnPIDController pid = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
         telemetry.setMsTransmissionInterval(50);
         // Checking lastSlope to make sure that it's not oscillating when it quits
-        while (Math.abs(targetAngle - getAbsoluteAngle()) > 0.5 || pid.getLastSlope() > 0.75) {
+        runtime.reset();
+        while ((runtime.seconds() < timeoutS) && (Math.abs(targetAngle - getAbsoluteAngle()) > 0.5 || pid.getLastSlope() > 0.75)) {
             double motorPower = pid.update(getAbsoluteAngle());
             robot.lf.setPower(-motorPower);
             robot.rf.setPower(motorPower);

@@ -138,9 +138,9 @@ public class RedWarehouseAuto extends LinearOpMode {
                 robot.lifter.setPower(0.9);
 
                 //Move along barrier and toward wobble
-                constantHeading(0.5,2,24,1.3);
+                constantHeading(0.5,0,24,1.3);
                 constantHeading(0.5,-2,0,0.5);
-                turnPID(70);
+                turnAbsPID(-90);
                 robot.spin.setPower(0);
                 constantHeading(0.5,0,-2,0.5);
                 constantHeading(0.675,2.8,2.8,1);

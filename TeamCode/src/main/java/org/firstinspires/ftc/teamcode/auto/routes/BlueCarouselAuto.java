@@ -125,7 +125,32 @@ public class BlueCarouselAuto extends LinearOpMode {
 
         switch (detector.getLocation()) {
             case LEFT: {
-                //...
+                //power on lift
+                robot.lifter.setTargetPosition(constants.elevatorPositionBottom);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(1);
+
+                // move to drop
+                robot.spin.setPower(0.2);
+                constantHeading(0.6,24,24,2);
+                variableHeading(0.6,-10,20,1.5);
+                constantHeading(0.5,4,0,0.7);
+                turnPID(270,1.5);
+                constantHeading(0.5,4,0,0.7);
+                //out-take
+                constantHeading(0.5,0,1,0.4);
+                robot.spin.setPower(-0.75);
+                sleep(2000);
+                robot.spin.setPower(0);
+                constantHeading(0.5,0,-1,0.4);
+
+                //move to carousel
+                constantHeading(0.5,4,0,0.7);
+                turnAbsPID(270,1.5);
+                constantHeading(0.5,0,36,2);
+
+
+                telemetry.addLine("Path: Left");
                 break;
             }
             case RIGHT: {
@@ -294,10 +319,10 @@ public class BlueCarouselAuto extends LinearOpMode {
             runtime.reset();
 
 
-            robot.lf.setVelocity(speed * constants.maxVelocityDT * ratioAddPose);
-            robot.rf.setVelocity(speed * constants.maxVelocityDT * ratioSubPose);
-            robot.lb.setVelocity(speed * constants.maxVelocityDT * ratioSubPose * 0.9);
-            robot.rb.setVelocity(speed * constants.maxVelocityDT * ratioAddPose * 0.9);
+            robot.lf.setVelocity(speed * constants.maxVelocityDT * ratioSubPose);
+            robot.rf.setVelocity(speed * constants.maxVelocityDT * ratioAddPose);
+            robot.lb.setVelocity(speed * constants.maxVelocityDT * ratioAddPose * 0.9);
+            robot.rb.setVelocity(speed * constants.maxVelocityDT * ratioSubPose * 0.9);
 
             while (opModeIsActive() && (runtime.seconds() < timeoutS)) {
                 // Display it for the driver.
@@ -319,7 +344,6 @@ public class BlueCarouselAuto extends LinearOpMode {
             robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
-
     //Turn
     public void resetAngle(){
         lastAngles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -374,17 +398,18 @@ public class BlueCarouselAuto extends LinearOpMode {
                 AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES
         ).firstAngle;
     }
-    public void turnPID(double degrees) {
-        mathPID(-degrees + getAbsoluteAngle());
+    public void turnPID(double degrees,double timeOut) {
+        turnToPID(-degrees + getAbsoluteAngle(), timeOut);
     }
-    public void turnAbsPID(double absDegrees){
-        mathPID(-absDegrees);
+    public void turnAbsPID(double absDegrees, double timeOut){
+        turnToPID(-absDegrees, timeOut);
     }
-    void mathPID(double targetAngle) {
+    void turnToPID(double targetAngle, double timeoutS) {
         TurnPIDController pid = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
         telemetry.setMsTransmissionInterval(50);
         // Checking lastSlope to make sure that it's not oscillating when it quits
-        while (Math.abs(targetAngle - getAbsoluteAngle()) > 0.5 || pid.getLastSlope() > 0.75) {
+        runtime.reset();
+        while ((runtime.seconds() < timeoutS) && (Math.abs(targetAngle - getAbsoluteAngle()) > 0.5 || pid.getLastSlope() > 0.75)) {
             double motorPower = pid.update(getAbsoluteAngle());
             robot.lf.setPower(-motorPower);
             robot.rf.setPower(motorPower);

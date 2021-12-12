@@ -130,7 +130,7 @@ public class OdoAutoDrive extends LinearOpMode {
         //Test Paths Start
 
         //...
-        variableHeading(0.5,0,20,3);
+        constantHeading(0.5,0,20,3);
         turnAbsPID(-90,3);
 
         //End of Path

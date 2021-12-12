@@ -162,7 +162,7 @@ public class RedWarehouseAuto extends LinearOpMode {
                 constantHeading(0.5,3,0,0.5);
                 constantHeading(0.5,0,-44,3);
                 constantHeading(0.5,0,3,0.7);
-                turnPID(70);
+                turnPID(100);
                 constantHeading(0.5,3,0,0.7);
                 robot.spin.setPower(1);
                 constantHeading(0.8,0,33,1.2);
@@ -196,7 +196,7 @@ public class RedWarehouseAuto extends LinearOpMode {
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.lifter.setPower(0.9);
                 constantHeading(0.5,0,3,0.7);
-                turnPID(70);
+                turnPID(100);
                 constantHeading(0.5,4,0,0.7);
                 robot.spin.setPower(1);
                 constantHeading(0.8,2,17,0.7);
@@ -233,7 +233,7 @@ public class RedWarehouseAuto extends LinearOpMode {
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.lifter.setPower(0.9);
                 constantHeading(0.5,0,3,0.7);
-                turnPID(70);
+                turnPID(100);
                 constantHeading(0.5,4,0,0.7);
                 robot.spin.setPower(1);
                 constantHeading(0.8,0,33,1.2);

@@ -126,7 +126,50 @@ public class BlueWarehouseAuto extends LinearOpMode {
 
         switch (detector.getLocation()) {
             case LEFT: {
-                //...
+                //Hit barrier
+                constantHeading(0.5,0,13,1);
+                constantHeading(0.5,-12,0,1);
+
+                robot.spin.setPower(0.2);
+
+                //lift arm
+                robot.lifter.setTargetPosition(constants.elevatorPositionBottom - 400);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(0.9);
+
+                //Move along barrier and toward wobble
+                constantHeading(0.5,-5,24,1.3);
+                constantHeading(0.5,2,0,0.5);
+                turnAbsPID(-90);
+                robot.spin.setPower(0);
+                constantHeading(0.5,0,-2,0.5);
+                constantHeading(0.675,2.8,2.8,1);
+                constantHeading(0.3,0,1.3,0.5);
+                turnPID(20);
+
+                //outtake
+                robot.spin.setPower(-0.7);
+                sleep(3800);
+                robot.spin.setPower(0);
+
+                //park
+                constantHeading(0.8,0,-6,1);
+                constantHeading(0.5,0,2,0.75);
+                turnPID(90);
+                robot.lifter.setTargetPosition(constants.elevatorPositionDown);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(0.9);
+                constantHeading(0.5,-3,0,0.5);
+                constantHeading(0.5,0,-44,3);
+                constantHeading(0.5,0,3,0.7);
+                turnPID(100);
+                constantHeading(0.5,-3,0,0.7);
+                robot.spin.setPower(1);
+                constantHeading(0.8,0,33,1.2);
+                constantHeading(0.2,0,2,0.3);
+                constantHeading(0.25,3,1,0.75);
+                sleep(1000);
+
                 telemetry.addLine("Path: Left");
                 break;
             }
@@ -164,7 +207,37 @@ public class BlueWarehouseAuto extends LinearOpMode {
                 break;
             }
             case MID: {
-                //...
+                //lift arm
+                robot.lifter.setTargetPosition(constants.elevatorPositionMid-400);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(0.9);
+                robot.spin.setPower(0.3);
+
+
+                //move to wobble
+                variableHeading(0.5,6.1,16.75,1.5);
+                constantHeading(0.5,0,3,0.4);
+
+                //outtake
+                robot.spin.setPower(-1);
+                sleep(2300);
+
+                //park
+                constantHeading(0.5,0,-3,0.4);
+                variableHeading(0.5,6.25,-17,1.5);
+                robot.lifter.setTargetPosition(constants.elevatorPositionDown);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(0.9);
+                constantHeading(0.5,0,3,0.7);
+                turnPID(100);
+                constantHeading(0.5,-4,0,0.7);
+                robot.spin.setPower(1);
+                constantHeading(0.8,-2,17,0.7);
+                constantHeading(0.8,-2,17,0.7);
+                constantHeading(0.2,0,1.5,0.3);
+                constantHeading(0.35,3.5,2,0.75);
+                sleep(500);
+
                 telemetry.addLine("Path: Mid");
                 break;
             }

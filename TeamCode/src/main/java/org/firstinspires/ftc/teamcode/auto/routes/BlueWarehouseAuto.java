@@ -39,6 +39,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.auto.cv.BlueDetection;
+import org.firstinspires.ftc.teamcode.auto.cv.BlueWarehouseDetection;
 import org.firstinspires.ftc.teamcode.common.Constants;
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
 import org.firstinspires.ftc.teamcode.common.MathConstHead;
@@ -101,7 +102,7 @@ public class BlueWarehouseAuto extends LinearOpMode {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId","id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-        BlueDetection detector = new BlueDetection(telemetry);
+        BlueWarehouseDetection detector = new BlueWarehouseDetection(telemetry);
         phoneCam.setPipeline(detector);
 
         phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()

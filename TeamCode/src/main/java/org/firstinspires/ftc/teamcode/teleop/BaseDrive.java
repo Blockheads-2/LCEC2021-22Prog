@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.common.Button;
 import org.firstinspires.ftc.teamcode.common.Constants;
@@ -59,6 +60,10 @@ public class BaseDrive extends OpMode{
     /* Declare OpMode members. */
     HardwareDrive robot = new HardwareDrive();
     Constants constants = new Constants();
+    private ElapsedTime runtime = new ElapsedTime();
+
+
+
 
     Button capUpButton = new Button();
     Button capDropButton = new Button();
@@ -69,11 +74,14 @@ public class BaseDrive extends OpMode{
     Button lifterButton = new Button();
     Button lifterBottomButton = new Button();
 
+    int countSmile = 0;
+
     @Override
     public void init() {
         robot.init(hardwareMap);
 
         telemetry.addData("Say", "Hello Driver");
+        runtime.reset();
     }
 
     @Override
@@ -100,6 +108,7 @@ public class BaseDrive extends OpMode{
         DriveTrainSpeed();
         Capping();
         DriveMicroAdjust(0.4);
+        OscillateServo();
     }
 
     void UpdatePlayer2(){
@@ -127,6 +136,17 @@ public class BaseDrive extends OpMode{
         carouselButtonInverted.update(gamepad2.b);
         lifterButton.update(gamepad2.y);
         lifterBottomButton.update(gamepad2.x);
+    }
+
+    void OscillateServo(){
+        if (runtime.seconds() > 1){
+            if (countSmile % 2 == 0)
+                robot.cap.setPosition(constants.capPickUp);
+            else
+                robot.cap.setPosition(constants.capStart);
+            runtime.reset();
+            countSmile += 1;
+        }
     }
 
     void DriveTrainBase(double drivePower){

@@ -125,7 +125,7 @@ public class HardwareDrive
         cap  = hwMap.get(Servo.class, "cap");
         spin = hwMap.get(CRServo.class,"spin");
 
-        cap.setPosition(constants.capStart);
+      //  cap.setPosition(constants.capStart);
         spin.setPower(0);
 
 

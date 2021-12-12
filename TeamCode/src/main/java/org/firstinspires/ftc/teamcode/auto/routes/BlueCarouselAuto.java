@@ -126,67 +126,122 @@ public class BlueCarouselAuto extends LinearOpMode {
         switch (detector.getLocation()) {
             case LEFT: {
                 //power on lift
-                robot.lifter.setTargetPosition(constants.elevatorPositionBottom);
+                robot.lifter.setTargetPosition(constants.elevatorPositionBottom - 400);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.lifter.setPower(1);
 
                 // move to drop
                 robot.spin.setPower(0.2);
-                constantHeading(0.6,24,24,2);
-                variableHeading(0.6,-10,20,1.5);
-                constantHeading(0.5,4,0,0.7);
-                turnPID(270,1.5);
-                constantHeading(0.5,4,0,0.7);
+                constantHeading(0.5,25,30,2.5);
+                variableHeading(0.6,-10,10,1.5);
+                turnPID(-10,1);
+                constantHeading(0.3,0,3,1);
+
                 //out-take
-                constantHeading(0.5,0,1,0.4);
                 robot.spin.setPower(-0.75);
                 sleep(2000);
                 robot.spin.setPower(0);
                 constantHeading(0.5,0,-1,0.4);
 
+
+                robot.lifter.setTargetPosition(constants.elevatorPositionDown);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(0.6);
+
                 //move to carousel
                 constantHeading(0.5,4,0,0.7);
                 turnAbsPID(270,1.5);
-                constantHeading(0.5,0,36,2);
+                constantHeading(0.5,0,-36,2);
+                robot.duckWheel.setPower(0);
+                constantHeading(0.3,0,1,1);
+                turnAbsPID(0,1);
+                constantHeading(0.45,5,-34,3.7);
 
+                robot.duckWheel.setVelocity(1600);
+                constantHeading(0.1,0,-2,4);
+                robot.lifter.setPower(0);
+
+                constantHeading(0.5,3,20,4);
 
                 telemetry.addLine("Path: Left");
                 break;
             }
             case RIGHT: {
-                variableHeading(0.3,12,5,2);
-                sleep(100);
-
-                constantHeading(0.3,20,90,3);
-                sleep(100);
-
-                robot.duckWheel.setPower(0.7);
-                sleep(2300);
-                robot.duckWheel.setPower(0);
+                //power on lift
                 robot.lifter.setTargetPosition(constants.elevatorPositionTop);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.lifter.setPower(1);
 
-                variableHeading(0.5,5,38,3);
-                sleep(1000);
-                constantHeading(0.5,19,0,3);
+                // move to drop
+                variableHeading(0.5,-6.25,17.1,1.5);
+                constantHeading(0.5,0,1.5,0.4);
 
+                //outtake
                 robot.spin.setPower(-1);
-                sleep(1000);
+                sleep(2300);
 
-                variableHeading(0.5,-15,-5,3);
-                constantHeading(0.5,-20,0,3);
-
+                //park
+                constantHeading(0.5,0,-1.5,0.4);
+                variableHeading(0.5,-6.25,-17.1,1.5);
                 robot.lifter.setTargetPosition(constants.elevatorPositionDown);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(1);
-                sleep(3000);
+                robot.lifter.setPower(0.6);
+
+                //carousel
+                variableHeading(0.5,20,-20,2);
+                constantHeading(0.5,0,-48,2.5);
+
+                constantHeading(0.3,-7,0,1.5);
+                robot.duckWheel.setPower(0.7);
+                constantHeading(01,-2,0,4);
+                robot.duckWheel.setPower(0);
                 robot.lifter.setPower(0);
-                telemetry.addData("Path Finished:","None Detected");
+
+                constantHeading(0.5,22,0,2);
+                constantHeading(0.5,0,-5,2);
+
                 break;
             }
             case MID: {
-                //...
+                //power on lift
+                robot.lifter.setTargetPosition(constants.elevatorPositionMid);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(1);
+
+                // move to drop
+                robot.spin.setPower(0.1);
+                constantHeading(0.6,30,20,2);
+                turnAbsPID(0,1);
+                constantHeading(0.5,0,20,1.5);
+                variableHeading(0.6,-10,2,1.5);
+                constantHeading(0.5,4,1,0.7);
+
+                //out-take
+                robot.spin.setPower(-1);
+                sleep(2300);
+                robot.spin.setPower(0);
+                constantHeading(0.5,0,-5,0.7);
+
+
+                robot.lifter.setTargetPosition(constants.elevatorPositionDown);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(0.6);
+
+                //move to carousel -- start ---
+                turnAbsPID(270,1.5);
+                constantHeading(0.3,0,-35,3);
+                robot.lifter.setPower(0);
+                constantHeading(0.3,0,1,1);
+                turnAbsPID(0,1);
+                constantHeading(0.5,4,0,0.5x);
+                constantHeading(0.45,10,-40,3.7);
+
+                robot.duckWheel.setVelocity(1600);
+                constantHeading(0.1,0,-2,4);
+                robot.lifter.setPower(0);
+
+                constantHeading(0.5,3,20,4);
+
                 break;
             }
 
@@ -319,10 +374,10 @@ public class BlueCarouselAuto extends LinearOpMode {
             runtime.reset();
 
 
-            robot.lf.setVelocity(speed * constants.maxVelocityDT * ratioSubPose);
-            robot.rf.setVelocity(speed * constants.maxVelocityDT * ratioAddPose);
-            robot.lb.setVelocity(speed * constants.maxVelocityDT * ratioAddPose * 0.9);
-            robot.rb.setVelocity(speed * constants.maxVelocityDT * ratioSubPose * 0.9);
+            robot.lf.setVelocity(speed * constants.maxVelocityDT * ratioAddPose);
+            robot.rf.setVelocity(speed * constants.maxVelocityDT * ratioSubPose);
+            robot.lb.setVelocity(speed * constants.maxVelocityDT * ratioSubPose * 0.9);
+            robot.rb.setVelocity(speed * constants.maxVelocityDT * ratioAddPose * 0.9);
 
             while (opModeIsActive() && (runtime.seconds() < timeoutS)) {
                 // Display it for the driver.

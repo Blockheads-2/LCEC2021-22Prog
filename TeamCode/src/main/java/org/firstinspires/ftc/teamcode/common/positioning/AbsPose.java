@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.common;
+package org.firstinspires.ftc.teamcode.common.positioning;
 
 public class AbsPose {
     private double absPoseX = 0;

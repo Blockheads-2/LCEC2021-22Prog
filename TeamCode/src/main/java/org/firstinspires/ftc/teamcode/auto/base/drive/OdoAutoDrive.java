@@ -27,25 +27,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.auto.base;
+package org.firstinspires.ftc.teamcode.auto.base.drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.teamcode.common.MathConstHead;
-import org.firstinspires.ftc.teamcode.common.MathSpline;
+import org.firstinspires.ftc.teamcode.common.positioning.MathConstHead;
+import org.firstinspires.ftc.teamcode.common.positioning.MathSpline;
 import org.firstinspires.ftc.teamcode.common.Constants;
-import org.firstinspires.ftc.teamcode.common.TurnPIDController;
+import org.firstinspires.ftc.teamcode.common.pid.TurnPIDController;
 
 
 /**

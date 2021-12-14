@@ -1,6 +1,7 @@
-package org.firstinspires.ftc.teamcode.common;
+package org.firstinspires.ftc.teamcode.common.positioning;
 
-import static java.lang.Math.*;
+import org.firstinspires.ftc.teamcode.common.Constants;
+import org.firstinspires.ftc.teamcode.common.positioning.AbsPose;
 
 public class MathSpline {
     double alpha = 0; //final x

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.auto.base;
+package org.firstinspires.ftc.teamcode.auto.base.drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
-import org.firstinspires.ftc.teamcode.common.TurnPIDController;
+import org.firstinspires.ftc.teamcode.common.pid.TurnPIDController;
 
 
 @Autonomous(name="Gyro", group="Test")

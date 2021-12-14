@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.common;
+package org.firstinspires.ftc.teamcode.common.pid;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -48,8 +48,7 @@ public class TurnPIDController {
         lastError = error;
         lastTime = timer.milliseconds();
 
-        double motorPower = 0.1 * Math.signum(error)
-                + 0.9 * Math.tanh(kP * error + kI * accumulatedError - kD * slope);
+        double motorPower = 0.1 * Math.signum(error) + 0.9 * Math.tanh(kP * error + kI * accumulatedError - kD * slope);
         return motorPower;
     }
 

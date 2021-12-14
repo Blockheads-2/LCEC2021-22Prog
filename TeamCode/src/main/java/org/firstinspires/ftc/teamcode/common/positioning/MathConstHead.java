@@ -1,5 +1,8 @@
-package org.firstinspires.ftc.teamcode.common;
+package org.firstinspires.ftc.teamcode.common.positioning;
 
+
+import org.firstinspires.ftc.teamcode.common.Constants;
+import org.firstinspires.ftc.teamcode.common.positioning.AbsPose;
 
 public class MathConstHead {
     double psi = 0; //final x

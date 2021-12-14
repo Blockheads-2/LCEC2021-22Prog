@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import org.firstinspires.ftc.teamcode.common.Constants;
+import org.firstinspires.ftc.teamcode.common.pid.MovePIDController;
 
 /**
  * This file illustrates the concept of driving a path based on encoder counts.
@@ -120,6 +121,7 @@ public class DrivePID extends LinearOpMode {
     }
 
     void driveWithPID(){
+        MovePIDController path1 = new MovePIDController(0.1,0,0.03,10);
 
     }
 }

@@ -22,27 +22,29 @@ public class MovePIDController {
             this.currentTime = getTimeSeconds();
         }
 
-        public double getCorrectedOutput(double processValue) {
+        public double update(double currentValue) {
             previousTime = currentTime;
             currentTime = getTimeSeconds();
             deltaTime = currentTime - previousTime;
-            currentError = processValue - targetValue;
 
-            if (deltaTime > 0) {
-                deltaError = currentError - previousError;
+            // P
+            currentError = targetValue - currentValue;
 
+            // I
+            integral += currentError * deltaTime;
+
+            // D
+            deltaError = currentError - previousError;
+
+            if (deltaTime > 0)
                 derivative =  deltaError/deltaTime;
-                integral += currentError * deltaTime;
 
-                double output = -(currentError * kP + integral * kI + derivative * kD);
+            //Calculate PID Output
+            double output = (currentError * kP) + (integral * kI) + (derivative * kD);
+            previousError = currentError;
 
-                previousError = currentError;
-                previousOutput = output;
-
-                return output;
-            }
-
-            return previousOutput;
+            //Update the PID System
+            return output;
         }
 
         public void reset() {

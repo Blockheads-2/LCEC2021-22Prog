@@ -3,24 +3,27 @@ package org.firstinspires.ftc.teamcode.auto.base.drive;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.common.Constants;
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
 import org.firstinspires.ftc.teamcode.common.pid.MovePIDController;
 import org.firstinspires.ftc.teamcode.common.pid.TurnPIDController;
 
 
-@Autonomous(name="Gyro", group="Test")
+@Autonomous(name="Move PID", group="Test")
 @Disabled
-public class Gyro extends LinearOpMode{
+public class MovePID extends LinearOpMode{
 
     /* Declare OpMode members. */
     HardwareDrive robot   = new HardwareDrive();   // Use a Pushbot's hardware
     private ElapsedTime     runtime = new ElapsedTime();
+    Constants constants = new Constants();
 
 
     static final double     FORWARD_SPEED = 0.6;
@@ -45,12 +48,12 @@ public class Gyro extends LinearOpMode{
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-    }
+        driveStraight(10);
 
-    //Turn
-    public void resetAngle(){
-        lastAngles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        currAngle = 0;
+        turn(90);
+
+        driveStraight(20);
+
     }
 
     public double getAngle() {
@@ -73,6 +76,11 @@ public class Gyro extends LinearOpMode{
         lastAngles = orientation;
         telemetry.addData("gyro", orientation.firstAngle);
         return currAngle;
+    }
+
+    public void resetAngle(){
+        lastAngles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        currAngle = 0;
     }
 
     public void turn(double degrees){
@@ -98,32 +106,47 @@ public class Gyro extends LinearOpMode{
         robot.rb.setPower(0);
 
     }
+
     public double getAbsoluteAngle() {
         return robot.imu.getAngularOrientation(
                 AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES
         ).firstAngle;
     }
 
-    public void turnPID(double degrees) {
-        turnToPID(-degrees + getAbsoluteAngle());
-    }
+    void driveStraight(double distance) {
+        double targetAngle = getAbsoluteAngle();
+        double distanceFoward = distance * constants.clicksPerInch;
 
-    void turnToPID(double targetAngle) {
-        TurnPIDController pid = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
-        telemetry.setMsTransmissionInterval(50);
-        // Checking lastSlope to make sure that it's not oscillating when it quits
-        while (Math.abs(targetAngle - getAbsoluteAngle()) > 0.5 || pid.getLastSlope() > 0.75) {
-            double motorPower = pid.update(getAbsoluteAngle());
-            robot.lf.setPower(-motorPower);
-            robot.rf.setPower(motorPower);
-            robot.lb.setPower(-motorPower);
-            robot.rb.setPower(motorPower);
+        TurnPIDController pidTurn = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
+        MovePIDController pidMove = new MovePIDController(distanceFoward, 0.01, 0, 0.003);
 
-            telemetry.addData("Current Angle", getAbsoluteAngle());
-            telemetry.addData("Target Angle", targetAngle);
-            telemetry.addData("Slope", pid.getLastSlope());
-            telemetry.addData("Power", motorPower);
-            telemetry.update();
+
+        runtime.reset();
+
+        while (runtime.seconds() < 3) {
+
+            robot.lf.setTargetPosition((int)distanceFoward);
+            robot.rf.setTargetPosition((int)distanceFoward);
+            robot.lb.setTargetPosition((int)distanceFoward);
+            robot.rb.setTargetPosition((int)distanceFoward);
+
+            robot.lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+            double angleCorrection = pidTurn.update(getAbsoluteAngle());
+            double lfCorrection = pidMove.update(robot.lf.getCurrentPosition());
+            double rfCorrection = pidMove.update(robot.rf.getCurrentPosition());
+            double lbCorrection = pidMove.update(robot.lb.getCurrentPosition());
+            double rbCorrection = pidMove.update(robot.rb.getCurrentPosition());
+
+
+            robot.lf.setPower(lfCorrection - angleCorrection);
+            robot.rf.setPower(rfCorrection + angleCorrection);
+            robot.lb.setPower(lbCorrection - angleCorrection);
+            robot.rb.setPower(rbCorrection + angleCorrection);
         }
         robot.lf.setPower(0);
         robot.rf.setPower(0);

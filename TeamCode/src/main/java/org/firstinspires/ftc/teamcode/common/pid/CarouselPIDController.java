@@ -38,7 +38,7 @@ public class CarouselPIDController {
         lastError = error;
         lastTime = timer.milliseconds();
 
-        double motorPower = Math.tanh(kP * error + kI * accumulatedError + kD * slope);
-        return motorPower;
+        double motorVelocity = kP * error + kI * accumulatedError + kD * slope;
+        return motorVelocity;
     }
 }

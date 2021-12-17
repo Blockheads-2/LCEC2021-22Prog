@@ -280,10 +280,10 @@ public class BaseDrive extends OpMode{
         CarouselPIDController carouselPIDControllerNegative = new CarouselPIDController(-1700,0.01,0,0.003);
 
         if (carouselButton.is(Button.State.HELD)) {
-            robot.duckWheel.setVelocity(carouselPIDControllerPositive.update(robot.duckWheel.getVelocity()));
+            robot.duckWheel.setVelocity(1700 + carouselPIDControllerPositive.update(robot.duckWheel.getVelocity()));
         }
         else if (carouselButtonInverted.is(Button.State.HELD)) {
-            robot.duckWheel.setVelocity(carouselPIDControllerNegative.update(robot.duckWheel.getVelocity()));
+            robot.duckWheel.setVelocity(-1700 + carouselPIDControllerNegative.update(robot.duckWheel.getVelocity()));
         }
         robot.duckWheel.setPower(0);
     }

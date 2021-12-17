@@ -2,26 +2,25 @@ package org.firstinspires.ftc.teamcode.common.pid;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class MovePIDController{
-
+public class CarouselPIDController {
     private double kP, kI, kD;
     private ElapsedTime timer = new ElapsedTime();
-    private double targetDistance;
+    private double targetVelocity;
     private double lastError = 0;
     private double accumulatedError = 0;
     private double lastTime = -1;
     private double lastSlope = 0;
 
-    public MovePIDController(double target, double p, double i, double d) {
+    public CarouselPIDController(double target, double p, double i, double d) {
         kP = p;
         kI = i;
         kD = d;
-        targetDistance = target;
+        targetVelocity = target;
     }
 
-    public double update(double currentDistance) {
+    public double update(double currentVelocity) {
         // P
-        double error = targetDistance - currentDistance;
+        double error = targetVelocity - currentVelocity;
 
         // I
         accumulatedError *= Math.signum(error);
@@ -39,7 +38,7 @@ public class MovePIDController{
         lastError = error;
         lastTime = timer.milliseconds();
 
-        double motorPower = 0.9 * Math.tanh(kP * error + kI * accumulatedError + kD * slope);
+        double motorPower = Math.tanh(kP * error + kI * accumulatedError + kD * slope);
         return motorPower;
     }
 }

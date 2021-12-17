@@ -38,6 +38,7 @@ import org.firstinspires.ftc.teamcode.common.Button;
 import org.firstinspires.ftc.teamcode.common.Constants;
 
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
+import org.firstinspires.ftc.teamcode.common.pid.CarouselPIDController;
 
 /**
  * This file provides basic Telop driving for a Pushbot robot.
@@ -275,11 +276,14 @@ public class BaseDrive extends OpMode{
     }
 
     void Carousel(){
+        CarouselPIDController carouselPIDControllerPositive = new CarouselPIDController(1700,0.01,0,0);
+        CarouselPIDController carouselPIDControllerNegative = new CarouselPIDController(1700,0.01,0,0);
+
         if (carouselButton.is(Button.State.HELD)) {
-            robot.duckWheel.setVelocity(1700);
+            robot.duckWheel.setVelocity(carouselPIDControllerPositive.update(robot.duckWheel.getVelocity()));
         }
         else if (carouselButtonInverted.is(Button.State.HELD)) {
-            robot.duckWheel.setVelocity(-1700);
+            robot.duckWheel.setVelocity(carouselPIDControllerNegative.update(robot.duckWheel.getVelocity()));
         }
         robot.duckWheel.setPower(0);
     }

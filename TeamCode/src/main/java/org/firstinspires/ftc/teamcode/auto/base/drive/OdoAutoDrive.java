@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode.auto.base.drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -73,7 +74,7 @@ import org.firstinspires.ftc.teamcode.common.pid.TurnPIDController;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-//@Disabled
+@Disabled
 @Autonomous(name="Odometry Auto Drive", group="Robot Base Drive")
 
 //Start of Class

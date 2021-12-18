@@ -1,13 +1,10 @@
 package org.firstinspires.ftc.teamcode.common;
 
+import org.checkerframework.checker.units.qual.C;
+
 public class Constants {
 
     //Elevator Motor Positions
-
-    // distance moved
-    // --------------   * 537 = clicks per distance moved
-    //      80 mm
-
     public int elevatorPositionDown = 0; //Rest
     public int elevatorPositionTop = 3410; //Extended
     public int elevatorPositionMid = 2700;

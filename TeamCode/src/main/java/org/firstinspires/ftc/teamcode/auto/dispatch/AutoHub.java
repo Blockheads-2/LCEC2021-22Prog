@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -30,9 +31,10 @@ import java.util.List;
 public class AutoHub {
 
     private final LinearOpMode linearOpMode;
+    private OpenCvCamera phoneCam;
+
 
     /* Declare OpMode members. */
-    OpenCvCamera phoneCam;
     HardwareDrive         robot   = new HardwareDrive();   // Use a Pushbot's hardware
     HardwareMap hardwareMap;
     private ElapsedTime runtime = new ElapsedTime();
@@ -306,44 +308,19 @@ public class AutoHub {
         sleep((long) spinTime);
         robot.duckWheel.setVelocity(0);
     }
-
     public void spinCarousel(double velocity){
         robot.duckWheel.setVelocity(velocity);
     }
-
     public void spinIntake(double power){
         robot.spin.setPower(power);
     }
-
     public void spinIntake(double power, double spinTime){
         robot.spin.setPower(power);
         sleep((long) spinTime);
         robot.spin.setPower(0);
     }
-
-    public void liftElevatorUp(){
-        robot.lifter.setTargetPosition(constants.elevatorPositionTop);
-        robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        robot.lifter.setPower(0.8);
-    }
-
-    public void liftElevatorMid(){
-        robot.lifter.setTargetPosition(constants.elevatorPositionMid);
-        robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        robot.lifter.setPower(0.8);
-    }
-
-    public void liftElevatorBottom(){
-        robot.lifter.setTargetPosition(constants.elevatorPositionBottom);
-        robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        robot.lifter.setPower(0.8);
-    }
-
-    public void liftElevatorDown(){
-        robot.lifter.setTargetPosition(constants.elevatorPositionDown);
+    public void moveElevator(int elevatorPosition){
+        robot.lifter.setTargetPosition(elevatorPosition);
         robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         robot.lifter.setPower(0.8);

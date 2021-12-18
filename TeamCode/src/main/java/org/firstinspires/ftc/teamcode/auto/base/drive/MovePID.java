@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.common.pid.TurnPIDController;
 
 
 @Autonomous(name="Move PID", group="Test")
-//@Disabled
+@Disabled
 public class MovePID extends LinearOpMode{
 
     /* Declare OpMode members. */

@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.common.pid.TurnPIDController;
 
 
 @Autonomous(name="Move PID", group="Test")
-@Disabled
+//@Disabled
 public class MovePID extends LinearOpMode{
 
     /* Declare OpMode members. */
@@ -48,11 +48,7 @@ public class MovePID extends LinearOpMode{
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        driveStraight(10);
-
-        turn(90);
-
-        driveStraight(20);
+        driveStraight(0.5,24);
 
     }
 
@@ -113,40 +109,39 @@ public class MovePID extends LinearOpMode{
         ).firstAngle;
     }
 
-    void driveStraight(double distance) {
+    void driveStraight(double power, double distance) {
         double targetAngle = getAbsoluteAngle();
         double distanceFoward = distance * constants.clicksPerInch;
 
-        TurnPIDController pidTurn = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
-        MovePIDController pidMove = new MovePIDController(distanceFoward, 0.01, 0, 0.003);
+        TurnPIDController pidTurn = new TurnPIDController(targetAngle, 0.001, 0, 0.00003);
 
+        double lfDistance = robot.lf.getCurrentPosition() + distanceFoward;
+        double rfDistance = robot.rf.getCurrentPosition() + distanceFoward;
+        double lbDistance = robot.lb.getCurrentPosition() + distanceFoward;
+        double rbDistance = robot.rb.getCurrentPosition() + distanceFoward;
 
         runtime.reset();
 
         while (runtime.seconds() < 3) {
 
-            robot.lf.setTargetPosition((int)distanceFoward);
-            robot.rf.setTargetPosition((int)distanceFoward);
-            robot.lb.setTargetPosition((int)distanceFoward);
-            robot.rb.setTargetPosition((int)distanceFoward);
+            robot.lf.setTargetPosition((int) lfDistance);
+            robot.rf.setTargetPosition((int) rfDistance);
+            robot.lb.setTargetPosition((int) lbDistance);
+            robot.rb.setTargetPosition((int) rbDistance);
 
             robot.lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
             double angleCorrection = pidTurn.update(getAbsoluteAngle());
-            double lfCorrection = pidMove.update(robot.lf.getCurrentPosition());
-            double rfCorrection = pidMove.update(robot.rf.getCurrentPosition());
-            double lbCorrection = pidMove.update(robot.lb.getCurrentPosition());
-            double rbCorrection = pidMove.update(robot.rb.getCurrentPosition());
 
 
-            robot.lf.setPower(lfCorrection - angleCorrection);
-            robot.rf.setPower(rfCorrection + angleCorrection);
-            robot.lb.setPower(lbCorrection - angleCorrection);
-            robot.rb.setPower(rbCorrection + angleCorrection);
+            robot.lf.setPower(power - (power * angleCorrection));
+            robot.rf.setPower(power + (power * angleCorrection));
+            robot.lb.setPower(power - (power * angleCorrection));
+            robot.rb.setPower(power + (power * angleCorrection));
         }
         robot.lf.setPower(0);
         robot.rf.setPower(0);

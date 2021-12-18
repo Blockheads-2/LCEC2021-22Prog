@@ -16,9 +16,9 @@ public class TestRoute extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         dispatch = new AutoHub(this);
-        robot.init(hardwareMap);
 
         waitForStart();
-        dispatch.variableHeading(0.5,20,20,2);
+        dispatch.constantHeading(0.9,-10,5,2,0.001,0,0.0003);
+
     }
 }

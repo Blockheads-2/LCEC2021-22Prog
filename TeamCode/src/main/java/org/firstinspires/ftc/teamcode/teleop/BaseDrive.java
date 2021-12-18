@@ -109,7 +109,7 @@ public class BaseDrive extends OpMode{
         DriveTrainSpeed();
         Capping();
         DriveMicroAdjust(0.4);
-        OscillateServo();
+      //  OscillateServo();
     }
 
     void UpdatePlayer2(){
@@ -139,7 +139,9 @@ public class BaseDrive extends OpMode{
         lifterBottomButton.update(gamepad2.x);
     }
 
-    void OscillateServo(){
+    /*
+
+        void OscillateServo(){
         if (runtime.seconds() > 1){
             if (countSmile % 2 == 0)
                 robot.cap.setPosition(constants.capPickUp);
@@ -149,6 +151,8 @@ public class BaseDrive extends OpMode{
             countSmile += 1;
         }
     }
+
+     */
 
     void DriveTrainBase(double drivePower){
         double directionX = Math.pow(gamepad1.left_stick_x, 1); //Strafe

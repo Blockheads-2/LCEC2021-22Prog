@@ -128,8 +128,9 @@ public class OdoAutoDrive extends LinearOpMode {
         //Test Paths Start
 
         //...
-        constantHeading(0.5,0,20,3);
-        turnAbsPID(-90,3);
+        constantHeading(0.5,0,20,3, 0.001,0,0.0003);
+        turnPID(-90,3);
+        constantHeading(0.5,20,20,3,0.001,0,0.0003);
 
         //End of Path
         telemetry.update();
@@ -156,6 +157,10 @@ public class OdoAutoDrive extends LinearOpMode {
             leftDistance = mathSpline.returnLDistance() * COUNTS_PER_INCH;
             rightDistance = mathSpline.returnRDistance() * COUNTS_PER_INCH;
 
+            double targetAngle = getAbsoluteAngle();
+            TurnPIDController pidTurn = new TurnPIDController(targetAngle, 0.001, 0, 0.00003);
+
+
             if ((yPose >= 0 && xPose < 0) || (yPose < 0 && xPose >= 0)){
                 FleftEncoderTarget = robot.lf.getCurrentPosition() - (int) leftDistance;
                 FrightEncoderTarget = robot.rf.getCurrentPosition() - (int) rightDistance;
@@ -180,11 +185,6 @@ public class OdoAutoDrive extends LinearOpMode {
             robot.lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            robot.lf.setVelocity(speed * mathSpline.returnLPower());
-            robot.rf.setVelocity(speed * mathSpline.returnRPower());
-            robot.lb.setVelocity(speed * mathSpline.returnLPower());
-            robot.rb.setVelocity(speed * mathSpline.returnRPower());
-
             // reset the timeout time and start motion.
             runtime.reset();
 
@@ -196,14 +196,6 @@ public class OdoAutoDrive extends LinearOpMode {
                 telemetry.addData("Left Distance", mathSpline.returnLDistance());
                 telemetry.update();
             }
-
-            // Stop all motion;
-            robot.lf.setPower(-0.25);
-            robot.rf.setPower(-0.25);
-            robot.lb.setPower(-0.25);
-            robot.rb.setPower(-0.25);
-
-            sleep(100);
 
             // Stop all motion;
             robot.lf.setPower(0);
@@ -218,8 +210,12 @@ public class OdoAutoDrive extends LinearOpMode {
             robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
-    public void constantHeading(double speed, double xPose, double yPose, double timeoutS) {
+    public void constantHeading(double speed, double xPose, double yPose, double timeoutS, double kP, double kI, double kD) {
         mathConstHead.setFinalPose(xPose,yPose);
+
+        double targetAngle = getAbsoluteAngle();
+        TurnPIDController pidTurn = new TurnPIDController(targetAngle, kP, kI, kD);
+
 
         double distance = mathConstHead.returnDistance();
         double radianAngle = mathConstHead.returnAngle();
@@ -231,16 +227,16 @@ public class OdoAutoDrive extends LinearOpMode {
 
         double ratioAddPose = Math.cos(radianAngle) + Math.sin(radianAngle);
         double ratioSubPose = Math.cos(radianAngle) - Math.sin(radianAngle);
-        int addPose = (int) (ratioAddPose * COUNTS_PER_INCH * distance);
-        int subtractPose = (int) (ratioSubPose * COUNTS_PER_INCH * distance);
+        double addPose = (ratioAddPose * COUNTS_PER_INCH * distance);
+        double subtractPose = (ratioSubPose * COUNTS_PER_INCH * distance);
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
             // Determine new target position, and pass to motor controller
-            newLeftFrontTarget = robot.lf.getCurrentPosition() + addPose;
-            newRightFrontTarget = robot.rf.getCurrentPosition() + subtractPose;
-            newLeftBackTarget = robot.lb.getCurrentPosition() + subtractPose;
-            newRightBackTarget = robot.rb.getCurrentPosition() + addPose;
+            newLeftFrontTarget = (int) (robot.lf.getCurrentPosition() + addPose);
+            newRightFrontTarget = (int) (robot.rf.getCurrentPosition() + subtractPose);
+            newLeftBackTarget = (int) (robot.lb.getCurrentPosition() + subtractPose);
+            newRightBackTarget = (int) (robot.rb.getCurrentPosition() + addPose);
 
             robot.lf.setTargetPosition(newLeftFrontTarget);
             robot.rf.setTargetPosition(newRightFrontTarget);
@@ -256,13 +252,17 @@ public class OdoAutoDrive extends LinearOpMode {
             // reset the timeout time and start motion.
             runtime.reset();
 
-
-            robot.lf.setVelocity(speed * constants.maxVelocityDT * ratioAddPose);
-            robot.rf.setVelocity(speed * constants.maxVelocityDT * ratioSubPose);
-            robot.lb.setVelocity(speed * constants.maxVelocityDT * ratioSubPose * 0.9);
-            robot.rb.setVelocity(speed * constants.maxVelocityDT * ratioAddPose * 0.9);
-
             while (opModeIsActive() && (runtime.seconds() < timeoutS)) {
+
+
+                double angleCorrection = pidTurn.update(getAbsoluteAngle());
+
+                robot.lf.setVelocity((speed * constants.maxVelocityDT * ratioAddPose) - (speed * angleCorrection * Math.signum(ratioAddPose) * constants.maxVelocityDT));
+                robot.rf.setVelocity((speed * constants.maxVelocityDT * ratioSubPose) + (speed * angleCorrection * Math.signum(ratioSubPose) * constants.maxVelocityDT));
+                robot.lb.setVelocity((speed * constants.maxVelocityDT * ratioSubPose) - (speed * angleCorrection * Math.signum(ratioSubPose) * constants.maxVelocityDT));
+                robot.rb.setVelocity((speed * constants.maxVelocityDT * ratioAddPose) + (speed * angleCorrection * Math.signum(ratioAddPose) * constants.maxVelocityDT));
+
+
                 // Display it for the driver.
                 telemetry.addData("Left Velocity: ", robot.lb.getVelocity());
                 telemetry.addData("Right Velocity: ", robot.rb.getVelocity());
@@ -348,7 +348,7 @@ public class OdoAutoDrive extends LinearOpMode {
         telemetry.setMsTransmissionInterval(50);
         // Checking lastSlope to make sure that it's not oscillating when it quits
         runtime.reset();
-        while ((runtime.seconds() < timeoutS) && (Math.abs(targetAngle - getAbsoluteAngle()) > 0.5 || pid.getLastSlope() > 0.75)) {
+        while ((runtime.seconds() < timeoutS) && (Math.abs(targetAngle - getAbsoluteAngle()) > 0.2 || pid.getLastSlope() > 0.75)) {
             double motorPower = pid.update(getAbsoluteAngle());
             robot.lf.setPower(-motorPower);
             robot.rf.setPower(motorPower);

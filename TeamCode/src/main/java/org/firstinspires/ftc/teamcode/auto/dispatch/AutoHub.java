@@ -2,14 +2,17 @@ package org.firstinspires.ftc.teamcode.auto.dispatch;
 
 import static android.os.SystemClock.sleep;
 
+import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.auto.cv.BlueDetection;
 import org.firstinspires.ftc.teamcode.common.Constants;
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
 
@@ -17,6 +20,11 @@ import org.firstinspires.ftc.teamcode.common.pid.TurnPIDController;
 import org.firstinspires.ftc.teamcode.common.positioning.MathConstHead;
 import org.firstinspires.ftc.teamcode.common.positioning.MathSpline;
 import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvInternalCamera;
+
+import java.util.List;
 
 
 public class AutoHub {
@@ -26,6 +34,7 @@ public class AutoHub {
     /* Declare OpMode members. */
     OpenCvCamera phoneCam;
     HardwareDrive         robot   = new HardwareDrive();   // Use a Pushbot's hardware
+    HardwareMap hardwareMap;
     private ElapsedTime runtime = new ElapsedTime();
     Constants constants = new Constants();
     MathSpline mathSpline = new MathSpline();
@@ -45,6 +54,25 @@ public class AutoHub {
 
     public AutoHub(LinearOpMode plinear){
         linearOpMode = plinear;
+        hardwareMap = linearOpMode.hardwareMap;
+
+        robot.init(hardwareMap);
+
+        // Send telemetry message to signify robot waiting;
+        linearOpMode.telemetry.addData("Status", "Resetting Encoders and Camera");
+        linearOpMode.telemetry.update();
+
+        robot.lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.rb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.lifter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void variableHeading(double speed, double xPose, double yPose, double timeoutS) {
@@ -102,14 +130,6 @@ public class AutoHub {
         }
 
         // Stop all motion;
-        robot.lf.setPower(-0.25);
-        robot.rf.setPower(-0.25);
-        robot.lb.setPower(-0.25);
-        robot.rb.setPower(-0.25);
-
-        sleep(100);
-
-        // Stop all motion;
         robot.lf.setPower(0);
         robot.rf.setPower(0);
         robot.lb.setPower(0);
@@ -121,8 +141,12 @@ public class AutoHub {
         robot.lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-    public void constantHeading(double speed, double xPose, double yPose, double timeoutS) {
+    public void constantHeading(double speed, double xPose, double yPose, double timeoutS, double kP, double kI, double kD) {
         mathConstHead.setFinalPose(xPose,yPose);
+
+        double targetAngle = getAbsoluteAngle();
+        TurnPIDController pidTurn = new TurnPIDController(targetAngle, kP, kI, kD);
+
 
         double distance = mathConstHead.returnDistance();
         double radianAngle = mathConstHead.returnAngle();
@@ -134,16 +158,16 @@ public class AutoHub {
 
         double ratioAddPose = Math.cos(radianAngle) + Math.sin(radianAngle);
         double ratioSubPose = Math.cos(radianAngle) - Math.sin(radianAngle);
-        int addPose = (int) (ratioAddPose * COUNTS_PER_INCH * distance);
-        int subtractPose = (int) (ratioSubPose * COUNTS_PER_INCH * distance);
+        double addPose = (ratioAddPose * COUNTS_PER_INCH * distance);
+        double subtractPose = (ratioSubPose * COUNTS_PER_INCH * distance);
 
         // Ensure that the opmode is still active
         if (linearOpMode.opModeIsActive()) {
             // Determine new target position, and pass to motor controller
-            newLeftFrontTarget = robot.lf.getCurrentPosition() + addPose;
-            newRightFrontTarget = robot.rf.getCurrentPosition() + subtractPose;
-            newLeftBackTarget = robot.lb.getCurrentPosition() + subtractPose;
-            newRightBackTarget = robot.rb.getCurrentPosition() + addPose;
+            newLeftFrontTarget = (int) (robot.lf.getCurrentPosition() + addPose);
+            newRightFrontTarget = (int) (robot.rf.getCurrentPosition() + subtractPose);
+            newLeftBackTarget = (int) (robot.lb.getCurrentPosition() + subtractPose);
+            newRightBackTarget = (int) (robot.rb.getCurrentPosition() + addPose);
 
             robot.lf.setTargetPosition(newLeftFrontTarget);
             robot.rf.setTargetPosition(newRightFrontTarget);
@@ -159,13 +183,17 @@ public class AutoHub {
             // reset the timeout time and start motion.
             runtime.reset();
 
-
-            robot.lf.setVelocity(speed * constants.maxVelocityDT * ratioAddPose);
-            robot.rf.setVelocity(speed * constants.maxVelocityDT * ratioSubPose);
-            robot.lb.setVelocity(speed * constants.maxVelocityDT * ratioSubPose * 0.9);
-            robot.rb.setVelocity(speed * constants.maxVelocityDT * ratioAddPose * 0.9);
-
             while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS)) {
+
+
+                double angleCorrection = pidTurn.update(getAbsoluteAngle());
+
+                robot.lf.setVelocity((speed * constants.maxVelocityDT * ratioAddPose) - (speed * angleCorrection * Math.signum(ratioAddPose) * constants.maxVelocityDT));
+                robot.rf.setVelocity((speed * constants.maxVelocityDT * ratioSubPose) + (speed * angleCorrection * Math.signum(ratioSubPose) * constants.maxVelocityDT));
+                robot.lb.setVelocity((speed * constants.maxVelocityDT * ratioSubPose) - (speed * angleCorrection * Math.signum(ratioSubPose) * constants.maxVelocityDT));
+                robot.rb.setVelocity((speed * constants.maxVelocityDT * ratioAddPose) + (speed * angleCorrection * Math.signum(ratioAddPose) * constants.maxVelocityDT));
+
+
                 // Display it for the driver.
                 linearOpMode.telemetry.addData("Left Velocity: ", robot.lb.getVelocity());
                 linearOpMode.telemetry.addData("Right Velocity: ", robot.rb.getVelocity());
@@ -185,6 +213,7 @@ public class AutoHub {
             robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
+
     //Turn
     public void resetAngle(){
         lastAngles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);

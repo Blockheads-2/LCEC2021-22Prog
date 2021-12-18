@@ -75,6 +75,9 @@ public class AutoHub {
         robot.lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
+    //====================================================================================
+    // ====================================================================================
+
     public void variableHeading(double speed, double xPose, double yPose, double timeoutS) {
         int FleftEncoderTarget;
         int FrightEncoderTarget;
@@ -296,6 +299,54 @@ public class AutoHub {
         robot.rf.setPower(0);
         robot.lb.setPower(0);
         robot.rb.setPower(0);
+    }
+
+    public void spinCarousel(double velocity, double spinTime){
+        robot.duckWheel.setVelocity(velocity);
+        sleep((long) spinTime);
+        robot.duckWheel.setVelocity(0);
+    }
+
+    public void spinCarousel(double velocity){
+        robot.duckWheel.setVelocity(velocity);
+    }
+
+    public void spinIntake(double power){
+        robot.spin.setPower(power);
+    }
+
+    public void spinIntake(double power, double spinTime){
+        robot.spin.setPower(power);
+        sleep((long) spinTime);
+        robot.spin.setPower(0);
+    }
+
+    public void liftElevatorUp(){
+        robot.lifter.setTargetPosition(constants.elevatorPositionTop);
+        robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.lifter.setPower(0.8);
+    }
+
+    public void liftElevatorMid(){
+        robot.lifter.setTargetPosition(constants.elevatorPositionMid);
+        robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.lifter.setPower(0.8);
+    }
+
+    public void liftElevatorBottom(){
+        robot.lifter.setTargetPosition(constants.elevatorPositionBottom);
+        robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.lifter.setPower(0.8);
+    }
+
+    public void liftElevatorDown(){
+        robot.lifter.setTargetPosition(constants.elevatorPositionDown);
+        robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.lifter.setPower(0.8);
     }
 
 }

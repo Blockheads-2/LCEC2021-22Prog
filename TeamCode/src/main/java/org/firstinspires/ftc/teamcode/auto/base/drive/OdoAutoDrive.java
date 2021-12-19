@@ -74,7 +74,7 @@ import org.firstinspires.ftc.teamcode.common.pid.TurnPIDController;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Disabled
+//@Disabled
 @Autonomous(name="Odometry Auto Drive", group="Robot Base Drive")
 
 //Start of Class
@@ -127,11 +127,9 @@ public class OdoAutoDrive extends LinearOpMode {
         waitForStart();
 
         //Test Paths Start
+        variableHeading(0.5,20,20,3);
 
         //...
-        constantHeading(0.5,0,20,3, 0.001,0,0.0003);
-        turnPID(-90,3);
-        constantHeading(0.5,20,20,3,0.001,0,0.0003);
 
         //End of Path
         telemetry.update();
@@ -147,6 +145,9 @@ public class OdoAutoDrive extends LinearOpMode {
 
         double leftDistance;
         double rightDistance;
+        double deltaTheta;
+        double deltaTime;
+        double zeta;
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
@@ -157,10 +158,12 @@ public class OdoAutoDrive extends LinearOpMode {
 
             leftDistance = mathSpline.returnLDistance() * COUNTS_PER_INCH;
             rightDistance = mathSpline.returnRDistance() * COUNTS_PER_INCH;
+            deltaTheta = mathSpline.returnTheta();
+            deltaTime = leftDistance / (mathSpline.returnLPower() * constants.clicksPerInch);
+            zeta = deltaTheta/deltaTime;
 
-            double targetAngle = getAbsoluteAngle();
-            TurnPIDController pidTurn = new TurnPIDController(targetAngle, 0.001, 0, 0.00003);
-
+            double startingAngle = getAbsoluteAngle();
+            double targetAngle;
 
             if ((yPose >= 0 && xPose < 0) || (yPose < 0 && xPose >= 0)){
                 FleftEncoderTarget = robot.lf.getCurrentPosition() - (int) leftDistance;
@@ -192,17 +195,28 @@ public class OdoAutoDrive extends LinearOpMode {
             while (opModeIsActive() && (runtime.seconds() < timeoutS) && robot.lf.isBusy() && robot.rf.isBusy()
                     && robot.lb.isBusy() && robot.rb.isBusy()) {
 
+                targetAngle = startingAngle + zeta * (runtime.milliseconds() + 1);
+
+                TurnPIDController pidTurn = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
+
+                double angleCorrection = pidTurn.update(getAbsoluteAngle());
+
+                robot.lf.setVelocity(speed * (mathSpline.returnLPower() + angleCorrection));
+                robot.rf.setVelocity(speed * (mathSpline.returnRPower() - angleCorrection));
+                robot.lb.setVelocity(speed * (mathSpline.returnLPower() + angleCorrection));
+                robot.rb.setVelocity(speed * (mathSpline.returnRPower() - angleCorrection));
+
                 // Display it for the driver.
-                telemetry.addData("Right Distance", mathSpline.returnRDistance());
-                telemetry.addData("Left Distance", mathSpline.returnLDistance());
+                telemetry.addData("Right Distance", deltaTheta);
+                telemetry.addData("Left Distance", deltaTime);
                 telemetry.update();
             }
 
             // Stop all motion;
-            robot.lf.setPower(0);
-            robot.rf.setPower(0);
-            robot.lb.setPower(0);
-            robot.rb.setPower(0);
+            robot.lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
             // Turn off RUN_TO_POSITION
             robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

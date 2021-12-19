@@ -4,26 +4,21 @@ import static android.os.SystemClock.sleep;
 
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.auto.cv.BlueDetection;
 import org.firstinspires.ftc.teamcode.common.Constants;
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
 
 import org.firstinspires.ftc.teamcode.common.pid.TurnPIDController;
 import org.firstinspires.ftc.teamcode.common.positioning.MathConstHead;
 import org.firstinspires.ftc.teamcode.common.positioning.MathSpline;
-import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvInternalCamera;
 
 import java.util.List;
 
@@ -31,11 +26,10 @@ import java.util.List;
 public class AutoHub {
 
     private final LinearOpMode linearOpMode;
-    private OpenCvCamera phoneCam;
 
 
     /* Declare OpMode members. */
-    HardwareDrive         robot   = new HardwareDrive();   // Use a Pushbot's hardware
+    HardwareDrive robot;   // Use a Pushbot's hardware
     HardwareMap hardwareMap;
     private ElapsedTime runtime = new ElapsedTime();
     Constants constants = new Constants();
@@ -55,8 +49,11 @@ public class AutoHub {
 
 
     public AutoHub(LinearOpMode plinear){
+
         linearOpMode = plinear;
         hardwareMap = linearOpMode.hardwareMap;
+
+        robot = new HardwareDrive();
 
         robot.init(hardwareMap);
 
@@ -75,11 +72,15 @@ public class AutoHub {
         robot.lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        linearOpMode.telemetry.addData("Status", "Ready to Run");
+        linearOpMode.telemetry.update();
     }
 
     //====================================================================================
     // ====================================================================================
 
+    //Core Movement
     public void variableHeading(double speed, double xPose, double yPose, double timeoutS) {
         int FleftEncoderTarget;
         int FrightEncoderTarget;
@@ -88,63 +89,80 @@ public class AutoHub {
 
         double leftDistance;
         double rightDistance;
+        double deltaTheta;
+        double deltaTime;
+        double zeta;
 
         // Ensure that the opmode is still active
-        speed = speed * MAX_VELOCITY_DT;
+        if (linearOpMode.opModeIsActive()) {
 
-        mathSpline.setFinalPose(xPose,yPose);
+            speed = speed * MAX_VELOCITY_DT;
 
-        leftDistance = mathSpline.returnLDistance() * COUNTS_PER_INCH;
-        rightDistance = mathSpline.returnRDistance() * COUNTS_PER_INCH;
+            mathSpline.setFinalPose(xPose,yPose);
 
-        if ((yPose >= 0 && xPose < 0) || (yPose < 0 && xPose >= 0)){
-            FleftEncoderTarget = robot.lf.getCurrentPosition() - (int) leftDistance;
-            FrightEncoderTarget = robot.rf.getCurrentPosition() - (int) rightDistance;
-            BleftEncoderTarget = robot.lb.getCurrentPosition() - (int) leftDistance;
-            BrightEncoderTarget = robot.rb.getCurrentPosition() - (int) rightDistance;
+            leftDistance = mathSpline.returnLDistance() * COUNTS_PER_INCH;
+            rightDistance = mathSpline.returnRDistance() * COUNTS_PER_INCH;
+            deltaTheta = mathSpline.returnTheta();
+            deltaTime = leftDistance / (mathSpline.returnLPower() * constants.clicksPerInch);
+            zeta = deltaTheta/deltaTime;
+
+            double startingAngle = getAbsoluteAngle();
+            double targetAngle;
+
+            if ((yPose >= 0 && xPose < 0) || (yPose < 0 && xPose >= 0)){
+                FleftEncoderTarget = robot.lf.getCurrentPosition() - (int) leftDistance;
+                FrightEncoderTarget = robot.rf.getCurrentPosition() - (int) rightDistance;
+                BleftEncoderTarget = robot.lb.getCurrentPosition() - (int) leftDistance;
+                BrightEncoderTarget = robot.rb.getCurrentPosition() - (int) rightDistance;
+            }
+            else {
+                FleftEncoderTarget = robot.lf.getCurrentPosition() + (int) leftDistance;
+                FrightEncoderTarget = robot.rf.getCurrentPosition() + (int) rightDistance;
+                BleftEncoderTarget = robot.lb.getCurrentPosition() + (int) leftDistance;
+                BrightEncoderTarget = robot.rb.getCurrentPosition() + (int) rightDistance;
+            }
+
+            robot.lf.setTargetPosition(FleftEncoderTarget);
+            robot.lb.setTargetPosition(BleftEncoderTarget);
+            robot.rf.setTargetPosition(FrightEncoderTarget);
+            robot.rb.setTargetPosition(BrightEncoderTarget);
+
+            // Turn On RUN_TO_POSITION
+            robot.lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+
+            while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS) && robot.lf.isBusy() && robot.rf.isBusy()
+                    && robot.lb.isBusy() && robot.rb.isBusy()) {
+
+                targetAngle = startingAngle + zeta * (runtime.milliseconds() + 1);
+
+                TurnPIDController pidTurn = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
+
+                double angleCorrection = pidTurn.update(getAbsoluteAngle());
+
+                robot.lf.setVelocity(speed * (mathSpline.returnLPower() + angleCorrection));
+                robot.rf.setVelocity(speed * (mathSpline.returnRPower() - angleCorrection));
+                robot.lb.setVelocity(speed * (mathSpline.returnLPower() + angleCorrection));
+                robot.rb.setVelocity(speed * (mathSpline.returnRPower() - angleCorrection));
+            }
+
+            // Stop all motion;
+            robot.lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+            // Turn off RUN_TO_POSITION
+            robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
-        else {
-            FleftEncoderTarget = robot.lf.getCurrentPosition() + (int) leftDistance;
-            FrightEncoderTarget = robot.rf.getCurrentPosition() + (int) rightDistance;
-            BleftEncoderTarget = robot.lb.getCurrentPosition() + (int) leftDistance;
-            BrightEncoderTarget = robot.rb.getCurrentPosition() + (int) rightDistance;
-        }
-
-
-        robot.lf.setTargetPosition(FleftEncoderTarget);
-        robot.lb.setTargetPosition(BleftEncoderTarget);
-        robot.rf.setTargetPosition(FrightEncoderTarget);
-        robot.rb.setTargetPosition(BrightEncoderTarget);
-
-        // Turn On RUN_TO_POSITION
-        robot.lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        robot.lf.setVelocity(speed * mathSpline.returnLPower());
-        robot.rf.setVelocity(speed * mathSpline.returnRPower());
-        robot.lb.setVelocity(speed * mathSpline.returnLPower());
-        robot.rb.setVelocity(speed * mathSpline.returnRPower());
-
-        // reset the timeout time and start motion.
-        runtime.reset();
-
-        while ((runtime.seconds() < timeoutS) && robot.lf.isBusy() && robot.rf.isBusy()
-                && robot.lb.isBusy() && robot.rb.isBusy()) {
-        }
-
-        // Stop all motion;
-        robot.lf.setPower(0);
-        robot.rf.setPower(0);
-        robot.lb.setPower(0);
-        robot.rb.setPower(0);
-
-        // Turn off RUN_TO_POSITION
-        robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
     public void constantHeading(double speed, double xPose, double yPose, double timeoutS, double kP, double kI, double kD) {
         mathConstHead.setFinalPose(xPose,yPose);
@@ -188,15 +206,16 @@ public class AutoHub {
             // reset the timeout time and start motion.
             runtime.reset();
 
-            while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS)) {
+            while ((runtime.seconds() < timeoutS) && (robot.lf.isBusy() || robot.rf.isBusy()
+                    || robot.lb.isBusy() || robot.rb.isBusy())) {
 
 
                 double angleCorrection = pidTurn.update(getAbsoluteAngle());
 
-                robot.lf.setVelocity((speed * constants.maxVelocityDT * ratioAddPose) - (speed * angleCorrection * Math.signum(ratioAddPose) * constants.maxVelocityDT));
-                robot.rf.setVelocity((speed * constants.maxVelocityDT * ratioSubPose) + (speed * angleCorrection * Math.signum(ratioSubPose) * constants.maxVelocityDT));
-                robot.lb.setVelocity((speed * constants.maxVelocityDT * ratioSubPose) - (speed * angleCorrection * Math.signum(ratioSubPose) * constants.maxVelocityDT));
-                robot.rb.setVelocity((speed * constants.maxVelocityDT * ratioAddPose) + (speed * angleCorrection * Math.signum(ratioAddPose) * constants.maxVelocityDT));
+                robot.lf.setVelocity((speed * constants.maxVelocityDT * ratioAddPose) - (speed * angleCorrection * constants.maxVelocityDT));
+                robot.rf.setVelocity((speed * constants.maxVelocityDT * ratioSubPose) + (speed * angleCorrection * constants.maxVelocityDT));
+                robot.lb.setVelocity((speed * constants.maxVelocityDT * ratioSubPose) - (speed * angleCorrection * constants.maxVelocityDT));
+                robot.rb.setVelocity((speed * constants.maxVelocityDT * ratioAddPose) + (speed * angleCorrection * constants.maxVelocityDT));
 
 
                 // Display it for the driver.
@@ -206,10 +225,10 @@ public class AutoHub {
             }
 
             // Stop all motion;
-            robot.lf.setPower(0);
-            robot.rf.setPower(0);
-            robot.lb.setPower(0);
-            robot.rb.setPower(0);
+            robot.lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
             // Turn off RUN_TO_POSITION
             robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -274,12 +293,12 @@ public class AutoHub {
         ).firstAngle;
     }
     public void turnPID(double degrees,double timeOut) {
-        turnToPID(-degrees + getAbsoluteAngle(), timeOut);
+        turnMath(-degrees + getAbsoluteAngle(), timeOut);
     }
     public void turnAbsPID(double absDegrees, double timeOut){
-        turnToPID(-absDegrees, timeOut);
+        turnMath(-absDegrees, timeOut);
     }
-    void turnToPID(double targetAngle, double timeoutS) {
+    void turnMath(double targetAngle, double timeoutS) {
         TurnPIDController pid = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
         linearOpMode.telemetry.setMsTransmissionInterval(50);
         // Checking lastSlope to make sure that it's not oscillating when it quits
@@ -297,19 +316,20 @@ public class AutoHub {
             linearOpMode.telemetry.addData("Power", motorPower);
             linearOpMode.telemetry.update();
         }
-        robot.lf.setPower(0);
-        robot.rf.setPower(0);
-        robot.lb.setPower(0);
-        robot.rb.setPower(0);
+        robot.lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        robot.rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        robot.lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        robot.rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
+    //Peripheral Movements
+    public void spinCarousel(double velocity){
+        robot.duckWheel.setVelocity(velocity);
+    }
     public void spinCarousel(double velocity, double spinTime){
         robot.duckWheel.setVelocity(velocity);
         sleep((long) spinTime);
         robot.duckWheel.setVelocity(0);
-    }
-    public void spinCarousel(double velocity){
-        robot.duckWheel.setVelocity(velocity);
     }
     public void spinIntake(double power){
         robot.spin.setPower(power);
@@ -324,6 +344,11 @@ public class AutoHub {
         robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         robot.lifter.setPower(0.8);
+    }
+    public void breakPoint(){
+        while (!linearOpMode.gamepad1.a) {
+            sleep(1);
+        }
     }
 
 }

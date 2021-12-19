@@ -48,10 +48,11 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Autonomous(name="Blue Carousel Auto", group="Routes")
 
-//@Disabled
+@Disabled
 public class BlueCarouselAuto extends LinearOpMode {
 
     /* Declare OpMode members. */

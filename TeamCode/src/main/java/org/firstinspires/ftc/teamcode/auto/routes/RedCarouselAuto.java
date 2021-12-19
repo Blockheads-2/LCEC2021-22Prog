@@ -30,7 +30,9 @@
 package org.firstinspires.ftc.teamcode.auto.routes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -51,7 +53,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 @Autonomous(name="Red Carousel Auto", group="Routes")
 
-//@Disabled
+@Disabled
 public class RedCarouselAuto extends LinearOpMode {
 
     /* Declare OpMode members. */

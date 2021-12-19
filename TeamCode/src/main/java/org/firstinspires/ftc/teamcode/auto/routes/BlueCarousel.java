@@ -54,83 +54,93 @@ public class BlueCarousel extends LinearOpMode{
         switch (detector.getLocation()) {
             case LEFT: {
                 //power on lift
-                dispatch.moveElevator(constants.elevatorPositionBottom - 400);
+                dispatch.moveElevator(constants.elevatorPositionBottom - 150);
 
                 // move to drop
                 dispatch.spinIntake(0.2);
-                dispatch.constantHeading(0.5,25,30,2.5,0.001,0,0.0003);
-                dispatch.variableHeading(0.6,-10,10,1.5);
-                dispatch.turnPID(-10,1);
-                dispatch.constantHeading(0.3,0,3,1,0.001,0,0.0003);
+                dispatch.constantHeading(0.6,20,20,2,0.001,0,0.0003);
+                dispatch.turnAbsPID(0,1);
 
-                //out-take
-                dispatch.spinIntake(-0.75,2000);
-                dispatch.constantHeading(0.5,0,-1,0.4,0.001,0,0.0003);
+                dispatch.constantHeading(0.5,0,16,1.5,0.001,0,0.0003);
+                dispatch.spinIntake(0);
+                dispatch.variableHeading(0.6,-10,2,1.5);
+                dispatch.constantHeading(0.5,0,1.75,0.7,0.001,0,0.0003);
+                dispatch.spinIntake(-0.7,1200);
+                dispatch.constantHeading(0.5,0,-5,0.7,0.001,0,0.0003);
 
 
                 dispatch.moveElevator(constants.elevatorPositionDown);
 
-                //move to carousel
-                dispatch.constantHeading(0.5,4,0,0.7,0.001,0,0.0003);
+                //move to carousel -- start ---
                 dispatch.turnAbsPID(270,1.5);
-                dispatch.constantHeading(0.5,0,-36,2,0.001,0,0.0003);
-                dispatch.constantHeading(0.3,0,1,1,0.001,0,0.0003);
+                dispatch.constantHeading(0.3,0,-35,1.7,0.001,0,0.0003);
+                dispatch.constantHeading(0.3,0,1,0.5,0.001,0,0.0003);
                 dispatch.turnAbsPID(0,1);
-                dispatch.constantHeading(0.45,5,-34,3.7,0.001,0,0.0003);
+                dispatch.constantHeading(0.5,4,0,0.5,0.001,0,0.0003);
+                dispatch.constantHeading(0.45,10,-25,2.5,0.001,0,0.0003);
 
-                dispatch.spinCarousel(1600);
-                dispatch.constantHeading(0.1,0,-2,4,0.001,0,0.0003);
+                dispatch.spinCarousel(1400);
+                dispatch.constantHeading(0.2,0,-6,2.7,0.001,0,0.0003);
                 dispatch.spinCarousel(0);
+                dispatch.constantHeading(0.5,5,0,0.35,0.001,0,0.0003);
+                dispatch.constantHeading(0.3,0,26,1.7,0.001,0,0.0003);
+                dispatch.turnAbsPID(-90,1);
 
-                dispatch.constantHeading(0.5,3,20,4,0.001,0,0.0003);
-
-                telemetry.addLine("Path: Left");
                 break;
             }
             case RIGHT: {
                 //power on lift
                 dispatch.moveElevator(constants.elevatorPositionTop);
+                sleep(1500);
 
                 // move to drop
-                dispatch.variableHeading(0.5,-6.25,17.1,1.5);
-                dispatch.constantHeading(0.5,0,1.5,0.4,0.001,0,0.0003);
+                dispatch.variableHeading(0.5,-6.25,15,2);
+                dispatch.constantHeading(0.5,0,1.5,1,0.001,0,0.0003);
 
                 //outtake
-                robot.spin.setPower(-1);
-                sleep(2300);
+                dispatch.spinIntake(-1, 2000);
 
                 //park
-                dispatch.constantHeading(0.5,0,-1.5,0.4,0.001,0,0.0003);
-                dispatch.variableHeading(0.5,-6.25,-17.1,1.5);
+                dispatch.variableHeading(0.5,20,-12, 1.5);
+                dispatch.constantHeading(0.25, 0, -5, .5, .001, 0, .0003);
+
                 dispatch.moveElevator(constants.elevatorPositionDown);
 
-                //carousel
-                dispatch.variableHeading(0.5,20,-20,2);
-                dispatch.constantHeading(0.5,0,-48,2.5,0.001,0,0.0003);
+                dispatch.turnAbsPID(0,1);
 
-                dispatch.constantHeading(0.3,-7,0,1.5,0.001,0,0.0003);
-                dispatch.spinCarousel(1600);
-                dispatch.constantHeading(0.1,-2,0,4,0.001,0,0.0003);
+                dispatch.constantHeading(.5,0, 5, .5, .001, 0, .0003);
+                dispatch.constantHeading(0.5,12,0,2,0.001,0,0.0003);
+
+                dispatch.spinCarousel(1400);
+                dispatch.constantHeading(0.2,0,-6,3,0.001,0,0.0003);
                 dispatch.spinCarousel(0);
+                dispatch.constantHeading(0.5,5,0,1,0.001,0,0.0003);
+                dispatch.constantHeading(0.3,0,26,2,0.001,0,0.0003);
+                dispatch.turnAbsPID(-90,1);
 
-                dispatch.constantHeading(0.5,22,0,2,0.001,0,0.0003);
-                dispatch.constantHeading(0.5,0,-5,2,0.001,0,0.0003);
+                //carousel
+
 
                 break;
             }
             case MID: {
                 //power on lift
-                dispatch.moveElevator(constants.elevatorPositionMid);
+                dispatch.moveElevator(constants.elevatorPositionMid - 350);
 
                 // move to drop
-                dispatch.spinIntake(0.1);
+                dispatch.spinIntake(0.2);
                 dispatch.constantHeading(0.6,30,20,2,0.001,0,0.0003);
                 dispatch.turnAbsPID(0,1);
-                dispatch.constantHeading(0.5,0,20,1.5,0.001,0,0.0003);
+                dispatch.constantHeading(0.5,0,16,1.5,0.001,0,0.0003);
                 dispatch.variableHeading(0.6,-10,2,1.5);
-                dispatch.constantHeading(0.5,4,1,0.7,0.001,0,0.0003);
+                dispatch.constantHeading(0.5,-5.5,0,0.7,0.001,0,0.0003);
+                dispatch.spinIntake(0);
+                dispatch.constantHeading(0.5,0,.8,0.7,0.001,0,0.0003);
+
 
                 //out-take
+                dispatch.turnAbsPID(-90,1);
+                dispatch.constantHeading(0.5,0,6.5,0.6,0.001,0,0.0003);
                 dispatch.spinIntake(-1,2300);
                 dispatch.constantHeading(0.5,0,-5,0.7,0.001,0,0.0003);
 
@@ -143,17 +153,19 @@ public class BlueCarousel extends LinearOpMode{
                 dispatch.constantHeading(0.3,0,1,1,0.001,0,0.0003);
                 dispatch.turnAbsPID(0,1);
                 dispatch.constantHeading(0.5,4,0,0.5,0.001,0,0.0003);
-                dispatch.constantHeading(0.45,10,-40,3.7,0.001,0,0.0003);
+                dispatch.constantHeading(0.45,10,-25,3.7,0.001,0,0.0003);
 
-                dispatch.spinCarousel(1600);
-                dispatch.constantHeading(0.1,0,-2,4,0.001,0,0.0003);
+                dispatch.spinCarousel(1400);
+                dispatch.constantHeading(0.2,0,-6,3,0.001,0,0.0003);
                 dispatch.spinCarousel(0);
+                dispatch.constantHeading(0.5,5,0,1,0.001,0,0.0003);
+                dispatch.constantHeading(0.3,0,26,2,0.001,0,0.0003);
+                dispatch.turnAbsPID(-90,2);
 
-                dispatch.constantHeading(0.5,3,20,4,0.001,0,0.0003);
+
 
                 break;
             }
-
         }
 
         phoneCam.stopStreaming();

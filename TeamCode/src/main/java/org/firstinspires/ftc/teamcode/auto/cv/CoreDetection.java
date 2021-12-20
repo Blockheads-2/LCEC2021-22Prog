@@ -9,7 +9,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-public class BlueDetection extends OpenCvPipeline {
+public class CoreDetection extends OpenCvPipeline {
     Telemetry telemetry;
     Mat mat = new Mat();
     public enum Location {
@@ -27,21 +27,21 @@ public class BlueDetection extends OpenCvPipeline {
     */
 
     static final Rect MID_ROI = new Rect(
-            new Point(450, 180),
-            new Point(700, 420));
+            new Point(350, 180),
+            new Point(550, 420));
     static final Rect LEFT_ROI = new Rect(
-            new Point(1000,180),
-            new Point(1150,420));
+            new Point(950,180),
+            new Point(1100,420));
 
 
     static double PERCENT_COLOR_THRESHOLD = 0.4;
 
-    public BlueDetection (Telemetry t) { telemetry = t; }
+    public CoreDetection (Telemetry t) { telemetry = t; }
 
     @Override
     public Mat processFrame(Mat input) {
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
-        Scalar lowHSV = new Scalar(35, 50, 70);
+        Scalar lowHSV = new Scalar(35, 30, 70);
         Scalar highHSV = new Scalar(45, 255, 255);
 
         Core.inRange(mat, lowHSV, highHSV, mat);

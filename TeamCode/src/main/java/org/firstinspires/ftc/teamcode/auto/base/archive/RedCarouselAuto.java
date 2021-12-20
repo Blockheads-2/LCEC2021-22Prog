@@ -27,17 +27,19 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.auto.routes;
+package org.firstinspires.ftc.teamcode.auto.base.archive;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.auto.cv.BlueWarehouseDetection;
+import org.firstinspires.ftc.teamcode.auto.cv.CoreDetection;
 import org.firstinspires.ftc.teamcode.common.Constants;
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
 import org.firstinspires.ftc.teamcode.common.positioning.MathConstHead;
@@ -48,12 +50,11 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-@Autonomous(name="Blue Warehouse Auto", group="Routes")
+@Autonomous(name="Red Carousel Auto", group="Routes")
 
 @Disabled
-public class BlueWarehouseAuto extends LinearOpMode {
+public class RedCarouselAuto extends LinearOpMode {
 
     /* Declare OpMode members. */
     OpenCvCamera phoneCam;
@@ -63,9 +64,10 @@ public class BlueWarehouseAuto extends LinearOpMode {
     MathSpline mathSpline = new MathSpline();
     MathConstHead mathConstHead = new MathConstHead();
 
+    double degreeConversion = constants.degree;
+
     private Orientation lastAngles = new Orientation();
     private double currAngle = 0.0;
-    double degreeConversion = constants.degree;
 
     static final double     COUNTS_PER_MOTOR_REV    = 537.7;    // eg: TETRIX Motor Encoder
     static final double     MAX_VELOCITY_DT         = 2700;
@@ -101,7 +103,7 @@ public class BlueWarehouseAuto extends LinearOpMode {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId","id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-        BlueWarehouseDetection detector = new BlueWarehouseDetection(telemetry);
+        CoreDetection detector = new CoreDetection(telemetry);
         phoneCam.setPipeline(detector);
 
         phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
@@ -125,119 +127,182 @@ public class BlueWarehouseAuto extends LinearOpMode {
 
         switch (detector.getLocation()) {
             case LEFT: {
-                //Hit barrier
-                constantHeading(0.5,0,13,1);
-                constantHeading(0.5,-12,0,1);
 
-                robot.spin.setPower(0.2);
-
-                //lift arm
-                robot.lifter.setTargetPosition(constants.elevatorPositionBottom - 400);
+                //power on lift
+                robot.lifter.setTargetPosition(constants.elevatorPositionBottom);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(0.9);
+                robot.lifter.setPower(1);
 
-                //Move along barrier and toward wobble
-                constantHeading(0.5,-5,24,1.3);
-                constantHeading(0.5,2,0,0.5);
-                turnAbsPID(-90);
+                // move to drop
+                robot.spin.setPower(0.2);
+                constantHeading(0.5,10,0,0.5);
+                variableHeading(0.6,10,20,1.5);
+
+                //out-take
+                constantHeading(0.5,0,1,0.4);
+                robot.spin.setPower(-0.75);
+                sleep(2000);
                 robot.spin.setPower(0);
-                constantHeading(0.5,0,-2,0.5);
-                constantHeading(0.675,2.8,2.8,1);
-                constantHeading(0.3,0,1.3,0.5);
-                turnPID(20);
+                constantHeading(0.5,0,-1,0.4);
 
-                //outtake
-                robot.spin.setPower(-0.7);
-                sleep(3800);
-                robot.spin.setPower(0);
 
-                //park
-                constantHeading(0.8,0,-6,1);
-                constantHeading(0.5,0,2,0.75);
-                turnPID(90);
+                //to carousel
+                variableHeading(0.5,-20,-10,1.2);
+
+                //move to carousel
+                constantHeading(0.4,0,-20,1.5);
+                constantHeading(0.4,10,0,1.5);
+
+                //spin
+                robot.duckWheel.setPower(-0.5);
+                //lift down
                 robot.lifter.setTargetPosition(constants.elevatorPositionDown);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(0.9);
-                constantHeading(0.5,-3,0,0.5);
-                constantHeading(0.5,0,-44,3);
-                constantHeading(0.5,0,3,0.7);
-                turnPID(100);
-                constantHeading(0.5,-3,0,0.7);
-                robot.spin.setPower(1);
-                constantHeading(0.8,0,33,1.2);
-                constantHeading(0.2,0,2,0.3);
-                constantHeading(0.25,3,1,0.75);
-                sleep(1000);
+                robot.lifter.setPower(0.5);
+                constantHeading(0.1,2,0,4.1);
+
+                /*
+                //Stop Elevator
+                if (robot.digitalTouch.getState() == false) {
+                    //Stop
+                    robot.lifter.setPower(0);
+
+                    //Reset
+                    robot.lifter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    robot.lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                }
+
+                 */
+
+                robot.duckWheel.setPower(0);
+
+                //move to park
+                constantHeading(0.5, -22, 0, 2);
+                constantHeading(0.5, 0, -5, 2);
+
 
                 telemetry.addLine("Path: Left");
                 break;
             }
-            case RIGHT: {
-                robot.lifter.setTargetPosition(constants.elevatorPositionTop);
-                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(0.9);
-                robot.spin.setPower(0.3);
-
-
-                //move to wobble
-                variableHeading(0.5,6.25,17.1,1.5);
-                constantHeading(0.5,0,1.5,0.4);
-
-                //outtake
-                robot.spin.setPower(-1);
-                sleep(2300);
-
-                //park
-                constantHeading(0.5,0,-1.5,0.4);
-                variableHeading(0.5,6.25,-17.1,1.5);
-                robot.lifter.setTargetPosition(constants.elevatorPositionDown);
-                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(0.9);
-                constantHeading(0.5,0,3,0.7);
-                turnPID(100);
-                constantHeading(0.5,-4,0,0.7);
-                robot.spin.setPower(1);
-                constantHeading(0.8,0,33,1.2);
-                constantHeading(0.2,0,1.5,0.3);
-                constantHeading(0.25,3,2,0.75);
-                sleep(1000);
-
-                telemetry.addLine("Path: Right");
-                break;
-            }
             case MID: {
-                //lift arm
-                robot.lifter.setTargetPosition(constants.elevatorPositionMid-400);
+                //power on lift
+                robot.lifter.setTargetPosition(constants.elevatorPositionMid);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(0.9);
-                robot.spin.setPower(0.3);
+                robot.lifter.setPower(1);
 
+                // move to drop
+                constantHeading(0.4,-12,0,1);
+                robot.spin.setPower(0.2);
+                constantHeading(0.8, 0, 18, 1);
+                variableHeading(0.6,19,14.825,1.5);
+                turnPID(15);
+                constantHeading(0.5,0,2,0.25);
 
-                //move to wobble
-                variableHeading(0.5,6.1,16.75,1.5);
-                constantHeading(0.5,0,3,0.4);
-
-                //outtake
+                //out-take
                 robot.spin.setPower(-1);
-                sleep(2300);
+                sleep(2000);
+                robot.spin.setPower(0);
 
-                //park
-                constantHeading(0.5,0,-3,0.4);
-                variableHeading(0.5,6.25,-17,1.5);
+
+
+                //to carousel
+                constantHeading(0.5,0,-5,0.5);
+
+                constantHeading(0.2,0,-3,0.5);
+                constantHeading(0.4, 24, -24, 3.0);
+                constantHeading(0.3,0,-5,0.5);
+
+                //move to carousel
+                constantHeading(0.7,14,0,1.5);
+
+                //spin
+                robot.duckWheel.setPower(-0.4);
+                //lift down
                 robot.lifter.setTargetPosition(constants.elevatorPositionDown);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.lifter.setPower(0.9);
-                constantHeading(0.5,0,3,0.7);
-                turnPID(100);
-                constantHeading(0.5,-4,0,0.7);
-                robot.spin.setPower(1);
-                constantHeading(0.8,-2,17,0.7);
-                constantHeading(0.8,-2,17,0.7);
-                constantHeading(0.2,0,1.5,0.3);
-                constantHeading(0.35,3.5,2,0.75);
-                sleep(500);
+                robot.lifter.setPower(0.5);
+                constantHeading(0.1,2,0,4.1);
+
+                /*
+
+            //Stop Elevator
+                if (robot.digitalTouch.getState() == false) {
+                    //Stop
+                    robot.lifter.setPower(0);
+
+                    //Reset
+                    robot.lifter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    robot.lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                }
+
+                 */
+
+                robot.duckWheel.setPower(0);
+
+                //move to park
+                constantHeading(0.5, -22, 0, 2);
+                constantHeading(0.5,0,-5,1);
 
                 telemetry.addLine("Path: Mid");
+                break;
+            }
+            case RIGHT:{
+
+                //power on lift
+                robot.lifter.setTargetPosition(constants.elevatorPositionTop);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(1);
+
+                // move to drop
+                constantHeading(0.4,-8,0,1);
+                robot.spin.setPower(0.2);
+                constantHeading(0.8, 0, 16, 1);
+                variableHeading(0.6,19,14.825,1.5);
+
+                //out-take
+                robot.spin.setPower(-0.4);
+                sleep(1600);
+                robot.spin.setPower(0);
+
+
+
+                //spline to carousel
+                constantHeading(0.5,-5,0,0.5);
+                turnPID(10);
+                constantHeading(0.2,0,-3,0.5);
+                constantHeading(0.6, 26, -26, 2.0);
+                constantHeading(0.3,0,-5,0.5);
+
+                //move to carousel
+                constantHeading(0.7,20,0,1.5);
+
+                //spin
+                robot.duckWheel.setPower(-0.4);
+                //lift down
+                robot.lifter.setTargetPosition(constants.elevatorPositionDown);
+                robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.lifter.setPower(0.5);
+                constantHeading(0.1,2,0,4.1);
+
+                /*
+                //Stop Elevator
+                if (robot.digitalTouch.getState() == false) {
+                    //Stop
+                    robot.lifter.setPower(0);
+
+                    //Reset
+                    robot.lifter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    robot.lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                }
+
+                 */
+
+                robot.duckWheel.setPower(0);
+
+                //move to park
+                constantHeading(0.5, -21, 0, 2);
+
+                telemetry.addLine("Path: Right");
                 break;
             }
         }
@@ -246,7 +311,7 @@ public class BlueWarehouseAuto extends LinearOpMode {
         telemetry.update();
     }
 
-    //Functions for Moving
+    //Functions for Movement
     public void variableHeading(double speed, double xPose, double yPose, double timeoutS) {
         int FleftEncoderTarget;
         int FrightEncoderTarget;
@@ -278,7 +343,6 @@ public class BlueWarehouseAuto extends LinearOpMode {
                 BleftEncoderTarget = robot.lb.getCurrentPosition() + (int) leftDistance;
                 BrightEncoderTarget = robot.rb.getCurrentPosition() + (int) rightDistance;
             }
-
 
             robot.lf.setTargetPosition(FleftEncoderTarget);
             robot.lb.setTargetPosition(BleftEncoderTarget);
@@ -329,7 +393,7 @@ public class BlueWarehouseAuto extends LinearOpMode {
             robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
-    public void constantHeading(double speed, double xPose, double yPose, double timeoutS) {
+    public void constantHeading(double speed, double xPose, double yPose, double timeoutS){
         mathConstHead.setFinalPose(xPose,yPose);
 
         double distance = mathConstHead.returnDistance();

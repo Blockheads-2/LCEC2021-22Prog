@@ -116,7 +116,7 @@ public class EncoderAutoDrive extends LinearOpMode {
         //Test Paths Start
 
         //...
-        constantHeading(0.5,10,10,3);
+        constantHeading(0.5,10,-10,3);
 
         //End of Path
         telemetry.update();

@@ -127,7 +127,7 @@ public class OdoAutoDrive extends LinearOpMode {
         waitForStart();
 
         //Test Paths Start
-        variableHeading(0.5,20,20,3);
+        variableHeading(0.5,30,30,3);
 
         //...
 
@@ -201,10 +201,10 @@ public class OdoAutoDrive extends LinearOpMode {
 
                 double angleCorrection = pidTurn.update(getAbsoluteAngle());
 
-                robot.lf.setVelocity(speed * (mathSpline.returnLPower() + angleCorrection));
-                robot.rf.setVelocity(speed * (mathSpline.returnRPower() - angleCorrection));
-                robot.lb.setVelocity(speed * (mathSpline.returnLPower() + angleCorrection));
-                robot.rb.setVelocity(speed * (mathSpline.returnRPower() - angleCorrection));
+                robot.lf.setVelocity(speed * (mathSpline.returnLPower()));
+                robot.rf.setVelocity(speed * (mathSpline.returnRPower()));
+                robot.lb.setVelocity(speed * (mathSpline.returnLPower()));
+                robot.rb.setVelocity(speed * (mathSpline.returnRPower()));
 
                 // Display it for the driver.
                 telemetry.addData("Right Distance", deltaTheta);

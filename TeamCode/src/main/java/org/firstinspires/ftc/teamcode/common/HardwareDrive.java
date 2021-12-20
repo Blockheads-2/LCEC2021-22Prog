@@ -77,7 +77,7 @@ public class HardwareDrive
     public CRServo succ = null;
 
     //Sensor
-    //public DigitalChannel digitalTouch;
+    public DigitalChannel digitalTouch;
     public BNO055IMU imu;
 
 
@@ -111,13 +111,13 @@ public class HardwareDrive
         succ = hwMap.get(CRServo.class,"string");
         succ.setPower(0);
 
-/*
+
         //Digital Touch Sensor
         digitalTouch = hwMap.get(DigitalChannel.class, "digital_touch");
         digitalTouch.setMode(DigitalChannel.Mode.INPUT);
 
 
- */
+
 
 
 

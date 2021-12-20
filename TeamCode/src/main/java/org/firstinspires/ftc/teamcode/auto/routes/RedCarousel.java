@@ -33,23 +33,17 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.auto.cv.BlueDetection;
-import org.firstinspires.ftc.teamcode.auto.cv.RedDetection;
+import org.firstinspires.ftc.teamcode.auto.cv.CoreDetection;
 import org.firstinspires.ftc.teamcode.auto.dispatch.AutoHub;
 import org.firstinspires.ftc.teamcode.common.Constants;
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
 import org.firstinspires.ftc.teamcode.common.positioning.MathConstHead;
 import org.firstinspires.ftc.teamcode.common.positioning.MathSpline;
-import org.firstinspires.ftc.teamcode.common.pid.TurnPIDController;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 @Autonomous(name="Red Carousel", group="Routes")
 
@@ -84,7 +78,7 @@ public class RedCarousel extends LinearOpMode {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId","id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-        RedDetection detector = new RedDetection(telemetry);
+        CoreDetection detector = new CoreDetection(telemetry);
         phoneCam.setPipeline(detector);
 
         phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
@@ -108,169 +102,117 @@ public class RedCarousel extends LinearOpMode {
 
         switch (detector.getLocation()) {
             case LEFT: {
-
                 //power on lift
-                dispatch.moveElevator(constants.elevatorPositionBottom);
+                dispatch.moveElevator(constants.elevatorPositionMid - 430);
 
                 // move to drop
-                dispatch.spinIntake(0.2);
-                dispatch.constantHeading(0.5,10,0,0.5,0.001,0,0.0003);
-                dispatch.variableHeading(0.6,10,20,1.5);
+                dispatch.spinIntake(0.1);
+                dispatch.constantHeading(0.6,-25,20,0.001,0,0.0003);
+                dispatch.turnAbsPID(0,1);
+                dispatch.variableHeading(0.6,20,1.7,1.5);
+                dispatch.constantHeading(0.5,5.5,0,0.001,0,0.0003);
+                dispatch.spinIntake(0);
 
                 //out-take
-                dispatch.constantHeading(0.5,0,1,0.4,0.001,0,0.0003);
-                dispatch.spinIntake(-0.75,2000);
-                dispatch.constantHeading(0.5,0,-1,0.4,0.001,0,0.0003);
-
-
-                //to carousel
-                dispatch.variableHeading(0.5,-20,-10,1.2);
-
-                //move to carousel
-                dispatch.constantHeading(0.4,0,-20,1.5,0.001,0,0.0003);
-                dispatch.constantHeading(0.4,10,0,1.5,0.001,0,0.0003);
-
-                //spin
-                dispatch.spinCarousel(-1600);
-                //lift down
-                dispatch.moveElevator(constants.elevatorPositionDown);
-                dispatch.constantHeading(0.1,2,0,4.1,0.001,0,0.0003);
-
-                /*
-                //Stop Elevator
-                if (robot.digitalTouch.getState() == false) {
-                    //Stop
-                    robot.lifter.setPower(0);
-
-                    //Reset
-                    robot.lifter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                    robot.lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                }
-
-                 */
-
-                dispatch.spinCarousel(0);
-
-                //move to park
-                dispatch.constantHeading(0.5, -22, 0, 2,0.001,0,0.0003);
-                dispatch.constantHeading(0.5, 0, -5, 2,0.001,0,0.0003);
-
-
-                telemetry.addLine("Path: Left");
-                break;
-            }
-            case MID: {
-                //power on lift
-                dispatch.moveElevator(constants.elevatorPositionMid);
-
-                // move to drop
-                dispatch.constantHeading(0.4,-12,0,1,0.001,0,0.0003);
-                robot.spin.setPower(0.2);
-                dispatch.constantHeading(0.8, 0, 18, 1,0.001,0,0.0003);
-                dispatch.variableHeading(0.6,19,14.825,1.5);
-                dispatch.turnPID(15,2);
-                dispatch.constantHeading(0.5,0,2,0.25,0.001,0,0.0003);
-
-                //out-take
+                dispatch.constantHeading(0.5,2,7,0.001,0,0.0003);
                 dispatch.spinIntake(-1,2000);
 
+                dispatch.constantHeading(0.5,0,-28,0.001,0,0.0003);
+                dispatch.constantHeading(0.5,34,0,0,0,0);
 
-
-                //to carousel
-                dispatch.constantHeading(0.5,0,-5,0.5,0.001,0,0.0003);
-
-                dispatch.constantHeading(0.2,0,-3,0.5,0.001,0,0.0003);
-                dispatch.constantHeading(0.4, 24, -24, 3.0,0.001,0,0.0003);
-                dispatch.constantHeading(0.3,0,-5,0.5,0.001,0,0.0003);
-
-                //move to carousel
-                dispatch.constantHeading(0.7,14,0,1.5,0.001,0,0.0003);
-
-                //spin
-                dispatch.spinCarousel(-1600);
-                // lift down
                 dispatch.moveElevator(constants.elevatorPositionDown);
-                dispatch.constantHeading(0.1,2,0,4.1,0.001,0,0.0003);
 
-                /*
-
-            //Stop Elevator
-                if (robot.digitalTouch.getState() == false) {
-                    //Stop
-                    robot.lifter.setPower(0);
-
-                    //Reset
-                    robot.lifter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                    robot.lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                }
-
-                 */
-
+                dispatch.spinCarousel(-1400);
+                dispatch.constantHeading(0.1,2,0,2.5,0,0,0);
                 dispatch.spinCarousel(0);
 
-                //move to park
-                dispatch.constantHeading(0.5, -22, 0, 2,0.001,0,0.0003);
-                dispatch.constantHeading(0.5,0,-5,1,0.001,0,0.0003);
+                dispatch.constantHeading(0.5,-24,0,0.001,0,0.0003);
+                dispatch.constantHeading(0.3,0,-10,0.001,0,0.0003);
 
-                telemetry.addLine("Path: Mid");
                 break;
             }
-            case RIGHT:{
-
+            case RIGHT: {
                 //power on lift
                 dispatch.moveElevator(constants.elevatorPositionTop);
 
                 // move to drop
-                dispatch.constantHeading(0.4,-8,0,1,0.001,0,0.0003);
-                robot.spin.setPower(0.2);
-                dispatch.constantHeading(0.8, 0, 16, 1,0.001,0,0.0003);
-                dispatch.variableHeading(0.6,19,14.825,1.5);
+                dispatch.spinIntake(0.1);
+                dispatch.constantHeading(0.6,30,20,2,0.001,0,0.0003);
+                dispatch.turnAbsPID(0,1);
+                dispatch.constantHeading(0.5,0,21,1.5,0.001,0,0.0003);
+                dispatch.variableHeading(0.6,-10,1.7,1.5);
+                dispatch.constantHeading(0.5,-5.5,0,0.7,0.001,0,0.0003);
+                dispatch.spinIntake(0);
+                dispatch.constantHeading(0.5,0,.8,0.7,0.001,0,0.0003);
+
 
                 //out-take
-                dispatch.spinCarousel(-1,2000);
+                dispatch.constantHeading(0.5,2,10,0.7,0.001,0,0.0003);
+                dispatch.spinIntake(-1,2000);
 
+                dispatch.constantHeading(0.5,0,-5,0.7,0.001,0,0.0003);
 
-
-                //spline to carousel
-                dispatch.constantHeading(0.5,-5,0,0.5,0.001,0,0.0003);
-                dispatch.turnPID(10,1);
-                dispatch.constantHeading(0.2,0,-3,0.5,0.001,0,0.0003);
-                dispatch.constantHeading(0.6, 26, -26, 2.0,0.001,0,0.0003);
-                dispatch.constantHeading(0.3,0,-5,0.5,0.001,0,0.0003);
-
-                //move to carousel
-                dispatch.constantHeading(0.7,20,0,1.5,0.001,0,0.0003);
-
-                //spin
-                dispatch.spinCarousel(-1600);
-                //lift down
                 dispatch.moveElevator(constants.elevatorPositionDown);
+                //move to carousel -- start ---
+                dispatch.turnAbsPID(270,0.5);
+                dispatch.constantHeading(0.3,0,-35,2,0.001,0,0.0003);
+                dispatch.constantHeading(0.3,0,1,1,0.001,0,0.0003);
+                dispatch.turnAbsPID(0,1);
+                dispatch.constantHeading(0.5,4,0,0.5,0.001,0,0.0003);
+                dispatch.constantHeading(0.45,10,-30,3.5,0.001,0,0.0003);
 
-                dispatch.constantHeading(0.1,2,0,4.1,0.001,0,0.0003);
-
-                /*
-                //Stop Elevator
-                if (robot.digitalTouch.getState() == false) {
-                    //Stop
-                    robot.lifter.setPower(0);
-
-                    //Reset
-                    robot.lifter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                    robot.lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                }
-
-                 */
-
+                dispatch.spinCarousel(1400);
+                dispatch.constantHeading(0.2,0,-6,2.5,0.001,0,0.0003);
                 dispatch.spinCarousel(0);
+                dispatch.constantHeading(0.5,5,0,1,0.001,0,0.0003);
+                dispatch.constantHeading(0.3,0,26,2,0.001,0,0.0003);
+                dispatch.turnAbsPID(-90,1);
 
-                //move to park
-                dispatch.constantHeading(0.5, -21, 0, 2,0.001,0,0.0003);
+                break;
+            }
+            case MID: {
+                //power on lift
+                dispatch.moveElevator(constants.elevatorPositionTop);
 
-                telemetry.addLine("Path: Right");
+                // move to drop
+                dispatch.spinIntake(0.1);
+                dispatch.constantHeading(0.6,30,20,2,0.001,0,0.0003);
+                dispatch.turnAbsPID(0,1);
+                dispatch.constantHeading(0.5,0,21,1.5,0.001,0,0.0003);
+                dispatch.variableHeading(0.6,-10,1.7,1.5);
+                dispatch.constantHeading(0.5,-5.5,0,0.7,0.001,0,0.0003);
+                dispatch.spinIntake(0);
+                dispatch.constantHeading(0.5,0,.8,0.7,0.001,0,0.0003);
+
+
+                //out-take
+                dispatch.constantHeading(0.5,2,5.8,0.7,0.001,0,0.0003);
+
+                dispatch.spinIntake(-1,2000);
+
+                dispatch.constantHeading(0.5,0,-5,0.7,0.001,0,0.0003);
+
+                dispatch.moveElevator(constants.elevatorPositionDown);
+                //move to carousel -- start ---
+                dispatch.turnAbsPID(270,0.5);
+                dispatch.constantHeading(0.3,0,-35,2,0.001,0,0.0003);
+                dispatch.constantHeading(0.3,0,1,1,0.001,0,0.0003);
+                dispatch.turnAbsPID(0,1);
+                dispatch.constantHeading(0.5,4,0,0.5,0.001,0,0.0003);
+                dispatch.constantHeading(0.45,10,-30,3.5,0.001,0,0.0003);
+
+                dispatch.spinCarousel(1400);
+                dispatch.constantHeading(0.2,0,-6,2.5,0.001,0,0.0003);
+                dispatch.spinCarousel(0);
+                dispatch.constantHeading(0.5,5,0,1,0.001,0,0.0003);
+                dispatch.constantHeading(0.3,0,26,2,0.001,0,0.0003);
+                dispatch.turnAbsPID(-90,1);
+
+
+
                 break;
             }
         }
-
         phoneCam.stopStreaming();
         telemetry.update();
     }

@@ -109,7 +109,7 @@ public class BaseDrive extends OpMode{
         DriveTrainSpeed();
         Capping();
         DriveMicroAdjust(0.4);
-      //  OscillateServo();
+        //OscillateServo();
     }
 
     void UpdatePlayer2(){
@@ -232,8 +232,6 @@ public class BaseDrive extends OpMode{
             }
         }
 
-        /*
-
         if (robot.digitalTouch.getState() == false) {
             //Stop
             robot.lifter.setPower(0);
@@ -242,12 +240,11 @@ public class BaseDrive extends OpMode{
             robot.lifter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            robot.lifter.setTargetPosition(5);
+            robot.lifter.setTargetPosition(20);
             robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.lifter.setPower(0.1);
         }
 
-         */
 
         if (lifterBottomButton.is(Button.State.TAP)){
                 if (position >= (constants.elevatorPositionBottom - 10)) {
@@ -280,14 +277,11 @@ public class BaseDrive extends OpMode{
     }
 
     void Carousel(){
-        CarouselPIDController carouselPIDControllerPositive = new CarouselPIDController(1700,0.01,0,0.003);
-        CarouselPIDController carouselPIDControllerNegative = new CarouselPIDController(-1700,0.01,0,0.003);
-
         if (carouselButton.is(Button.State.HELD)) {
-            robot.duckWheel.setVelocity(1700 + carouselPIDControllerPositive.update(robot.duckWheel.getVelocity()));
+            robot.duckWheel.setVelocity(1600);
         }
         else if (carouselButtonInverted.is(Button.State.HELD)) {
-            robot.duckWheel.setVelocity(-1700 + carouselPIDControllerNegative.update(robot.duckWheel.getVelocity()));
+            robot.duckWheel.setVelocity(-1600);
         }
         robot.duckWheel.setPower(0);
     }

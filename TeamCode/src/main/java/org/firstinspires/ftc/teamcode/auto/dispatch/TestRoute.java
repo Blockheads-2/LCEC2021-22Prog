@@ -18,7 +18,9 @@ public class TestRoute extends LinearOpMode {
         dispatch = new AutoHub(this);
 
         waitForStart();
-        dispatch.constantHeading(0.5,20,20,3,0.01,0,0.003);
+        dispatch.constantHeading(0.5,20,-20,0.001,0,0.003);
+        dispatch.variableHeading(0.5,15,-15,2);
+        dispatch.constantHeading(0.5,-20,20,0.001,0,0.003);
 
 
     }

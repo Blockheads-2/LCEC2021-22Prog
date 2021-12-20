@@ -74,7 +74,7 @@ import org.firstinspires.ftc.teamcode.common.pid.TurnPIDController;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-//@Disabled
+@Disabled
 @Autonomous(name="Odometry Auto Drive", group="Robot Base Drive")
 
 //Start of Class

@@ -20,18 +20,12 @@ public class CoreDetection extends OpenCvPipeline {
     }
     private Location location;
 
-    /*
-    static final Rect RIGHT_ROI = new Rect(
-            new Point(50, 180),
-            new Point(250, 420));
-    */
-
     static final Rect MID_ROI = new Rect(
-            new Point(350, 180),
-            new Point(550, 420));
+            new Point(700, 400),
+            new Point(1000, 600));
     static final Rect LEFT_ROI = new Rect(
-            new Point(950,180),
-            new Point(1100,420));
+            new Point(140,400),
+            new Point(420,600));
 
 
     static double PERCENT_COLOR_THRESHOLD = 0.4;
@@ -41,7 +35,7 @@ public class CoreDetection extends OpenCvPipeline {
     @Override
     public Mat processFrame(Mat input) {
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
-        Scalar lowHSV = new Scalar(35, 30, 70);
+        Scalar lowHSV = new Scalar(35, 30, 42);
         Scalar highHSV = new Scalar(45, 255, 255);
 
         Core.inRange(mat, lowHSV, highHSV, mat);

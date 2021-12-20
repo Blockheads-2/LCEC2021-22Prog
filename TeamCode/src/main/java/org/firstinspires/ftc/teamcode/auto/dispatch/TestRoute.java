@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.common.HardwareDrive;
 
 
 @Autonomous(name = "Test Route", group = "Routes")
-//@Disabled
+@Disabled
 public class TestRoute extends LinearOpMode {
     AutoHub dispatch;
 

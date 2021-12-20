@@ -8,7 +8,7 @@ public class Constants {
     public int elevatorPositionDown = 0; //Rest
     public int elevatorPositionTop = 3410; //Extended
     public int elevatorPositionMid = 2700;
-    public int elevatorPositionBottom = 1500;
+    public int elevatorPositionBottom = 1980;
     public int elevatorAcrossDrop = 2500;
 
     //Capping Servo Positions

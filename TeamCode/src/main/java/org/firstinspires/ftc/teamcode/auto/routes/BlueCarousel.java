@@ -126,7 +126,7 @@ public class BlueCarousel extends LinearOpMode{
                 dispatch.spinIntake(0);
 
                 dispatch.turnAbsPID(270, 1);
-                dispatch.constantHeading(.5, -10.5, 1.25, .001, 0, .0003);
+                dispatch.constantHeading(.5, -10.5, 1.5, .001, 0, .0003);
                 sleep(500);
 
                 //out-take

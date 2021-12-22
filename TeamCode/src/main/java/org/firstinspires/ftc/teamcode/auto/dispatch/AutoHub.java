@@ -164,6 +164,92 @@ public class AutoHub {
             robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
+    public void variableHeading(double speed, double xPose, double yPose) {
+        int FleftEncoderTarget;
+        int FrightEncoderTarget;
+        int BleftEncoderTarget;
+        int BrightEncoderTarget;
+
+        double leftDistance;
+        double rightDistance;
+        double deltaTheta;
+        double deltaTime;
+        double zeta;
+        double timeoutS;
+
+        // Ensure that the opmode is still active
+        if (linearOpMode.opModeIsActive()) {
+
+            speed = speed * MAX_VELOCITY_DT;
+
+            mathSpline.setFinalPose(xPose,yPose);
+
+            leftDistance = mathSpline.returnLDistance() * COUNTS_PER_INCH;
+            rightDistance = mathSpline.returnRDistance() * COUNTS_PER_INCH;
+            deltaTheta = mathSpline.returnTheta();
+            deltaTime = leftDistance / (mathSpline.returnLPower() * constants.clicksPerInch);
+            zeta = deltaTheta/deltaTime;
+
+            double startingAngle = getAbsoluteAngle();
+            double targetAngle;
+
+            timeoutS = mathSpline.returnDistance() / (constants.clicksPerInch * speed);
+
+            if ((yPose >= 0 && xPose < 0) || (yPose < 0 && xPose >= 0)){
+                FleftEncoderTarget = robot.lf.getCurrentPosition() - (int) leftDistance;
+                FrightEncoderTarget = robot.rf.getCurrentPosition() - (int) rightDistance;
+                BleftEncoderTarget = robot.lb.getCurrentPosition() - (int) leftDistance;
+                BrightEncoderTarget = robot.rb.getCurrentPosition() - (int) rightDistance;
+            }
+            else {
+                FleftEncoderTarget = robot.lf.getCurrentPosition() + (int) leftDistance;
+                FrightEncoderTarget = robot.rf.getCurrentPosition() + (int) rightDistance;
+                BleftEncoderTarget = robot.lb.getCurrentPosition() + (int) leftDistance;
+                BrightEncoderTarget = robot.rb.getCurrentPosition() + (int) rightDistance;
+            }
+
+            robot.lf.setTargetPosition(FleftEncoderTarget);
+            robot.lb.setTargetPosition(BleftEncoderTarget);
+            robot.rf.setTargetPosition(FrightEncoderTarget);
+            robot.rb.setTargetPosition(BrightEncoderTarget);
+
+            // Turn On RUN_TO_POSITION
+            robot.lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+
+            while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS) && robot.lf.isBusy() && robot.rf.isBusy()
+                    && robot.lb.isBusy() && robot.rb.isBusy()) {
+
+                targetAngle = startingAngle + zeta * (runtime.milliseconds() + 1);
+
+                TurnPIDController pidTurn = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
+
+                double angleCorrection = pidTurn.update(getAbsoluteAngle());
+
+                robot.lf.setVelocity(speed * mathSpline.returnLPower());
+                robot.rf.setVelocity(speed * mathSpline.returnRPower());
+                robot.lb.setVelocity(speed * mathSpline.returnLPower());
+                robot.rb.setVelocity(speed * mathSpline.returnRPower());
+            }
+
+            // Stop all motion;
+            robot.lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+            // Turn off RUN_TO_POSITION
+            robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+    }
     public void constantHeading(double speed, double xPose, double yPose, double timeoutS, double kP, double kI, double kD) {
         mathConstHead.setFinalPose(xPose,yPose);
 

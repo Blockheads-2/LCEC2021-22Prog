@@ -74,7 +74,7 @@ import org.firstinspires.ftc.teamcode.common.pid.TurnPIDController;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Disabled
+//@Disabled
 @Autonomous(name="Odometry Auto Drive", group="Robot Base Drive")
 
 //Start of Class
@@ -126,10 +126,8 @@ public class OdoAutoDrive extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        //Test Paths Start
-        variableHeading(0.5,30,30,3);
-
-        //...
+        //Start Movement
+        rampMove(1,80);
 
         //End of Path
         telemetry.update();
@@ -137,6 +135,53 @@ public class OdoAutoDrive extends LinearOpMode {
 
 
     //Functions for Moving
+
+    void rampMove(double speed, double distance){
+        int lfTargetDistance;
+        int rfTargetDistance;
+        int lbTargetDistance;
+        int rbTargetDistance;
+
+        double lfPower;
+        double rfPower;
+        double lbPower;
+        double rbPower;
+
+        if (opModeIsActive()){
+            speed = speed * constants.maxVelocityDT;
+
+            lfTargetDistance = (int) (robot.lf.getCurrentPosition() + (distance * constants.clicksPerInch));
+            rfTargetDistance = (int) (robot.rf.getCurrentPosition() + (distance * constants.clicksPerInch));
+            lbTargetDistance = (int) (robot.lb.getCurrentPosition() + (distance * constants.clicksPerInch));
+            rbTargetDistance = (int) (robot.rb.getCurrentPosition() + (distance * constants.clicksPerInch));
+
+            robot.lf.setTargetPosition(lfTargetDistance);
+            robot.rf.setTargetPosition(rfTargetDistance);
+            robot.lb.setTargetPosition(lbTargetDistance);
+            robot.rb.setTargetPosition(rbTargetDistance);
+
+
+            robot.lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            while (opModeIsActive()){
+
+                lfPower = Math.tanh(0.001 * (lfTargetDistance - robot.lf.getCurrentPosition()));
+                rfPower = Math.tanh(0.001 * (rfTargetDistance - robot.rf.getCurrentPosition()));
+                lbPower = Math.tanh(0.001 * (lbTargetDistance - robot.lb.getCurrentPosition()));
+                rbPower = Math.tanh(0.001 * (rbTargetDistance - robot.rb.getCurrentPosition()));
+
+                robot.lf.setVelocity(constants.maxVelocityDT * (0.2 + 0.8 * lfPower));
+                robot.rf.setVelocity(constants.maxVelocityDT * (0.2 + 0.8 * rfPower));
+                robot.lb.setVelocity(constants.maxVelocityDT * (0.2 + 0.8 * lbPower));
+                robot.rb.setVelocity(constants.maxVelocityDT * (0.2 + 0.8 * rbPower));
+            }
+
+        }
+
+    }
     public void variableHeading(double speed, double xPose, double yPose, double timeoutS) {
         int FleftEncoderTarget;
         int FrightEncoderTarget;

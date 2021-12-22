@@ -53,6 +53,21 @@ public class MathSpline {
         return theta;
     }
 
+    public double returnDistance(){
+        //radius
+        radius = ((alpha * alpha) + (beta * beta)) / (2 * alpha);
+
+        //theta
+        insideAcos = (-(alpha * alpha) - (beta * beta)) / (2 * radius * radius);
+        double inside = insideAcos + 1;
+
+        theta = Math.acos(inside);
+
+        double distance = radius * theta;
+
+        return distance; //dLeft
+    }
+
     public double returnLDistance(){
         //radius
         radius = ((alpha * alpha) + (beta * beta)) / (2 * alpha);

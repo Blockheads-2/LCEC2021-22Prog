@@ -27,11 +27,11 @@ public class BlueWarehouseDetection extends OpenCvPipeline {
     */
 
     static final Rect RIGHT_ROI = new Rect(
-            new Point(450, 180),
-            new Point(700, 420));
+            new Point(550, 400),
+            new Point(800, 600));
     static final Rect MID_ROI = new Rect(
-            new Point(1000,180),
-            new Point(1150,420));
+            new Point(50,400),
+            new Point(350,600));
 
 
     static double PERCENT_COLOR_THRESHOLD = 0.4;
@@ -75,11 +75,11 @@ public class BlueWarehouseDetection extends OpenCvPipeline {
         Imgproc.cvtColor(mat, mat, Imgproc.COLOR_GRAY2RGB);
 
         Scalar colorStone = new Scalar(255, 0, 0);
+        Scalar colorOtherStone = new Scalar(0, 0, 255);
         Scalar colorSkystone = new Scalar(0, 255, 0);
-        Scalar colorDuck = new Scalar(0,0,255);
 
         Imgproc.rectangle(mat, RIGHT_ROI, location == Location.RIGHT? colorSkystone:colorStone);
-        Imgproc.rectangle(mat, MID_ROI, location == Location.MID? colorDuck:colorDuck);
+        Imgproc.rectangle(mat, MID_ROI, location == Location.MID? colorSkystone:colorOtherStone);
 
         return mat;
     }

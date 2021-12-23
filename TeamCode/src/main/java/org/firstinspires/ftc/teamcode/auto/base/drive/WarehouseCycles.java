@@ -93,6 +93,23 @@ public class WarehouseCycles extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+        dispatch.spinIntake(1);
+        dispatch.constantHeading(0.75,0,22,0.001,0,0.0003);
+        dispatch.turn(-10);
+        dispatch.turn(10);
+        dispatch.spinIntake(0);
+        dispatch.turnAbsPID(-180,2);
+        dispatch.constantHeading(1,-20,0,0.001,0,0.0003);
+        dispatch.moveElevator(constants.elevatorPositionTop);
+        dispatch.constantHeading(0.75,-5,17,0.001,0,0.0003);
+        dispatch.variableHeading(0.75,27,13,2);
+        dispatch.spinIntake(-1,2000);
+        dispatch.moveElevator(constants.elevatorPositionDown);
+        dispatch.variableHeading(0.75,18 ,-12,2);
+        dispatch.constantHeading(0.75,0,-20,0.001,0,0.0003);
+        dispatch.turnAbsPID(0,2);
+
+        /*
         //Start Movement
         switch (peterPiper.getLocation()){
             case ONE:
@@ -164,46 +181,43 @@ public class WarehouseCycles extends LinearOpMode {
             telemetry.update();
 
             case THREE:
-                telemetry.addData("Location", 3);
-                telemetry.update();
+                for (int i = 0; i < 2; i ++) {
+                    telemetry.addData("Location", 3);
+                    telemetry.update();
 
-                dispatch.constantHeading(.3, 4, 0,0.001,0,0.0003);
-                dispatch.spinIntake(1);
-                //yPose 24
-                dispatch.constantHeading(.3, 0, 15,0.001,0,0.0003);
-                dispatch.variableHeading(.1, -2, 1, 1);
-                dispatch.variableHeading(.1, 4, 1, 1);
-                dispatch.spinIntake(0);
-                dispatch.spinIntake(-0.4, 500);
-                dispatch.turnAbsPID(0, .5);
-                dispatch.constantHeading(.3, 5, 0,0.001,0,0.0003);
-                dispatch.constantHeading(.3, 0, -37,0.001,0,0.0003);
-                dispatch.constantHeading(.3, -4, 0,0.001,0,0.0003);
-                dispatch.turnAbsPID(-90, .5);
-                dispatch.constantHeading(.5, 0, 0,0.001,0,0.0003);
+                    dispatch.constantHeading(0.75, 4, 0, 0.001, 0, 0.0003);
+                    dispatch.spinIntake(1);
+                    //yPose 24
+                    dispatch.constantHeading(0.75, 0, 22, 0.001, 0, 0.0003);
+                    dispatch.turn(-5);
+                    dispatch.turn(5);
+                    dispatch.turnAbsPID(0, 2);
+                    dispatch.constantHeading(0.5, 7, 0, 0.001, 0, 0.0003);
+                    dispatch.spinIntake(-0.1);
+                    dispatch.moveElevator(constants.elevatorPositionTop);
+                    dispatch.turnAbsPID(0, .5);
+                    dispatch.spinIntake(0);
+                    dispatch.constantHeading(0.75, 5, 0, 0.001, 0, 0.0003);
+                    dispatch.constantHeading(0.75, 0, -46, 0.001, 0, 0.0003);
+                    dispatch.constantHeading(0.75, -4, 0, 0.001, 0, 0.0003);
+                    dispatch.turnAbsPID(-90, .5);
+                    dispatch.constantHeading(0.75, 0, 0, 0.001, 0, 0.0003);
 
-                //Out-take
-                dispatch.moveElevator(constants.elevatorPositionTop);
-                sleep(500);
-                dispatch.turnAbsPID(-90, 1);
-                dispatch.constantHeading(0.5, -10, 8, 0.001,0,0.0003);
-                dispatch.constantHeading(0.5, 0, 3, 0.001,0,0.0003);
-                dispatch.turnAbsPID(-90, 1);
-                dispatch.constantHeading(0.5, 0, 0, 0.001,0,0.0003);
-                dispatch.spinIntake(-1, 2000);
-                dispatch.moveElevator(constants.elevatorPositionDown);
-                dispatch.constantHeading(0.3, 0, -5, 0.01,0,0.0003);
-                dispatch.turnAbsPID(0, 1);
-                dispatch.constantHeading(0.3, 12, 0, 0.01,0,0.0003);
+                    //Out-take
+                    dispatch.turnAbsPID(-90, 1);
+                    dispatch.constantHeading(0.75, -10, 8, 0.001, 0, 0.0003);
+                    dispatch.constantHeading(0.75, 0, 3, 0.001, 0, 0.0003);
+                    dispatch.turnAbsPID(-90, 1);
+                    dispatch.constantHeading(0.75, -3, 6, 0.001, 0, 0.0003);
+                    dispatch.spinIntake(-1, 2000);
+                    dispatch.moveElevator(constants.elevatorPositionDown);
+                    dispatch.constantHeading(0.75, 0, -5, 0.01, 0, 0.0003);
+                    dispatch.turnAbsPID(0, 1);
+                    dispatch.constantHeading(0.75, 18, 0, 0.01, 0, 0.0003);
 
-                dispatch.breakPoint();
-                dispatch.turnAbsPID(0,1);
-                dispatch.constantHeading(0.5, 0, 26, 0.01,0,0.0003);
-
-                dispatch.breakPoint();
-                dispatch.constantHeading(0.3, 10, 0, 0.01,0,0.0003);
-                dispatch.constantHeading(0.5, 0, 8.5, 0.01,0,0.0003);
-
+                    dispatch.turnAbsPID(0, 1);
+                    dispatch.constantHeading(0.5, 0, 37, 0.01, 0, 0.0003);
+                }
 
                 break;
             case SPIDER_MAN_HOME_PNG_DOES_NOT_EXIST:
@@ -211,6 +225,9 @@ public class WarehouseCycles extends LinearOpMode {
                 telemetry.update();
                 break;
         }
+
+         */
+
         //End of Path
         telemetry.update();
     }

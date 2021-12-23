@@ -74,8 +74,8 @@ public class BaseDrive extends OpMode{
     Button carouselButtonInverted = new Button();
     Button lifterButton = new Button();
     Button lifterBottomButton = new Button();
-
-    int countSmile = 0;
+    Button spinInFullButton = new Button();
+    Button spinOutFullButton = new Button();
 
     @Override
     public void init() {
@@ -137,6 +137,8 @@ public class BaseDrive extends OpMode{
         carouselButtonInverted.update(gamepad2.b);
         lifterButton.update(gamepad2.y);
         lifterBottomButton.update(gamepad2.x);
+        spinInFullButton.update(gamepad2.dpad_down);
+        spinOutFullButton.update(gamepad2.dpad_up);
     }
 
     /*
@@ -300,12 +302,12 @@ public class BaseDrive extends OpMode{
 
     void SpinIntake(){
         //Turn On
-        if (gamepad2.dpad_down) // Spin In
+        if (spinInFullButton.is(Button.State.HELD)) // Spin In
             robot.spin.setPower(1);
+        else if (spinOutFullButton.is(Button.State.HELD)) // Spin Out Med
+            robot.spin.setPower(-1);
         else if (gamepad2.left_trigger == 1) //Spin Out Slow
             robot.spin.setPower(-0.2);
-        else if (gamepad2.dpad_up) // Spin Out Med
-            robot.spin.setPower(-0.25);
         else if (gamepad2.right_trigger == 1) //Spin Out Fast
             robot.spin.setPower(0.3);
         else

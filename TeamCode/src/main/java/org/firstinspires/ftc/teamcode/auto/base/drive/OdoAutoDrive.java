@@ -127,7 +127,18 @@ public class OdoAutoDrive extends LinearOpMode {
         waitForStart();
 
         //Start Movement
-        rampMove(1,80);
+
+        robot.lf.setPower(0.2);
+        robot.rf.setPower(0.2);
+        robot.lb.setPower(0.2);
+        robot.rb.setPower(0.2);
+
+        sleep(1000);
+
+        robot.lf.setPower(0);
+        robot.rf.setPower(0);
+        robot.lb.setPower(0);
+        robot.rb.setPower(0);
 
         //End of Path
         telemetry.update();
@@ -137,6 +148,11 @@ public class OdoAutoDrive extends LinearOpMode {
     //Functions for Moving
 
     void rampMove(double speed, double distance){
+
+        double targetAngle = getAbsoluteAngle();
+        TurnPIDController pidTurn = new TurnPIDController(targetAngle, 0.001, 0, 0.0003);
+
+
         int lfTargetDistance;
         int rfTargetDistance;
         int lbTargetDistance;
@@ -148,6 +164,11 @@ public class OdoAutoDrive extends LinearOpMode {
         double rbPower;
 
         if (opModeIsActive()){
+
+
+            double angleCorrection = pidTurn.update(getAbsoluteAngle());
+
+
             speed = speed * constants.maxVelocityDT;
 
             lfTargetDistance = (int) (robot.lf.getCurrentPosition() + (distance * constants.clicksPerInch));
@@ -165,18 +186,19 @@ public class OdoAutoDrive extends LinearOpMode {
             robot.rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
             while (opModeIsActive()){
+
+                angleCorrection = pidTurn.update(getAbsoluteAngle());
 
                 lfPower = Math.tanh(0.001 * (lfTargetDistance - robot.lf.getCurrentPosition()));
                 rfPower = Math.tanh(0.001 * (rfTargetDistance - robot.rf.getCurrentPosition()));
                 lbPower = Math.tanh(0.001 * (lbTargetDistance - robot.lb.getCurrentPosition()));
                 rbPower = Math.tanh(0.001 * (rbTargetDistance - robot.rb.getCurrentPosition()));
 
-                robot.lf.setVelocity(constants.maxVelocityDT * (0.2 + 0.8 * lfPower));
-                robot.rf.setVelocity(constants.maxVelocityDT * (0.2 + 0.8 * rfPower));
-                robot.lb.setVelocity(constants.maxVelocityDT * (0.2 + 0.8 * lbPower));
-                robot.rb.setVelocity(constants.maxVelocityDT * (0.2 + 0.8 * rbPower));
+                robot.lf.setVelocity(constants.maxVelocityDT * (0.2 + (0.8 * lfPower) - (speed * angleCorrection)));
+                robot.rf.setVelocity(constants.maxVelocityDT * (0.2 + (0.8 * rfPower) + (speed * angleCorrection)));
+                robot.lb.setVelocity(constants.maxVelocityDT * (0.2 + (0.8 * lbPower) - (speed * angleCorrection)));
+                robot.rb.setVelocity(constants.maxVelocityDT * (0.2 + (0.8 * rbPower) + (speed * angleCorrection)));
             }
 
         }
@@ -408,7 +430,7 @@ public class OdoAutoDrive extends LinearOpMode {
         telemetry.setMsTransmissionInterval(50);
         // Checking lastSlope to make sure that it's not oscillating when it quits
         runtime.reset();
-        while ((runtime.seconds() < timeoutS) && (Math.abs(targetAngle - getAbsoluteAngle()) > 0.2 || pid.getLastSlope() > 0.75)) {
+        while ((runtime.seconds() < timeoutS) && (Math.abs(targetAngle - getAbsoluteAngle()) > 0.75 || pid.getLastSlope() > 0.75)) {
             double motorPower = pid.update(getAbsoluteAngle());
             robot.lf.setPower(-motorPower);
             robot.rf.setPower(motorPower);

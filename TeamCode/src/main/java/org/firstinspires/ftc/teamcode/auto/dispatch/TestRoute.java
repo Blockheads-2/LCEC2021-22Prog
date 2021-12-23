@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.common.HardwareDrive;
 
 
 @Autonomous(name = "Test Route", group = "Routes")
-@Disabled
+//@Disabled
 public class TestRoute extends LinearOpMode {
     AutoHub dispatch;
 
@@ -18,9 +18,7 @@ public class TestRoute extends LinearOpMode {
         dispatch = new AutoHub(this);
 
         waitForStart();
-        dispatch.constantHeading(0.5,20,-20,0.001,0,0.003);
-        dispatch.variableHeading(0.5,15,-15,2);
-        dispatch.constantHeading(0.5,-20,20,0.001,0,0.003);
+        dispatch.constantHeading(0.5,0,40,0.01,0,0.003);
 
 
     }

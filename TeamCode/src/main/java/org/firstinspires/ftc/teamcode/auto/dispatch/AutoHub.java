@@ -36,7 +36,6 @@ public class AutoHub {
     MathSpline mathSpline = new MathSpline();
     MathConstHead mathConstHead = new MathConstHead();
 
-    double degreeConversion = constants.degree;
     private Orientation lastAngles = new Orientation();
     private double currAngle = 0.0;
 
@@ -382,6 +381,8 @@ public class AutoHub {
                 linearOpMode.telemetry.update();
             }
 
+
+
             // Stop all motion;
             robot.lf.setPower(0);
             robot.rf.setPower(0);
@@ -461,7 +462,7 @@ public class AutoHub {
         linearOpMode.telemetry.setMsTransmissionInterval(50);
         // Checking lastSlope to make sure that it's not oscillating when it quits
         runtime.reset();
-        while ((runtime.seconds() < timeoutS) && (Math.abs(targetAngle - getAbsoluteAngle()) > 0.5 || pid.getLastSlope() > 0.75)) {
+        while ((runtime.seconds() < timeoutS) && (Math.abs(targetAngle - getAbsoluteAngle()) > 0.25 || pid.getLastSlope() > 0.15)) {
             double motorPower = pid.update(getAbsoluteAngle());
             robot.lf.setPower(-motorPower);
             robot.rf.setPower(motorPower);

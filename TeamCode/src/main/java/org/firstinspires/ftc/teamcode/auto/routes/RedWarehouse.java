@@ -110,8 +110,15 @@ public class RedWarehouse extends LinearOpMode {
                 dispatch.constantHeading(0.3,0,-18,0.001,0,0.0003);
                 dispatch.turnAbsPID(90, 1);
                 dispatch.constantHeading(0.2,5,0,0.001,0,0.0003);
-                dispatch.constantHeading(0.5, 0, 32, 0.001,0,0.0003);
+                dispatch.constantHeading(0.5, 0, 39, 0.001,0,0.0003);
 
+
+                dispatch.spinIntake(1);
+                dispatch.constantHeading(0.2,-5,0,0.7, 0,0,0);
+                dispatch.spinIntake(-0.5);
+                dispatch.constantHeading(0.5,5,0,0,0,0);
+                dispatch.spinIntake(0.2);
+                dispatch.constantHeading(0.75, 0,-32,0.001,0,0.0003);
                 break;
             }
             case MID: {

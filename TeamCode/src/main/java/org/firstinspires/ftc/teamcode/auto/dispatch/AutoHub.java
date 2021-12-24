@@ -140,6 +140,8 @@ public class AutoHub {
 
                 targetAngle = startingAngle + zeta * (runtime.milliseconds() + 1);
 
+                checkButton();
+
                 TurnPIDController pidTurn = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
 
                 double angleCorrection = pidTurn.update(getAbsoluteAngle());
@@ -148,6 +150,8 @@ public class AutoHub {
                 robot.rf.setVelocity(speed * mathSpline.returnRPower());
                 robot.lb.setVelocity(speed * mathSpline.returnLPower());
                 robot.rb.setVelocity(speed * mathSpline.returnRPower());
+
+
             }
 
             // Stop all motion;
@@ -192,7 +196,7 @@ public class AutoHub {
             double startingAngle = getAbsoluteAngle();
             double targetAngle;
 
-            timeoutS = mathSpline.returnDistance() / (constants.clicksPerInch * speed);
+            timeoutS = (mathSpline.returnDistance() * constants.clicksPerInch) / speed;
 
             if ((yPose >= 0 && xPose < 0) || (yPose < 0 && xPose >= 0)){
                 FleftEncoderTarget = robot.lf.getCurrentPosition() - (int) leftDistance;
@@ -226,6 +230,8 @@ public class AutoHub {
 
                 targetAngle = startingAngle + zeta * (runtime.milliseconds() + 1);
 
+                checkButton();
+
                 TurnPIDController pidTurn = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
 
                 double angleCorrection = pidTurn.update(getAbsoluteAngle());
@@ -234,6 +240,8 @@ public class AutoHub {
                 robot.rf.setVelocity(speed * mathSpline.returnRPower());
                 robot.lb.setVelocity(speed * mathSpline.returnLPower());
                 robot.rb.setVelocity(speed * mathSpline.returnRPower());
+
+                linearOpMode.telemetry.addData("Time", timeoutS);
             }
 
             // Stop all motion;
@@ -295,6 +303,8 @@ public class AutoHub {
 
 
                 double angleCorrection = pidTurn.update(getAbsoluteAngle());
+
+                checkButton();
 
                 robot.lf.setVelocity((speed * constants.maxVelocityDT * ratioAddPose) - (speed * angleCorrection * constants.maxVelocityDT));
                 robot.rf.setVelocity((speed * constants.maxVelocityDT * ratioSubPose) + (speed * angleCorrection * constants.maxVelocityDT));
@@ -368,6 +378,7 @@ public class AutoHub {
 
             while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS)) {
 
+                checkButton();
 
                 double angleCorrection = pidTurn.update(getAbsoluteAngle());
 
@@ -435,6 +446,8 @@ public class AutoHub {
             robot.lb.setPower(-motorPower);
             robot.rb.setPower(motorPower);
 
+            checkButton();
+
             error = degrees - getAngle();
             linearOpMode.telemetry.addData("error", error);
             linearOpMode.telemetry.update();
@@ -468,6 +481,8 @@ public class AutoHub {
             robot.rf.setPower(motorPower);
             robot.lb.setPower(-motorPower);
             robot.rb.setPower(motorPower);
+
+            checkButton();
 
             linearOpMode.telemetry.addData("Current Angle", getAbsoluteAngle());
             linearOpMode.telemetry.addData("Target Angle", targetAngle);
@@ -515,6 +530,21 @@ public class AutoHub {
     public void breakPoint(){
         while (!linearOpMode.gamepad1.a) {
             sleep(1);
+        }
+    }
+
+    public void checkButton(){
+        if (robot.digitalTouch.getState() == false) {
+            //Stop
+            robot.lifter.setPower(0);
+
+            //Reset
+            robot.lifter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            robot.lifter.setTargetPosition(20);
+            robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.lifter.setPower(0.1);
         }
     }
 

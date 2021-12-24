@@ -95,10 +95,8 @@ public class WarehouseCycles extends LinearOpMode {
 
         dispatch.spinIntake(1);
         dispatch.constantHeading(0.75,0,22,0.001,0,0.0003);
-        dispatch.turn(-10);
-        dispatch.turn(10);
-        dispatch.spinIntake(0);
         dispatch.turnAbsPID(-180,2);
+        dispatch.spinIntake(0);
         dispatch.constantHeading(1,-20,0,0.001,0,0.0003);
         dispatch.moveElevator(constants.elevatorPositionTop);
         dispatch.constantHeading(0.75,-5,17,0.001,0,0.0003);

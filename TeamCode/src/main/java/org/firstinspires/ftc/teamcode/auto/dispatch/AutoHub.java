@@ -494,6 +494,9 @@ public class AutoHub {
         robot.rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
+        constantHeading(1,0,0,0,0,0); //Brakes
     }
 
     //Peripheral Movements

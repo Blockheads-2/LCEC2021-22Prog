@@ -82,7 +82,7 @@ public class RedWarehouse extends LinearOpMode {
                 dispatch.spinIntake(0);
 
                 //out-take
-                dispatch.spinIntake(-1, 2000);
+                dispatch.spinIntake(-1, 1000);
                 dispatch.constantHeading(0.5,0,-5,0.001,0,0.0003);
                 dispatch.moveElevator(constants.elevatorPositionDown);
                 dispatch.turnAbsPID(0,0.5);
@@ -130,7 +130,10 @@ public class RedWarehouse extends LinearOpMode {
                 dispatch.spinIntake(-1,1250);
                 dispatch.variableHeading(0.75, 18 ,-12,2);
                 dispatch.moveElevator(constants.elevatorPositionDown);
-                dispatch.constantHeading(0.75,0,-23,0.001,0,0.0003);
+                dispatch.constantHeading(0.75,0,-26,0.001,0,0.0003);
+
+                dispatch.turnAbsPID(90,1);
+                dispatch.constantHeading(0.75,0,-0,0.001,0,0.0003);
 
                 break;
             }
@@ -159,7 +162,7 @@ public class RedWarehouse extends LinearOpMode {
                 dispatch.variableHeading(.5, 4, 0, .5);
                 dispatch.constantHeading(.5, 0, -5, 0.001,0,0.0003);
                 dispatch.spinIntake(0);
-                dispatch.spinIntake(-0.2, 375);
+                dispatch.spinIntake(-0.3, 375);
                 dispatch.turnAbsPID(-90,1);
                 dispatch.spinIntake(.15);
                 dispatch.constantHeading(1,-20,0,0.001,0,0.0003);
@@ -182,7 +185,7 @@ public class RedWarehouse extends LinearOpMode {
                 dispatch.variableHeading(.5, 4, 0, .5);
                 dispatch.constantHeading(.5, 0, -7, 0.001,0,0.0003);
                 dispatch.spinIntake(0);
-                dispatch.spinIntake(-0.2);
+                dispatch.spinIntake(-0.3);
                 dispatch.turnAbsPID(-90,1);
                 dispatch.spinIntake(.15);
                 dispatch.constantHeading(1,-20,0,0.001,0,0.0003);

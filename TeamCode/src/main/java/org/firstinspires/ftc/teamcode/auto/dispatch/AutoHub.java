@@ -2,16 +2,25 @@ package org.firstinspires.ftc.teamcode.auto.dispatch;
 
 import static android.os.SystemClock.sleep;
 
+import android.app.Activity;
+import android.graphics.Color;
+import android.view.View;
+
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
+import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.common.Constants;
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
@@ -45,7 +54,11 @@ public class AutoHub {
     static final double     WHEEL_DIAMETER_INCHES   =  (96.0/25.4);     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
+    boolean in = false;
 
+    double startRunTime = 0;
+
+    View relativeLayout;
 
     public AutoHub(LinearOpMode plinear){
 
@@ -60,6 +73,12 @@ public class AutoHub {
         linearOpMode.telemetry.addData("Status", "Resetting Encoders and Camera");
         linearOpMode.telemetry.update();
 
+        // Get a reference to the RelativeLayout so we can later change the background
+        // color of the Robot Controller app to match the hue detected by the RGB sensor.
+        int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
+        relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
+
+
         robot.lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -72,8 +91,12 @@ public class AutoHub {
         robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        linearOpMode.telemetry.addData("Status", "Ready to Run");
+        linearOpMode.telemetry.addData("Status", "Waiting on Camera");
         linearOpMode.telemetry.update();
+
+        if (robot.colorSensor instanceof SwitchableLight) {
+            ((SwitchableLight)robot.colorSensor).enableLight(true);
+        }
     }
 
     //====================================================================================
@@ -141,6 +164,7 @@ public class AutoHub {
                 targetAngle = startingAngle + zeta * (runtime.milliseconds() + 1);
 
                 checkButton();
+                detectColor();
 
                 TurnPIDController pidTurn = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
 
@@ -231,6 +255,8 @@ public class AutoHub {
                 targetAngle = startingAngle + zeta * (runtime.milliseconds() + 1);
 
                 checkButton();
+                detectColor();
+
 
                 TurnPIDController pidTurn = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
 
@@ -305,6 +331,7 @@ public class AutoHub {
                 double angleCorrection = pidTurn.update(getAbsoluteAngle());
 
                 checkButton();
+                detectColor();
 
                 robot.lf.setVelocity((speed * constants.maxVelocityDT * ratioAddPose) - (speed * angleCorrection * constants.maxVelocityDT));
                 robot.rf.setVelocity((speed * constants.maxVelocityDT * ratioSubPose) + (speed * angleCorrection * constants.maxVelocityDT));
@@ -330,7 +357,6 @@ public class AutoHub {
             robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
-
     public void constantHeading(double speed, double xPose, double yPose, double kP, double kI, double kD) {
         mathConstHead.setFinalPose(xPose,yPose);
 
@@ -379,6 +405,7 @@ public class AutoHub {
             while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS)) {
 
                 checkButton();
+                detectColor();
 
                 double angleCorrection = pidTurn.update(getAbsoluteAngle());
 
@@ -446,6 +473,7 @@ public class AutoHub {
             robot.lb.setPower(-motorPower);
             robot.rb.setPower(motorPower);
 
+            detectColor();
             checkButton();
 
             error = degrees - getAngle();
@@ -481,6 +509,8 @@ public class AutoHub {
             robot.rf.setPower(motorPower);
             robot.lb.setPower(-motorPower);
             robot.rb.setPower(motorPower);
+
+            detectColor();
 
             checkButton();
 
@@ -549,6 +579,20 @@ public class AutoHub {
             robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.lifter.setPower(0.1);
         }
+    }
+    public void detectColor() {
+        // Get the normalized colors from the sensor
+        NormalizedRGBA colors = robot.colorSensor.getNormalizedColors();
+
+
+        if(in && (runtime.seconds() - startRunTime) > 2){
+            spinIntake(0.01);
+        } else if (colors.red >= 0.014 && colors.green >= 0.010 && colors.blue >= 0.006 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 7 && !in) {
+            spinIntake(0);
+            in = true;
+            startRunTime = runtime.seconds();
+        } else if (colors.red < 0.014 && colors.green < 0.01 && colors.blue < 0.006 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) > 7)
+            in = false;
     }
 
 }

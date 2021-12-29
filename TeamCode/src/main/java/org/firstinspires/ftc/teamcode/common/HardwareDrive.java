@@ -29,12 +29,16 @@
 
 package org.firstinspires.ftc.teamcode.common;
 
+import android.app.Activity;
 import android.hardware.Sensor;
+import android.view.View;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -80,6 +84,9 @@ public class HardwareDrive
     public DigitalChannel digitalTouch;
     public BNO055IMU imu;
 
+    public NormalizedColorSensor colorSensor;
+
+
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
@@ -104,6 +111,11 @@ public class HardwareDrive
 
         duckWheel = hwMap.get(DcMotorEx.class, "carousel");
         lifter = hwMap.get(DcMotorEx.class, "lifter");
+        colorSensor = hwMap.get(NormalizedColorSensor.class, "color");
+
+        if (colorSensor instanceof SwitchableLight) {
+            ((SwitchableLight)colorSensor).enableLight(true);
+        }
 
 
         //Pyll String Test Opmode

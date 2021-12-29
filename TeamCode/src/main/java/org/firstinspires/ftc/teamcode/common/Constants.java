@@ -27,4 +27,8 @@ public class Constants {
     //Distance Between Odo and Center
     public double horizontalDistanceOdo = 6.25;
     public double midDistanceOdo = 3.0;
+
+    //Velocity of Spin
+    public double spinClockwise = 1600;
+    public double spinCounterClockwise = - 1600;
 }

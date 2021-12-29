@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.auto.base.drive;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -32,6 +33,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
+@Disabled
 @Autonomous (name = "Warehouse Cycles", group = "Test")
 public class WarehouseCycles extends LinearOpMode {
     /* Declare OpMode members. */

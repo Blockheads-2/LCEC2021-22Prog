@@ -85,6 +85,7 @@ public class HardwareDrive
     public BNO055IMU imu;
 
     public NormalizedColorSensor colorSensor;
+    public NormalizedColorSensor colorFloorSensor;
 
 
 
@@ -112,10 +113,13 @@ public class HardwareDrive
         duckWheel = hwMap.get(DcMotorEx.class, "carousel");
         lifter = hwMap.get(DcMotorEx.class, "lifter");
         colorSensor = hwMap.get(NormalizedColorSensor.class, "color");
+        colorFloorSensor = hwMap.get(NormalizedColorSensor.class, "floor_color");
 
-        if (colorSensor instanceof SwitchableLight) {
+        if (colorSensor instanceof SwitchableLight)
             ((SwitchableLight)colorSensor).enableLight(true);
-        }
+
+        if (colorFloorSensor instanceof SwitchableLight)
+            ((SwitchableLight)colorFloorSensor).enableLight(true);
 
 
         //Pyll String Test Opmode

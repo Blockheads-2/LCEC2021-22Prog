@@ -20,8 +20,7 @@ public class TestRoute extends LinearOpMode {
         waitForStart();
 
         dispatch.spinIntake(1);
-        dispatch.constantHeading(0.2,0,20,0.001,0,0.0003);
-        dispatch.variableHeading(0.3,10,10);
+        dispatch.constantHeading(0.2,0,100,true,0.001,0,0.0003);
 
 
     }

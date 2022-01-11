@@ -1,10 +1,16 @@
 package org.firstinspires.ftc.teamcode.teleop.base;
 
+import android.app.Activity;
+import android.view.View;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.common.Button;
 import org.firstinspires.ftc.teamcode.common.Constants;
 
@@ -33,12 +39,18 @@ public class BaseDrive extends OpMode{
     Button spinInFullButton = new Button();
     Button spinOutFullButton = new Button();
 
+    /** The relativeLayout field is used to aid in providing interesting visual feedback
+     * in this sample application; you probably *don't* need this when you use a color sensor on your
+     * robot. Note that you won't see anything change on the Driver Station, only on the Robot Controller. */
+    View relativeLayout;
+
     @Override
     public void init() {
         robot.init(hardwareMap);
 
         telemetry.addData("Say", "Hello Driver");
         runtime.reset();
+
     }
 
     @Override
@@ -78,6 +90,7 @@ public class BaseDrive extends OpMode{
 
         telemetry.addData("lifter position", robot.lifter.getCurrentPosition());
         telemetry.addData("Carousel Velocity", robot.duckWheel.getVelocity());
+
       //  telemetry.addData("Touch Sensor", robot.digitalTouch.getState());
         telemetry.update();
     }
@@ -258,16 +271,29 @@ public class BaseDrive extends OpMode{
 
     void SpinIntake(){
         //Turn On
+        int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
+        relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
+
+
+        NormalizedRGBA colors = robot.colorSensor.getNormalizedColors();
+
         if (spinInFullButton.is(Button.State.HELD)) // Spin In
             robot.spin.setPower(1);
         else if (spinOutFullButton.is(Button.State.HELD)) // Spin Out Med
             robot.spin.setPower(-1);
-        else if (gamepad2.left_trigger == 1) //Spin Out Slow
-            robot.spin.setPower(-0.2);
-        else if (gamepad2.right_trigger == 1) //Spin Out Fast
-            robot.spin.setPower(0.3);
-        else
+
+        if (colors.red >= 0.014 && colors.green >= 0.010 && colors.blue >= 0.006 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 7){
             robot.spin.setPower(0);
+        }
+
+
+        if (gamepad2.left_trigger == 1) //Spin Out Slow
+            robot.spin.setPower(-1);
+        else if (gamepad2.right_trigger == 1) //Spin Out Fast
+            robot.spin.setPower(1);
+
+
+
     }
 
     /*

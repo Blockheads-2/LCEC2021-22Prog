@@ -53,56 +53,61 @@ public class BlueWarehouse extends LinearOpMode {
                 sleep(750);
                 // move to drop
                 dispatch.spinIntake(0.1);
-                dispatch.variableHeading(0.5,7,15,2);
+                dispatch.variableHeading(0.5,7,14.5,2);
                 dispatch.spinIntake(0);
 
                 //out-take
-                dispatch.spinIntake(-1, 2000);
+                dispatch.spinIntake(-1, 1020);
                 dispatch.constantHeading(0.5,0,-5,0.001,0,0.0003);
                 dispatch.moveElevator(constants.elevatorPositionDown);
                 dispatch.turnAbsPID(0,0.5);
-                dispatch.constantHeading(0.3,0,-18,0.001,0,0.0003);
+                dispatch.constantHeading(0.6,0,-18,0.001,0,0.0003);
                 dispatch.turnAbsPID(-90, 1);
-                dispatch.constantHeading(0.2,-5,0,0.001,0,0.0003);
-                dispatch.constantHeading(0.5, 0, 32, 0.001,0,0.0003);
+                dispatch.constantHeading(0.4,-5,0,0.001,0,0.0003);
+                dispatch.constantHeading(0.8, 0, 17, 0.001,0,0.0003);
+                //delete later
+                dispatch.constantHeading(1,0,23,0.001,0,0.0003);
 
-                /*
-                //power on lift
-                dispatch.moveElevator(constants.elevatorPositionBottom);
-
-                // move to drop
-                dispatch.spinIntake(0.1);
-                dispatch.constantHeading(0.6,30,20,0.001,0,0.0003);
-                dispatch.turnAbsPID(0,1);
-                dispatch.constantHeading(0.5,0,21,0.001,0,0.0003);
-                dispatch.variableHeading(0.6,-10,1.7,1.5);
-                dispatch.constantHeading(0.5,-5.5,0,0.001,0,0.0003);
-                dispatch.spinIntake(0);
-                dispatch.constantHeading(0.5,0,.8,0.001,0,0.0003);
-
-
-                //out-take
-                dispatch.constantHeading(0.5,-2,7,0.001,0,0.0003);
-                dispatch.spinIntake(-1,2000);
-
-                dispatch.constantHeading(0.5,0,-5,0.001,0,0.0003);
-
+/*
+                //Cycle 1
+                dispatch.spinIntake(1);
+                dispatch.constantHeading(1,0,23,1.2,0.001,0,0.0003);
+                dispatch.variableHeading(.7, 4, 0, .4);
+                dispatch.variableHeading(.7, -4, 0, .4);
+                dispatch.constantHeading(.7, 0, -7, 0.001,0,0.0003);
+                dispatch.spinIntake(.15);
+                dispatch.turnAbsPID(90,1);
+                dispatch.constantHeading(1,20,0,0.001,0,0.0003);
+                dispatch.moveElevator(constants.elevatorPositionTop);
+                dispatch.constantHeading(0.75,9,19,0.001,0,0.0003);
+                dispatch.variableHeading(0.75,-27,13,2.5);
+                dispatch.spinIntake(-1,1250);
+                dispatch.variableHeading(0.75,-18 ,-13,2);
                 dispatch.moveElevator(constants.elevatorPositionDown);
-                //move to carousel -- start ---
-                dispatch.turnAbsPID(270,0.5);
-                dispatch.constantHeading(0.3,0,-35,0.001,0,0.0003);
-                dispatch.constantHeading(0.3,0,1,0.001,0,0.0003);
-                dispatch.turnAbsPID(0,1);
-                dispatch.constantHeading(0.5,4,0,0.001,0,0.0003);
-                dispatch.constantHeading(0.45,10,-30,0.001,0,0.0003);
-
-                dispatch.spinCarousel(1400);
-                dispatch.constantHeading(0.2,0,-6,2.5,0.001,0,0.0003);
-                dispatch.spinCarousel(0);
-                dispatch.constantHeading(0.5,5,0,0.001,0,0.0003);
-                dispatch.constantHeading(0.3,0,24,0.001,0,0.0003);
+                dispatch.turnAbsPID(90,0.1);
+                dispatch.constantHeading(1,0,-23,0.001,0,0.0003);
                 dispatch.turnAbsPID(-90,1);
-                */
+
+
+                //Cycle 2
+                dispatch.spinIntake(1);
+                dispatch.constantHeading(1,0,10,0.7,0.001,0,0.0003);
+                dispatch.variableHeading(.7, 4, 0, .4);
+                dispatch.variableHeading(.7, -4, 0, .4);
+                dispatch.constantHeading(.7, 0, -7, 0.001,0,0.0003);
+                dispatch.spinIntake(.15);
+                dispatch.turnAbsPID(90,1);
+                dispatch.constantHeading(1,20,0,0.001,0,0.0003);
+                dispatch.moveElevator(constants.elevatorPositionTop);
+                dispatch.constantHeading(0.75,9,19,0.001,0,0.0003);
+                dispatch.variableHeading(0.75,-33,13,2);
+                dispatch.spinIntake(-1,1250);
+                dispatch.variableHeading(0.85, -18 ,-13,1.8);
+                dispatch.moveElevator(constants.elevatorPositionDown);
+                dispatch.turnAbsPID(90,0.1);
+                dispatch.constantHeading(1,0,-27,1.7,0.001,0,0.0003);
+*/
+
                 break;
 
             }
@@ -117,31 +122,56 @@ public class BlueWarehouse extends LinearOpMode {
 
                 //out-take
                 dispatch.spinIntake(-1, 2000);
-                dispatch.constantHeading(0.5,0,-5,0.001,0,0.0003);
+                dispatch.constantHeading(0.75,0,-5,0.001,0,0.0003);
                 dispatch.moveElevator(constants.elevatorPositionDown);
                 dispatch.turnAbsPID(0,0.5);
-                dispatch.constantHeading(0.3,0,-18,0.001,0,0.0003);
+                dispatch.constantHeading(0.75,0,-18,0.001,0,0.0003);
                 dispatch.turnAbsPID(-90, 1);
-                dispatch.constantHeading(0.2,-5,0,0.001,0,0.0003);
-                dispatch.constantHeading(0.5, 0, 32, 0.001,0,0.0003);
+                dispatch.constantHeading(0.75,-5,0,0.001,0,0.0003);
+                dispatch.constantHeading(1, 0, 23, 0.001,0,0.0003);
+                //delete this line later
+                dispatch.constantHeading(1,0,23,0.001,0,0.0003);
 
-//                dispatch.moveElevator(constants.elevatorPositionDown);
-//                //move to carousel -- start ---
-//                dispatch.turnAbsPID(270, 0.5);
-//                dispatch.constantHeading(0.3, 0, -35, 0.001, 0, 0.0003);
-//                dispatch.constantHeading(0.3, 0, 1, 0.001, 0, 0.0003);
-//                dispatch.turnAbsPID(0, 1);
-//                dispatch.constantHeading(0.5, 4, 0, 0.001, 0, 0.0003);
-//                dispatch.constantHeading(0.45, 10, -30, 0.001, 0, 0.0003);
-//
-//                dispatch.spinCarousel(1400);
-//                dispatch.constantHeading(0.2, 0, -6, 2.5, 0.001, 0, 0.0003);
-//                dispatch.spinCarousel(0);
-//                dispatch.constantHeading(0.5, 5, 0, 0.001, 0, 0.0003);
-//                dispatch.constantHeading(0.3, 0, 24, 0.001, 0, 0.0003);
-//                dispatch.turnAbsPID(-90, 1);
+/*
+                //Cycle 1
+                dispatch.spinIntake(1);
+                dispatch.constantHeading(1,0,23,0.001,0,0.0003);
+                dispatch.variableHeading(.7, 4, 0, .5);
+                dispatch.variableHeading(.7, -4, 0, .5);
+                dispatch.constantHeading(.7, 0, -7, 0.001,0,0.0003);
+                dispatch.spinIntake(.15);
+                dispatch.turnAbsPID(90,1);
+                dispatch.constantHeading(1,20,0,0.001,0,0.0003);
+                dispatch.moveElevator(constants.elevatorPositionTop);
+                dispatch.constantHeading(0.75,9,19,0.001,0,0.0003);
+                dispatch.variableHeading(0.75,-29,12,2.5);
+                dispatch.spinIntake(-1,1250);
+                dispatch.variableHeading(0.75,-18 ,-13,2);
+                dispatch.moveElevator(constants.elevatorPositionDown);
+                dispatch.turnAbsPID(90,0.1);
+                dispatch.constantHeading(1,0,-23,0.001,0,0.0003);
+                dispatch.turnAbsPID(-90,1);
 
 
+                //Cycle 2
+                dispatch.spinIntake(1);
+                dispatch.constantHeading(1,0,10,0.001,0,0.0003);
+                dispatch.variableHeading(.7, 4, 0, .5);
+                dispatch.variableHeading(.7, -4, 0, .5);
+                dispatch.constantHeading(.7, 0, -7, 0.001,0,0.0003);
+                dispatch.spinIntake(.15);
+                dispatch.turnAbsPID(90,1);
+                dispatch.constantHeading(1,20,0,0.001,0,0.0003);
+                dispatch.moveElevator(constants.elevatorPositionTop);
+                dispatch.constantHeading(0.75,9,19,0.001,0,0.0003);
+                dispatch.variableHeading(0.75,-31,13,2);
+                dispatch.spinIntake(-1,1250);
+                dispatch.variableHeading(0.75, -18 ,-13,2);
+                dispatch.moveElevator(constants.elevatorPositionDown);
+                dispatch.turnAbsPID(90,1);
+                dispatch.constantHeading(1,0,-27,1.7,0.001,0,0.0003);
+
+ */
                 break;
             }
             case MID: {
@@ -150,54 +180,62 @@ public class BlueWarehouse extends LinearOpMode {
                 sleep(750);
                 // move to drop
                 dispatch.spinIntake(0.1);
-                dispatch.variableHeading(0.5,7,12,2);
+                dispatch.variableHeading(0.75,5,12,2);
                 dispatch.spinIntake(0);
 
                 //out-take
                 dispatch.spinIntake(-1, 2000);
-                dispatch.constantHeading(0.5,0,-5,0.001,0,0.0003);
+                dispatch.constantHeading(0.75,0,-5,0.001,0,0.0003);
                 dispatch.moveElevator(constants.elevatorPositionDown);
                 dispatch.turnAbsPID(0,0.5);
-                dispatch.constantHeading(0.3,0,-18,0.001,0,0.0003);
+                dispatch.constantHeading(0.75,0,-18,0.001,0,0.0003);
                 dispatch.turnAbsPID(-90, 1);
-                dispatch.constantHeading(0.2,-5,0,0.001,0,0.0003);
-                dispatch.constantHeading(0.5, 0, 32, 0.001,0,0.0003);
+                dispatch.constantHeading(0.75,-5,0,0.001,0,0.0003);
+                dispatch.constantHeading(1, 0, 17, 0.001,0,0.0003);
+                //delete line later
+                dispatch.constantHeading(1,0,23,0.001,0,0.0003);
 
-                /*
-                // move to drop
-                dispatch.spinIntake(0.1);
-                dispatch.constantHeading(0.6, 30, 20, 0.001, 0, 0.0003);
-                dispatch.turnAbsPID(0, 1);
-                dispatch.constantHeading(0.5, 0, 21, 0.001, 0, 0.0003);
-                dispatch.variableHeading(0.6, -10, 1.7, 1.5);
-                dispatch.constantHeading(0.5, -5.5, 0, 0.001, 0, 0.0003);
-                dispatch.spinIntake(0);
-
-                dispatch.turnAbsPID(270, 1);
-                dispatch.constantHeading(.5, -10.5, 2, .001, 0, .0003);
-                sleep(500);
-
-                //out-take
-                dispatch.spinIntake(-1, 2000);
-
-                dispatch.constantHeading(0.5, 0, -5, 0.001, 0, 0.0003);
-
+/*
+                //Cycle 1
+                dispatch.spinIntake(1);
+                dispatch.constantHeading(1,0,23,0.001,0,0.0003);
+                dispatch.variableHeading(.7, 4, 0, .5);
+                dispatch.variableHeading(.7, -4, 0, .5);
+                dispatch.constantHeading(.7, 0, -7, 0.001,0,0.0003);
+                dispatch.spinIntake(.15);
+                dispatch.turnAbsPID(90,1);
+                dispatch.constantHeading(1,20,0,0.001,0,0.0003);
+                dispatch.moveElevator(constants.elevatorPositionTop);
+                dispatch.constantHeading(0.75,9,19,0.001,0,0.0003);
+                dispatch.variableHeading(0.75,-28.5,12,2.5);
+                dispatch.spinIntake(-1,1250);
+                dispatch.variableHeading(0.75,-17 ,-13,2);
                 dispatch.moveElevator(constants.elevatorPositionDown);
-                //move to carousel -- start ---
-                dispatch.turnAbsPID(270, 0.5);
-                dispatch.constantHeading(0.3, 0, -35, 0.001, 0, 0.0003);
-                dispatch.constantHeading(0.3, 0, 1, 0.001, 0, 0.0003);
-                dispatch.turnAbsPID(0, 1);
-                dispatch.constantHeading(0.5, 4, 0, 0.001, 0, 0.0003);
-                dispatch.constantHeading(0.45, 10, -30, 0.001, 0, 0.0003);
+                dispatch.turnAbsPID(90,1);
+                dispatch.constantHeading(1,0,-23,0.001,0,0.0003);
+                dispatch.turnAbsPID(-90,1);
 
-                dispatch.spinCarousel(1400);
-                dispatch.constantHeading(0.2, 0, -6, 2.5, 0.001, 0, 0.0003);
-                dispatch.spinCarousel(0);
-                dispatch.constantHeading(0.5, 5, 0, 0.001, 0, 0.0003);
-                dispatch.constantHeading(0.3, 0, 24, 0.001, 0, 0.0003);
-                dispatch.turnAbsPID(-90, 1);
-                */
+
+
+                //Cycle 2
+                dispatch.spinIntake(1);
+                dispatch.constantHeading(1,0,10,0.001,0,0.0003);
+                dispatch.variableHeading(.7, 4, 0, .5);
+                dispatch.variableHeading(.7, -4, 0, .5);
+                dispatch.constantHeading(.7, 0, -7, 0.001,0,0.0003);
+                dispatch.spinIntake(.15);
+                dispatch.turnAbsPID(90,1);
+                dispatch.constantHeading(1,20,0,0.001,0,0.0003);
+                dispatch.moveElevator(constants.elevatorPositionTop);
+                dispatch.constantHeading(0.75,9,19,0.001,0,0.0003);
+                dispatch.variableHeading(0.75,-33,13,2);
+                dispatch.spinIntake(-1,1250);
+                dispatch.variableHeading(0.75, -18 ,-13,2);
+                dispatch.moveElevator(constants.elevatorPositionDown);
+                dispatch.turnAbsPID(90,1);
+                dispatch.constantHeading(1,0,-27,1.7,0.001,0,0.0003);
+
+ */
 
                 break;
             }

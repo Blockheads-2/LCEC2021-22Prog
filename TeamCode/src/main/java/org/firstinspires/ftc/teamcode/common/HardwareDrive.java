@@ -86,6 +86,7 @@ public class HardwareDrive
 
     public NormalizedColorSensor colorSensor;
     public NormalizedColorSensor colorFloorSensor;
+    public NormalizedColorSensor colorFloorSensor2;
 
 
 
@@ -114,12 +115,17 @@ public class HardwareDrive
         lifter = hwMap.get(DcMotorEx.class, "lifter");
         colorSensor = hwMap.get(NormalizedColorSensor.class, "color");
         colorFloorSensor = hwMap.get(NormalizedColorSensor.class, "floor_color");
+        colorFloorSensor2 = hwMap.get(NormalizedColorSensor.class, "floor_color2");
+
 
         if (colorSensor instanceof SwitchableLight)
             ((SwitchableLight)colorSensor).enableLight(true);
 
         if (colorFloorSensor instanceof SwitchableLight)
             ((SwitchableLight)colorFloorSensor).enableLight(true);
+
+        if (colorFloorSensor2 instanceof SwitchableLight)
+            ((SwitchableLight)colorFloorSensor2).enableLight(true);
 
 
         //Pyll String Test Opmode

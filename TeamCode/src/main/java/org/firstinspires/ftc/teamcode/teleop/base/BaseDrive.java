@@ -219,7 +219,7 @@ public class BaseDrive extends OpMode{
 
         if (lifterBottomButton.is(Button.State.TAP)){
                 if (position >= (constants.elevatorPositionBottom - 10)) {
-                    robot.lifter.setTargetPosition(constants.elevatorPositionDown);
+                    robot.lifter.setTargetPosition(constants.elevatorPositionDown - 200);
                     robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.lifter.setPower(1);
                 }
@@ -230,11 +230,6 @@ public class BaseDrive extends OpMode{
                 }
         }
 
-        if (lifterBottomButton.is(Button.State.DOUBLE_TAP)){
-            robot.lifter.setTargetPosition(constants.elevatorAcrossDrop);
-            robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.lifter.setPower(1);
-        }
         if (gamepad2.left_bumper) {
             robot.lifter.setTargetPosition(position - 50);
             robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -273,24 +268,22 @@ public class BaseDrive extends OpMode{
         //Turn On
         int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
         relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
-
-
+/*
         NormalizedRGBA colors = robot.colorSensor.getNormalizedColors();
 
-        if (spinInFullButton.is(Button.State.HELD)) // Spin In
-            robot.spin.setPower(1);
-        else if (spinOutFullButton.is(Button.State.HELD)) // Spin Out Med
-            robot.spin.setPower(-1);
+
 
         if (colors.red >= 0.014 && colors.green >= 0.010 && colors.blue >= 0.006 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 7){
             robot.spin.setPower(0);
         }
-
-
-        if (gamepad2.left_trigger == 1) //Spin Out Slow
-            robot.spin.setPower(-1);
-        else if (gamepad2.right_trigger == 1) //Spin Out Fast
+*/
+        if (spinInFullButton.is(Button.State.HELD)) // Spin In
             robot.spin.setPower(1);
+        else if (spinOutFullButton.is(Button.State.HELD)) // Spin Out Med
+            robot.spin.setPower(-1);
+        else
+            robot.spin.setPower(0);
+
 
 
 

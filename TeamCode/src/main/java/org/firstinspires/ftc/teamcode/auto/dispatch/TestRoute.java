@@ -19,8 +19,9 @@ public class TestRoute extends LinearOpMode {
 
         waitForStart();
 
-        dispatch.spinIntake(1);
-        dispatch.constantHeading(0.2,0,100,true,0.001,0,0.0003);
+        dispatch.constantHeading(1,25,0,true,0.001,0,0.0003);
+        dispatch.constantHeading(0.75,9,40,true,0.001,0,0.0003);
+        dispatch.variableHeading(0.75,-35,10,2);
 
 
     }

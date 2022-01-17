@@ -52,9 +52,9 @@ public class BlueCarousel extends LinearOpMode{
     waitForStart();
         switch (detector.getLocation()) {
             case LEFT: {
-                dispatch.moveElevator(constants.elevatorPositionBottom);
+                dispatch.moveElevator(constants.elevatorPositionBottom + 100);
                 sleep(1000);
-                dispatch.variableHeading(.5, -5.5, 14, 2);
+                dispatch.variableHeading(.5, -6, 14, 2);
                 dispatch.spinIntake(-1,2000);
                 dispatch.constantHeading(.5, 0, -8, 0.001,0,0.0003);
                 dispatch.turnAbsPID(270, 1);
@@ -63,7 +63,7 @@ public class BlueCarousel extends LinearOpMode{
                 dispatch.turnAbsPID(0, 1);
                 dispatch.constantHeading(.5, 8, 0, .001, 0, .0003);
                 dispatch.spinCarousel(1000);
-                dispatch.constantHeading(0.2,0,-6,3,0.001,0,0.0003);
+                dispatch.constantHeading(0.2,0,-9,4,0.001,0,0.0003);
                 dispatch.spinCarousel(0);
                 dispatch.constantHeading(0.5,5,0,0.001,0,0.0003);
                 dispatch.constantHeading(0.3,0,24,0.001,0,0.0003);
@@ -85,7 +85,7 @@ public class BlueCarousel extends LinearOpMode{
                 dispatch.turnAbsPID(0, 1);
                 dispatch.constantHeading(.5, 8, 0, .001, 0, .0003);
                 dispatch.spinCarousel(1000);
-                dispatch.constantHeading(0.2,0,-6,3,0.001,0,0.0003);
+                dispatch.constantHeading(0.2,0,-9,4,0.001,0,0.0003);
                 dispatch.spinCarousel(0);
                 dispatch.constantHeading(0.5,5,0,0.001,0,0.0003);
                 dispatch.constantHeading(0.3,0,24,0.001,0,0.0003);
@@ -131,7 +131,7 @@ public class BlueCarousel extends LinearOpMode{
 
                 dispatch.moveElevator(constants.elevatorPositionTop - 200);
                 sleep(1000);
-                dispatch.variableHeading(.5, -4.5, 10.5, 2);
+                dispatch.variableHeading(.5, -4.75, 13, 2);
                 dispatch.spinIntake(-1,2000);
                 dispatch.constantHeading(.5, 0, -6, 0.001,0,0.0003);
                 dispatch.moveElevator(constants.elevatorPositionDown);
@@ -140,7 +140,7 @@ public class BlueCarousel extends LinearOpMode{
                 dispatch.turnAbsPID(0, 1);
                 dispatch.constantHeading(.5, 8, 0, .001, 0, .0003);
                 dispatch.spinCarousel(1000);
-                dispatch.constantHeading(0.2,0,-6,3,0.001,0,0.0003);
+                dispatch.constantHeading(0.2,0,-9,4,0.001,0,0.0003);
                 dispatch.spinCarousel(0);
                 dispatch.constantHeading(0.5,5,0,0.001,0,0.0003);
                 dispatch.constantHeading(0.3,0,24,0.001,0,0.0003);

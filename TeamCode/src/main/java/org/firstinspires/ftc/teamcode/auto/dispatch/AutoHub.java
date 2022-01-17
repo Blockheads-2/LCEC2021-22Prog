@@ -101,7 +101,7 @@ public class AutoHub {
     }
 
     //====================================================================================
-    // ====================================================================================
+    //====================================================================================
 
     //Core Movement
     public void variableHeading(double speed, double xPose, double yPose, double timeoutS) {
@@ -480,32 +480,31 @@ public class AutoHub {
             // reset the timeout time and start motion.
             runtime.reset();
 
-            while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS)) {
+            while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS) && !over) {
 
                 checkButton();
                 detectColor();
-                if (check)
-                    detectFloor();
+                over = detectFloor();
+
                 double angleCorrection = pidTurn.update(getAbsoluteAngle());
 
                 robot.lf.setVelocity((speed * constants.maxVelocityDT * ratioAddPose) - (speed * angleCorrection * constants.maxVelocityDT));
                 robot.rf.setVelocity((speed * constants.maxVelocityDT * ratioSubPose) + (speed * angleCorrection * constants.maxVelocityDT));
                 robot.lb.setVelocity((speed * constants.maxVelocityDT * ratioSubPose) - (speed * angleCorrection * constants.maxVelocityDT));
                 robot.rb.setVelocity((speed * constants.maxVelocityDT * ratioAddPose) + (speed * angleCorrection * constants.maxVelocityDT));
-                if (over)
-                    break;
-                // Display it for the driver.
-                linearOpMode.telemetry.addData("Time: ", timeoutS);
+
+                //linearOpMode.telemetry.addData("Time",timeoutS);
                 linearOpMode.telemetry.update();
+
             }
 
 
 
             // Stop all motion;
-            robot.lf.setPower(0);
-            robot.rf.setPower(0);
-            robot.lb.setPower(0);
-            robot.rb.setPower(0);
+            //robot.lf.setPower(0);
+            //robot.rf.setPower(0);
+            //robot.lb.setPower(0);
+            //robot.rb.setPower(0);
 
             // Turn off RUN_TO_POSITION
             robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -514,6 +513,86 @@ public class AutoHub {
             robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
+    public void constantHeading(double speed, double xPose, double yPose, double kP, double kI, double kD, boolean stop) {
+        mathConstHead.setFinalPose(xPose,yPose);
+
+        double targetAngle = getAbsoluteAngle();
+        TurnPIDController pidTurn = new TurnPIDController(targetAngle, kP, kI, kD);
+
+
+        double distance = mathConstHead.returnDistance();
+        double radianAngle = mathConstHead.returnAngle();
+
+        int newLeftFrontTarget;
+        int newRightFrontTarget;
+        int newLeftBackTarget;
+        int newRightBackTarget;
+        double timeoutS;
+
+        double ratioAddPose = Math.cos(radianAngle) + Math.sin(radianAngle);
+        double ratioSubPose = Math.cos(radianAngle) - Math.sin(radianAngle);
+        double addPose = (ratioAddPose * COUNTS_PER_INCH * distance);
+        double subtractPose = (ratioSubPose * COUNTS_PER_INCH * distance);
+
+        timeoutS = distance / (speed * constants.clicksPerInch);
+
+        // Ensure that the opmode is still active
+        if (linearOpMode.opModeIsActive()) {
+            // Determine new target position, and pass to motor controller
+            newLeftFrontTarget = (int) (robot.lf.getCurrentPosition() + addPose);
+            newRightFrontTarget = (int) (robot.rf.getCurrentPosition() + subtractPose);
+            newLeftBackTarget = (int) (robot.lb.getCurrentPosition() + subtractPose);
+            newRightBackTarget = (int) (robot.rb.getCurrentPosition() + addPose);
+
+            robot.lf.setTargetPosition(newLeftFrontTarget);
+            robot.rf.setTargetPosition(newRightFrontTarget);
+            robot.lb.setTargetPosition(newLeftBackTarget);
+            robot.rb.setTargetPosition(newRightBackTarget);
+
+            // Turn On RUN_TO_POSITION
+            robot.lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+
+            while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS) && !over) {
+
+                checkButton();
+                detectColor();
+
+                double angleCorrection = pidTurn.update(getAbsoluteAngle());
+
+                robot.lf.setVelocity((speed * constants.maxVelocityDT * ratioAddPose) - (speed * angleCorrection * constants.maxVelocityDT));
+                robot.rf.setVelocity((speed * constants.maxVelocityDT * ratioSubPose) + (speed * angleCorrection * constants.maxVelocityDT));
+                robot.lb.setVelocity((speed * constants.maxVelocityDT * ratioSubPose) - (speed * angleCorrection * constants.maxVelocityDT));
+                robot.rb.setVelocity((speed * constants.maxVelocityDT * ratioAddPose) + (speed * angleCorrection * constants.maxVelocityDT));
+
+                //linearOpMode.telemetry.addData("Time",timeoutS);
+                linearOpMode.telemetry.update();
+
+            }
+
+
+
+            // Stop all motion;
+            if (stop) {
+                robot.lf.setPower(0);
+                robot.rf.setPower(0);
+                robot.lb.setPower(0);
+                robot.rb.setPower(0);
+            }
+
+            // Turn off RUN_TO_POSITION
+            robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+    }
+
 
 
     //Turn
@@ -681,7 +760,7 @@ public class AutoHub {
     }
 
     public void checkButton(){
-        if (robot.digitalTouch.getState() == false) {
+        if (!robot.digitalTouch.getState()) {
             //Stop
             robot.lifter.setPower(0);
 
@@ -709,10 +788,30 @@ public class AutoHub {
             in = false;
     }
 
-    public void detectFloor() {
+    public boolean detectFloor() {
         NormalizedRGBA floorColors = robot.colorFloorSensor.getNormalizedColors();
 
-        over = floorColors.red >= 0.7 && floorColors.green >= 0.7 && floorColors.blue >= 0.7;
+        boolean checkOver = floorColors.alpha >= 0.3 || floorColors.red >= 0.0019 || floorColors.green >= 0.003 || floorColors.blue >= 0.0025 ;
+
+
+        linearOpMode.telemetry.addData("RED", floorColors.red);
+        linearOpMode.telemetry.addData("GREEN", floorColors.green);
+        linearOpMode.telemetry.addData("BLUE", floorColors.blue);
+        linearOpMode.telemetry.addData("Alpha", "%.3f", floorColors.alpha);
+
+        NormalizedRGBA floorColors2 = robot.colorFloorSensor2.getNormalizedColors();
+
+        boolean checkOver2 = floorColors2.alpha >= 0.3 || floorColors2.red >= 0.0019 || floorColors2.green >= 0.003 || floorColors2.blue >= 0.0025 ;
+
+
+        linearOpMode.telemetry.addData("RED2", floorColors2.red);
+        linearOpMode.telemetry.addData("GREEN2", floorColors2.green);
+        linearOpMode.telemetry.addData("BLUE2", floorColors2.blue);
+        linearOpMode.telemetry.addData("Alpha2", "%.3f", floorColors2.alpha);
+        linearOpMode.telemetry.update();
+
+
+        return checkOver || checkOver2;
     }
 
 }

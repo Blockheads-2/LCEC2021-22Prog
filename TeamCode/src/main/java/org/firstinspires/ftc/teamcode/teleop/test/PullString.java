@@ -56,7 +56,7 @@ import org.firstinspires.ftc.teamcode.common.HardwareDrive;
  */
 
 @TeleOp(name="Pull String", group="Test")
-@Disabled
+//@Disabled
 public class PullString extends OpMode{
 
     /* Declare OpMode members. */
@@ -92,13 +92,13 @@ public class PullString extends OpMode{
     }
     void UpdatePlayer1(){
         SpinMotor();
-        SpinServo();
     }
 
     void UpdateTelemetry(){
-
-        telemetry.addData("lifter position", robot.lifter.getCurrentPosition());
-        telemetry.addData("Carousel Velocity", robot.duckWheel.getVelocity());
+        telemetry.addData("B", "LF");
+        telemetry.addData("A", "RF");
+        telemetry.addData("X", "LB");
+        telemetry.addData("Y", "RB");
         telemetry.update();
     }
 
@@ -111,21 +111,25 @@ public class PullString extends OpMode{
 
     void SpinMotor(){
         if (spinMotorIn.is(Button.State.HELD))
-            robot.testSpin.setPower(0.2);
-        else if (spinMotorOut.is(Button.State.HELD))
-            robot.testSpin.setPower(-0.2);
+            robot.lf.setPower(0.3);
         else
-            robot.testSpin.setPower(0);
+            robot.lf.setPower(0);
+        if (spinMotorOut.is(Button.State.HELD))
+            robot.rf.setPower(0.3);
+        else
+            robot.rf.setPower(0);
+        if (spinServoIn.is(Button.State.HELD))
+            robot.lb.setPower(0.3);
+        else
+            robot.lb.setPower(0);
+        if (spinServoOut.is(Button.State.HELD))
+            robot.rb.setPower(0.3
+            );
+        else
+            robot.rb.setPower(0);
     }
 
-    void SpinServo(){
-        if (spinServoIn.is(Button.State.HELD))
-            robot.succ.setPower(1);
-        else if (spinServoOut.is(Button.State.HELD))
-            robot.succ.setPower(-1);
-        else
-            robot.succ.setPower(0);
-    }
+
 
     @Override
     public void stop() {

@@ -104,14 +104,14 @@ public class RedCarousel extends LinearOpMode {
         switch (detector.getLocation()) {
             case LEFT: {
 
-                dispatch.moveElevator(constants.elevatorPositionBottom);
+                dispatch.moveElevator(constants.elevatorPositionBottom-150);
                 sleep(1000);
-                dispatch.variableHeading(.5, 12, 17, 10);
+                dispatch.variableHeading(.5, 16, 18, 10);
                 dispatch.spinIntake(-1,2000);
                 dispatch.constantHeading(.5, 0, -4, 0.001,0,0.0003);
                 dispatch.turnAbsPID(90, 1);
                 dispatch.constantHeading(.5, 8, 0, 0.001,0,0.0003);
-                dispatch.constantHeading(.5, 0, -40, 0.001,0,0.0003);
+                dispatch.constantHeading(.3, 0, -40, 0.001,0,0.0003);
                 dispatch.moveElevator(constants.elevatorPositionDown);
                 dispatch.constantHeading(.5, 12, 0, .001, 0, .0003);
                 dispatch.spinCarousel(-1000);
@@ -160,18 +160,17 @@ public class RedCarousel extends LinearOpMode {
 
                 // move to drop
                 dispatch.spinIntake(0.1);
-                dispatch.constantHeading(0.6,-25,20,0.001,0,0.0003);
+                dispatch.constantHeading(0.6,-20,20,0.001,0,0.0003);
                 dispatch.turnAbsPID(0,1);
                 dispatch.variableHeading(0.6,20,1.7,1.5);
                 dispatch.constantHeading(0.5,8,0,0.001,0,0.0003);
-                dispatch.spinIntake(0);
-
                 //out-take
                 dispatch.turnAbsPID(90,1);
-                dispatch.constantHeading(0.5,-1,9,0.001,0,0.0003);
+                dispatch.constantHeading(0.5,-1,10,0.001,0,0.0003);               dispatch.spinIntake(0);
+                dispatch.spinIntake(0);
                 dispatch.spinIntake(-1,2000);
 
-                dispatch.constantHeading(0.3,0,-26,0.001,0,0.0003);
+                dispatch.constantHeading(0.3,0,-32,0.001,0,0.0003);
                 dispatch.constantHeading(0.5,34,0,0,0,0);
                 dispatch.constantHeading(0.3,0,-5,0.001,0,0.0003);
 
@@ -188,9 +187,11 @@ public class RedCarousel extends LinearOpMode {
                 break;
             }
             case MID: {
-                dispatch.moveElevator(constants.elevatorPositionTop - 200);
+                /*dispatch.moveElevator(constants.elevatorPositionTop);
                 sleep(1000);
-                dispatch.variableHeading(.5, 12, 14, 10);
+                dispatch.constantHeading(.5, 0, 4, .001, 0, .0003);
+                dispatch.constantHeading(.5, 10, 0, .001, 0, .0003);
+                dispatch.variableHeading(.5, 7, 12.5, 10);
                 dispatch.spinIntake(-1,2000);
                 dispatch.constantHeading(.5, 0, -4, 0.001,0,0.0003);
                 dispatch.turnAbsPID(90, 1);
@@ -198,15 +199,44 @@ public class RedCarousel extends LinearOpMode {
                 dispatch.constantHeading(.5, 8, 0, 0.001,0,0.0003);
                 dispatch.constantHeading(.5, 0, -40, 0.001,0,0.0003);
                 //dispatch.moveElevator(constants.elevatorPositionDown);
-                dispatch.constantHeading(.5, 12, 0, .001, 0, .0003);
+                dispatch.constantHeading(.4, 12, 0, .001, 0, .0003);
                 dispatch.spinCarousel(-1000);
-                dispatch.constantHeading(0.2,8,0, 4, 0.001,0,0.0003);
+                dispatch.constantHeading(0.1,6,0, 4, 0.001,0,0.0003);
                 dispatch.spinCarousel(0);
                 dispatch.turnAbsPID(90, 1);
                 dispatch.constantHeading(0.5,0,-5,0.001,0,0.0003);
                 dispatch.constantHeading(0.5,-22,0,0.001,0,0.0003);
                 dispatch.constantHeading(0.3,0,-10,0.001,0,0.0003);
+                 */
+                dispatch.moveElevator(constants.elevatorPositionTop);
 
+                // move to drop
+                dispatch.spinIntake(0.1);
+                dispatch.constantHeading(0.6,-20,20,0.001,0,0.0003);
+                dispatch.turnAbsPID(0,1);
+                dispatch.variableHeading(0.6,20,1.7,1.5);
+                dispatch.constantHeading(0.5,8,0,0.001,0,0.0003);
+                //out-take
+                dispatch.turnAbsPID(90,1);
+                dispatch.constantHeading(0.5,-1,5,0.001,0,0.0003);               dispatch.spinIntake(0);
+                dispatch.spinIntake(0);
+                dispatch.spinIntake(-1,2000);
+
+                dispatch.constantHeading(0.3,0,-32,0.001,0,0.0003);
+                dispatch.constantHeading(0.5,34,0,0,0,0);
+                dispatch.constantHeading(0.3,0,-5,0.001,0,0.0003);
+
+
+                dispatch.moveElevator(constants.elevatorPositionDown);
+
+                dispatch.spinCarousel(-1000);
+                dispatch.constantHeading(0.2,6,0,3,0,0,0);
+                dispatch.spinCarousel(0);
+
+                dispatch.constantHeading(0.5,-24,0,0.001,0,0.0003);
+                dispatch.constantHeading(0.3,0,-10,0.001,0,0.0003);
+
+                break;
                 /*
                 //power on lift
                 dispatch.moveElevator(constants.elevatorPositionTop - 200);
@@ -239,7 +269,6 @@ public class RedCarousel extends LinearOpMode {
                 dispatch.constantHeading(0.3,0,-10,0.001,0,0.0003);
                  */
 
-                break;
             }
         }
         phoneCam.stopStreaming();

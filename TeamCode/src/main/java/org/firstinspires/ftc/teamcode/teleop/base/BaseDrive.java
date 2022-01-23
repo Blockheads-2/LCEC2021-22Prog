@@ -192,7 +192,7 @@ public class BaseDrive extends OpMode{
         int position = robot.lifter.getCurrentPosition();
         if (lifterButton.is(Button.State.TAP)) {
             if (position >= (constants.elevatorPositionTop - 10)) {
-                robot.lifter.setTargetPosition(constants.elevatorPositionDown);
+                robot.lifter.setTargetPosition(constants.elevatorPositionDown + 10);
                 robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.lifter.setPower(1);
 
@@ -281,11 +281,12 @@ public class BaseDrive extends OpMode{
             robot.spin.setPower(1);
         else if (spinOutFullButton.is(Button.State.HELD)) // Spin Out Med
             robot.spin.setPower(-1);
+        else if (gamepad2.right_trigger == 1) // Spin In Slow
+            robot.spin.setPower(0.3);
+        else if (gamepad2.left_trigger == 1) // Spin Out Slow
+            robot.spin.setPower(-0.3);
         else
             robot.spin.setPower(0);
-
-
-
 
     }
 

@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -55,7 +56,10 @@ public class AutoHub {
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
     private boolean in = false;
-    private boolean over = false;
+    public static boolean over = false;
+    public static boolean finishedIntake = false;
+    public static boolean checkOver = false;
+    public static boolean checkOver2 = false;
 
     double startRunTime = 0;
 
@@ -501,10 +505,10 @@ public class AutoHub {
 
 
             // Stop all motion;
-            //robot.lf.setPower(0);
-            //robot.rf.setPower(0);
-            //robot.lb.setPower(0);
-            //robot.rb.setPower(0);
+            robot.lf.setPower(0);
+            robot.rf.setPower(0);
+            robot.lb.setPower(0);
+            robot.rb.setPower(0);
 
             // Turn off RUN_TO_POSITION
             robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -774,6 +778,8 @@ public class AutoHub {
         }
     }
     public void detectColor() {
+
+
         // Get the normalized colors from the sensor
         NormalizedRGBA colors = robot.colorSensor.getNormalizedColors();
 
@@ -783,15 +789,18 @@ public class AutoHub {
         } else if (colors.red >= 0.014 && colors.green >= 0.010 && colors.blue >= 0.006 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 7 && !in) {
             spinIntake(0);
             in = true;
+            finishedIntake = true;
             startRunTime = runtime.seconds();
         } else if (colors.red < 0.014 && colors.green < 0.01 && colors.blue < 0.006 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) > 7)
             in = false;
     }
 
+
     public boolean detectFloor() {
         NormalizedRGBA floorColors = robot.colorFloorSensor.getNormalizedColors();
-
-        boolean checkOver = floorColors.alpha >= 0.3 || floorColors.red >= 0.0019 || floorColors.green >= 0.003 || floorColors.blue >= 0.0025 ;
+        robot.colorFloorSensor.setGain(3);
+        robot.colorFloorSensor2.setGain(3);
+        checkOver = floorColors.alpha >= 0.3 || floorColors.red >= 0.0090 || floorColors.green >= 0.0096 || floorColors.blue >= 0.0096 ;
 
 
         linearOpMode.telemetry.addData("RED", floorColors.red);
@@ -801,7 +810,7 @@ public class AutoHub {
 
         NormalizedRGBA floorColors2 = robot.colorFloorSensor2.getNormalizedColors();
 
-        boolean checkOver2 = floorColors2.alpha >= 0.3 || floorColors2.red >= 0.0019 || floorColors2.green >= 0.003 || floorColors2.blue >= 0.0025 ;
+        checkOver2 = floorColors2.alpha >= 0.3 || floorColors2.red >= 0.0090 || floorColors2.green >= 0.0096 || floorColors2.blue >= 0.0096 ;
 
 
         linearOpMode.telemetry.addData("RED2", floorColors2.red);

@@ -783,15 +783,17 @@ public class AutoHub {
         // Get the normalized colors from the sensor
         NormalizedRGBA colors = robot.colorSensor.getNormalizedColors();
 
+        robot.colorSensor.setGain(3);
+
 
         if(in && (runtime.seconds() - startRunTime) > 2){
             spinIntake(0.01);
-        } else if (colors.red >= 0.014 && colors.green >= 0.010 && colors.blue >= 0.006 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 7 && !in) {
+        } else if (colors.red >= 0.085 && colors.green >= 0.060 && colors.blue >= 0.03 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 3 && !in) {
             spinIntake(0);
             in = true;
             finishedIntake = true;
             startRunTime = runtime.seconds();
-        } else if (colors.red < 0.014 && colors.green < 0.01 && colors.blue < 0.006 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) > 7)
+        } else if (colors.red >= 0.085 && colors.green >= 0.060 && colors.blue >= 0.03 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) > 7)
             in = false;
     }
 

@@ -39,6 +39,8 @@ public class BaseDrive extends OpMode{
     Button spinInFullButton = new Button();
     Button spinOutFullButton = new Button();
 
+    private boolean toggleButton = true;
+
     /** The relativeLayout field is used to aid in providing interesting visual feedback
      * in this sample application; you probably *don't* need this when you use a color sensor on your
      * robot. Note that you won't see anything change on the Driver Station, only on the Robot Controller. */
@@ -181,10 +183,14 @@ public class BaseDrive extends OpMode{
     double DriveTrainSpeed(){
         double drivePower = 0.75;
 
+        /*
+
         if (gamepad1.right_bumper)
             drivePower = 1;
         else if (gamepad1.left_bumper)
             drivePower = 0.25;
+
+         */
         return drivePower;
     }
 
@@ -203,7 +209,8 @@ public class BaseDrive extends OpMode{
             }
         }
 
-        if (robot.digitalTouch.getState() == false) {
+
+        if (!robot.digitalTouch.getState() && toggleButton) {
             //Stop
             robot.lifter.setPower(0);
 
@@ -214,7 +221,10 @@ public class BaseDrive extends OpMode{
             robot.lifter.setTargetPosition(20);
             robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.lifter.setPower(0.1);
+            runtime.reset();
         }
+
+        toggleButton = !(runtime.seconds() < 1);
 
 
         if (lifterBottomButton.is(Button.State.TAP)){

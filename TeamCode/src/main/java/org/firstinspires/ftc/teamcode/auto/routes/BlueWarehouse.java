@@ -121,11 +121,11 @@ public class BlueWarehouse extends LinearOpMode {
 
         }
         //Cycle 1
-        dispatch.constantHeading(1,0,20,true,0.001,0,0.0003);
+        dispatch.constantHeading(1,-7,20,true,0.00,0,0.000);
         AutoHub.checkOver = false;
         AutoHub.checkOver2 = false;
         dispatch.spinIntake(1);
-        dispatch.constantHeading(1,0,20,1.2,0.001,0,0.0003);
+        dispatch.constantHeading(1,-5,28,1.2,0.001,0,0.0003);
         if (!AutoHub.finishedIntake)
             dispatch.variableHeading(.7, 4, 0, .4);
         if (!AutoHub.finishedIntake)
@@ -147,20 +147,20 @@ public class BlueWarehouse extends LinearOpMode {
         dispatch.spinIntake(-1,1250);
         dispatch.variableHeading(0.75,-25 ,-8,2);
         dispatch.moveElevator(constants.elevatorPositionDown);
-        dispatch.turnAbsPID(90,0.1);
-        dispatch.constantHeading(1,5,0,0.001,0,0.0003);
-        dispatch.constantHeading(1,0,-17,0.001,0,0.0003);
-        dispatch.turnAbsPID(-90,1);
+        dispatch.constantHeading(1,7,0,0.001,0,0.0003);
+        dispatch.constantHeading(1,0,-27,0.001,0,0.0003);
+        dispatch.turnAbsPID(-87,1);
 
 
         //Cycle 2
+        dispatch.constantHeading(1,0,5 ,0,0,0);
         dispatch.spinIntake(1);
         if (!AutoHub.finishedIntake)
             dispatch.variableHeading(.7, 4, 0, .4);
         if (!AutoHub.finishedIntake)
             dispatch.variableHeading(.7, -4, 0, .4);
         if (!AutoHub.finishedIntake)
-            dispatch.constantHeading(.7, 0, -7, 0.001,0,0.0003);
+            dispatch.constantHeading(.7, 0, -9, 0.001,0,0.0003);
         if (!AutoHub.finishedIntake)
             dispatch.spinIntake(.15);
         dispatch.turnAbsPID(90,1);
@@ -174,14 +174,11 @@ public class BlueWarehouse extends LinearOpMode {
         dispatch.spinIntake(-1,1250);
         dispatch.variableHeading(0.75,-25 ,-8,2);
         dispatch.moveElevator(constants.elevatorPositionDown);
-        dispatch.turnAbsPID(90,0.1);
-        dispatch.constantHeading(1,5,0,0.001,0,0.0003);
-        dispatch.constantHeading(1,0,-20,true,0.001,0,0.0003);
-        AutoHub.checkOver = false;
-        AutoHub.checkOver2 = false;
-        dispatch.turnAbsPID(90,0.1);
-        dispatch.constantHeading(1,0,-15,0.001,0,0.0003);
-        dispatch.turnAbsPID(-90,1);
+        dispatch.turnAbsPID(90,0.2);
+        dispatch.constantHeading(1,7,0,0.001,0,0.0003);
+        dispatch.turnAbsPID(90,0.2);
+        dispatch.constantHeading(1,0,-25,0.001,0,0.0003);
+
 
         phoneCam.stopStreaming();
         telemetry.update();

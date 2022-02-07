@@ -785,7 +785,7 @@ public class AutoHub {
 
         robot.colorSensor.setGain(3);
 
-<<<<<<< Updated upstream
+
 
         if (in && (runtime.seconds() - startRunTime) > 2){
             spinIntake(0.01);
@@ -796,13 +796,11 @@ public class AutoHub {
             startRunTime = runtime.seconds();
         }
         if (colors.red < 0.085 || colors.green < 0.060 || colors.blue < 0.03 || ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) > 7)
-=======
         if (colors.red >= 0.085 && colors.green >= 0.060 && colors.blue >= 0.03 || ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 4) {
             spinIntake(0.05);
             in = true;
             finishedIntake = true;
         } else if (colors.red < 0.085 && colors.green < 0.060 && colors.blue < 0.03 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) > 7){
->>>>>>> Stashed changes
             in = false;
             finishedIntake = false;
         }

@@ -53,17 +53,17 @@ public class BlueWarehouse extends LinearOpMode {
                 sleep(750);
                 // move to drop
                 dispatch.spinIntake(0.1);
-                dispatch.variableHeading(0.5,8.5,14,2);
+                dispatch.variableHeading(0.75,8.5,14,2);
                 dispatch.spinIntake(0);
 
                 //out-take
-                dispatch.spinIntake(-1, 1020);
-                dispatch.constantHeading(0.5,0,-5,0.001,0,0.0003);
+                dispatch.spinIntake(-1, 550);
+                dispatch.constantHeading(0.75,0,-5,0.001,0,0.0003);
                 dispatch.moveElevator(constants.elevatorPositionDown);
                 dispatch.turnAbsPID(0,0.5);
-                dispatch.constantHeading(0.6,0,-20,0.001,0,0.0003);
+                dispatch.constantHeading(0.75,0,-20,0.001,0,0.0003);
                 dispatch.turnAbsPID(-90,1.2);
-                dispatch.constantHeading(0.4,-10,0,0.001,0,0.0003);
+                dispatch.constantHeading(1,-10,0,0.001,0,0.0003);
                 //dispatch.constantHeading(0.8, 0, 17,true, 0.001,0,0.0003);
                 //delete later
                 //dispatch.constantHeading(1,0,23,0.001,0,0.0003);
@@ -111,7 +111,7 @@ public class BlueWarehouse extends LinearOpMode {
                 dispatch.turnAbsPID(0,0.5);
                 dispatch.constantHeading(0.75,0,-18,0.001,0,0.0003);
                 dispatch.turnAbsPID(-90, 1);
-                dispatch.constantHeading(0.75,-5,0,0.001,0,0.0003);
+                dispatch.constantHeading(0.75,-8,0,0.001,0,0.0003);
                 //dispatch.constantHeading(1, 0, 17, 0.001,0,0.0003);
                 //delete line later
                 //dispatch.constantHeading(1,0,23,0.001,0,0.0003);
@@ -121,39 +121,42 @@ public class BlueWarehouse extends LinearOpMode {
 
         }
         //Cycle 1
-        dispatch.constantHeading(1,-7,20,true,0.00,0,0.000);
+        dispatch.constantHeading(.75,-7,20,true,0.00,0,0.000);
+        AutoHub.over = false;
         AutoHub.checkOver = false;
         AutoHub.checkOver2 = false;
         dispatch.spinIntake(1);
-        dispatch.constantHeading(1,-5,28,1.2,0.001,0,0.0003);
-        if (!AutoHub.finishedIntake)
-            dispatch.variableHeading(.7, 4, 0, .4);
-        if (!AutoHub.finishedIntake)
-            dispatch.variableHeading(.7, -4, 0, .4);
-        if (!AutoHub.finishedIntake)
-            dispatch.constantHeading(.7, 0, -7, 0.001,0,0.0003);
-        if (!AutoHub.finishedIntake)
-            dispatch.spinIntake(.15);
+        dispatch.constantHeading(1,-5,24,0.001,0,0.0003);
+        dispatch.constantHeading(.5, 0, 5, 0.001,0,0.0003);
+        dispatch.variableHeading(.7, 4, 0, .4);
+        dispatch.variableHeading(.7, -4, 0, .4);
+        dispatch.constantHeading(.7, 0, -7, 0.001,0,0.0003);
+        dispatch.spinIntake(.4);
         AutoHub.finishedIntake = false;
         dispatch.turnAbsPID(87,1);
-        dispatch.constantHeading(1,25,0,true,0.001,0,0.0003);
+        dispatch.constantHeading(.5,25,0,true,0.001,0,0.0003);
+        AutoHub.over = false;
         AutoHub.checkOver = false;
         AutoHub.checkOver2 = false;
         dispatch.moveElevator(constants.elevatorPositionTop);
-        dispatch.constantHeading(0.75,9,40,true,0.001,0,0.0003);
+        dispatch.constantHeading(0.5,9,40,true,0.001,0,0.0003);
+        AutoHub.over = false;
         AutoHub.checkOver = false;
         AutoHub.checkOver2 = false;
-        dispatch.variableHeading(0.75,-25,13.5,2);
-        dispatch.spinIntake(-1,1250);
-        dispatch.variableHeading(0.75,-25 ,-8,2);
+        dispatch.variableHeading(0.75,-25.5,13.5,2);
+        dispatch.spinIntake(-1,600);
+        dispatch.variableHeading(0.75,-25 ,-6.5,2);
         dispatch.moveElevator(constants.elevatorPositionDown);
+        dispatch.turnAbsPID(90,.2);
         dispatch.constantHeading(1,7,0,0.001,0,0.0003);
-        dispatch.constantHeading(1,0,-27,0.001,0,0.0003);
-        dispatch.turnAbsPID(-87,1);
+        dispatch.constantHeading(1,0,-17,0.001,0,0.0003);
+        dispatch.turnAbsPID(-90,1);
+        dispatch.constantHeading(1,0,7,0.001,0,0.0003);
+
 
 
         //Cycle 2
-        dispatch.constantHeading(1,0,5 ,0,0,0);
+        dispatch.constantHeading(.5,0,5 ,0,0,0);
         dispatch.spinIntake(1);
         if (!AutoHub.finishedIntake)
             dispatch.variableHeading(.7, 4, 0, .4);
@@ -162,7 +165,7 @@ public class BlueWarehouse extends LinearOpMode {
         if (!AutoHub.finishedIntake)
             dispatch.constantHeading(.7, 0, -9, 0.001,0,0.0003);
         if (!AutoHub.finishedIntake)
-            dispatch.spinIntake(.15);
+            dispatch.spinIntake(.3);
         dispatch.turnAbsPID(90,1);
         dispatch.constantHeading(1,25,0,0.001,0,0.0003);
         dispatch.moveElevator(constants.elevatorPositionTop);
@@ -170,12 +173,12 @@ public class BlueWarehouse extends LinearOpMode {
         AutoHub.checkOver = false;
         AutoHub.checkOver2 = false;
         dispatch.constantHeading(0.75,9,40,true,0.001,0,0.0003);
-        dispatch.variableHeading(0.75,-25,13.5,2);
-        dispatch.spinIntake(-1,1250);
-        dispatch.variableHeading(0.75,-25 ,-8,2);
+        dispatch.variableHeading(.75,-25,12.5,2);
+        dispatch.spinIntake(-1,600);
+        dispatch.variableHeading(.75,-24 ,-6.5,2);
         dispatch.moveElevator(constants.elevatorPositionDown);
         dispatch.turnAbsPID(90,0.2);
-        dispatch.constantHeading(1,7,0,0.001,0,0.0003);
+        dispatch.constantHeading(1,8,0,0.001,0,0.0003);
         dispatch.turnAbsPID(90,0.2);
         dispatch.constantHeading(1,0,-25,0.001,0,0.0003);
 

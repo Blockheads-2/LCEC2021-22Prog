@@ -124,7 +124,7 @@ public class RedWarehouse extends LinearOpMode {
             }
         }
         //Cycle 1
-        dispatch.constantHeading(.75,5,20,true,0.001,0,0.0003);
+        dispatch.constantHeading(.5,5,20,true,0.001,0,0.0003);
         dispatch.spinIntake(1);
         dispatch.constantHeading(1,0,20,1.2,0.001,0,0.0003);
         if (!AutoHub.finishedIntake)

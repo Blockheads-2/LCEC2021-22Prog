@@ -183,14 +183,14 @@ public class BaseDrive extends OpMode{
     double DriveTrainSpeed(){
         double drivePower = 0.75;
 
-        /*
+
 
         if (gamepad1.right_bumper)
             drivePower = 1;
         else if (gamepad1.left_bumper)
             drivePower = 0.25;
 
-         */
+
         return drivePower;
     }
 

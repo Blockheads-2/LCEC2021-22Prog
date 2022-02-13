@@ -106,7 +106,7 @@ public class RedCarousel extends LinearOpMode {
 
                 dispatch.moveElevator(constants.elevatorPositionBottom-150);
                 sleep(1000);
-                dispatch.variableHeading(.5, 16, 18, 10);
+                dispatch.variableHeading(.5, 15.0, 16.5, 10);
                 dispatch.spinIntake(-1,2000);
                 dispatch.constantHeading(.5, 0, -4, 0.001,0,0.0003);
                 dispatch.turnAbsPID(90, 1);
@@ -180,8 +180,9 @@ public class RedCarousel extends LinearOpMode {
                 dispatch.spinCarousel(-1000);
                 dispatch.constantHeading(0.2,6,0,3,0,0,0);
                 dispatch.spinCarousel(0);
-
-                dispatch.constantHeading(0.5,-24,0,0.001,0,0.0003);
+                dispatch.constantHeading(0.5,-4,0,0.001,0,0.0003);
+                dispatch.constantHeading(0.5,0,-10,0.001,0,0.0003);
+                dispatch.constantHeading(0.5,-20,0,0.001,0,0.0003);
                 dispatch.constantHeading(0.3,0,-10,0.001,0,0.0003);
 
                 break;
@@ -218,7 +219,7 @@ public class RedCarousel extends LinearOpMode {
                 dispatch.constantHeading(0.5,8,0,0.001,0,0.0003);
                 //out-take
                 dispatch.turnAbsPID(90,1);
-                dispatch.constantHeading(0.5,-1,5,0.001,0,0.0003);               dispatch.spinIntake(0);
+                dispatch.constantHeading(0.5,-1,3,0.001,0,0.0003);               dispatch.spinIntake(0);
                 dispatch.spinIntake(0);
                 dispatch.spinIntake(-1,2000);
 
@@ -232,8 +233,9 @@ public class RedCarousel extends LinearOpMode {
                 dispatch.spinCarousel(-1000);
                 dispatch.constantHeading(0.2,6,0,3,0,0,0);
                 dispatch.spinCarousel(0);
-
-                dispatch.constantHeading(0.5,-24,0,0.001,0,0.0003);
+                dispatch.constantHeading(0.5,-4,0,0.001,0,0.0003);
+                dispatch.constantHeading(0.5,0,-10,0.001,0,0.0003);
+                dispatch.constantHeading(0.5,-20,0,0.001,0,0.0003);
                 dispatch.constantHeading(0.3,0,-10,0.001,0,0.0003);
 
                 break;

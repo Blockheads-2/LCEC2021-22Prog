@@ -54,7 +54,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 @Autonomous(name="Duck Detection", group="Routes")
 
-//@Disabled
+@Disabled
 public class TestDuck extends LinearOpMode {
 
     /* Declare OpMode members. */

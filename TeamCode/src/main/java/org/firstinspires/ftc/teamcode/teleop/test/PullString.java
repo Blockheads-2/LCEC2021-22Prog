@@ -56,7 +56,7 @@ import org.firstinspires.ftc.teamcode.common.HardwareDrive;
  */
 
 @TeleOp(name="Pull String", group="Test")
-//@Disabled
+@Disabled
 public class PullString extends OpMode{
 
     /* Declare OpMode members. */

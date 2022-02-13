@@ -55,7 +55,6 @@ public class AutoHub {
     static final double     WHEEL_DIAMETER_INCHES   =  (96.0/25.4);     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
-    private boolean in = false;
     public static boolean over = false;
     public static boolean finishedIntake = false;
     public static boolean checkOver = false;
@@ -787,21 +786,15 @@ public class AutoHub {
 
 
 
-        if (in && (runtime.seconds() - startRunTime) > 2){
+
+        if (finishedIntake && (runtime.seconds() - startRunTime) > 2){
             spinIntake(0.01);
-        } else if (colors.red >= 0.085 && colors.green >= 0.060 && colors.blue >= 0.03 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 4) {
+        } else if (colors.red >= 0.07 && colors.green >= 0.055 && colors.blue >= 0.02 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 4) {
             spinIntake(0);
-            in = true;
             finishedIntake = true;
             startRunTime = runtime.seconds();
         }
-        if (colors.red < 0.085 || colors.green < 0.060 || colors.blue < 0.03 || ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) > 7)
-        if (colors.red >= 0.085 && colors.green >= 0.060 && colors.blue >= 0.03 || ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 4) {
-            spinIntake(0.05);
-            in = true;
-            finishedIntake = true;
-        } else if (colors.red < 0.085 && colors.green < 0.060 && colors.blue < 0.03 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) > 7){
-            in = false;
+        if (colors.red < 0.07 && colors.green < 0.055 && colors.blue < 0.02 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) > 4){
             finishedIntake = false;
         }
 

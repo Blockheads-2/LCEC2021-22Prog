@@ -30,8 +30,8 @@ public class TestBlockDetection extends OpenCvPipeline {
     @Override
     public Mat processFrame(Mat input) {
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
-        Scalar lowHSV = new Scalar(35 + amountChanged, 30, 42);
-        Scalar highHSV = new Scalar(45 + amountChanged, 255, 255);
+        Scalar lowHSV = new Scalar(40 + amountChanged, 30, 42);
+        Scalar highHSV = new Scalar(50 + amountChanged, 255, 255);
 
         Core.inRange(mat, lowHSV, highHSV, mat);
 

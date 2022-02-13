@@ -35,8 +35,8 @@ public class CoreDetection extends OpenCvPipeline {
     @Override
     public Mat processFrame(Mat input) {
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
-        Scalar lowHSV = new Scalar(35, 30, 42);
-        Scalar highHSV = new Scalar(45, 255, 255);
+        Scalar lowHSV = new Scalar(40, 30, 42);
+        Scalar highHSV = new Scalar(50, 255, 255);
 
         Core.inRange(mat, lowHSV, highHSV, mat);
 

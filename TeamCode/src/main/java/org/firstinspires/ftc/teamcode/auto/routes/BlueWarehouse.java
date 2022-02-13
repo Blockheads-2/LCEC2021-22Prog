@@ -53,7 +53,7 @@ public class BlueWarehouse extends LinearOpMode {
                 sleep(750);
                 // move to drop
                 dispatch.spinIntake(0.1);
-                dispatch.variableHeading(0.75,8.5,14,2);
+                dispatch.variableHeading(0.65,8.5,14,2);
                 dispatch.spinIntake(0);
 
                 //out-take
@@ -121,17 +121,16 @@ public class BlueWarehouse extends LinearOpMode {
 
         }
         //Cycle 1
-        dispatch.constantHeading(.75,-7,20,true,0.00,0,0.000);
+        dispatch.constantHeading(1,-7,45,0.00,0,0.000);
         AutoHub.over = false;
         AutoHub.checkOver = false;
         AutoHub.checkOver2 = false;
         dispatch.spinIntake(1);
-        dispatch.constantHeading(1,-5,24,0.001,0,0.0003);
-        dispatch.constantHeading(.5, 0, 5, 0.001,0,0.0003);
-        dispatch.variableHeading(.7, 4, 0, .4);
-        dispatch.variableHeading(.7, -4, 0, .4);
-        dispatch.constantHeading(.7, 0, -7, 0.001,0,0.0003);
-        dispatch.spinIntake(.4);
+        if (!AutoHub.finishedIntake)
+            dispatch.variableHeading(.7, 4, 0, .4);
+        if (!AutoHub.finishedIntake)
+            dispatch.variableHeading(.7, -4, 0, .4);
+        dispatch.constantHeading(.7, 0, -9, 0.001,0,0.0003);
         AutoHub.finishedIntake = false;
         dispatch.turnAbsPID(87,1);
         dispatch.constantHeading(.5,25,0,true,0.001,0,0.0003);
@@ -151,21 +150,17 @@ public class BlueWarehouse extends LinearOpMode {
         dispatch.constantHeading(1,7,0,0.001,0,0.0003);
         dispatch.constantHeading(1,0,-17,0.001,0,0.0003);
         dispatch.turnAbsPID(-90,1);
-        dispatch.constantHeading(1,0,7,0.001,0,0.0003);
+        dispatch.constantHeading(1,0,12,0.001,0,0.0003);
 
 
 
         //Cycle 2
-        dispatch.constantHeading(.5,0,5 ,0,0,0);
         dispatch.spinIntake(1);
         if (!AutoHub.finishedIntake)
             dispatch.variableHeading(.7, 4, 0, .4);
         if (!AutoHub.finishedIntake)
             dispatch.variableHeading(.7, -4, 0, .4);
-        if (!AutoHub.finishedIntake)
-            dispatch.constantHeading(.7, 0, -9, 0.001,0,0.0003);
-        if (!AutoHub.finishedIntake)
-            dispatch.spinIntake(.3);
+        dispatch.constantHeading(.7, 0, -9, 0.001,0,0.0003);
         dispatch.turnAbsPID(90,1);
         dispatch.constantHeading(1,25,0,0.001,0,0.0003);
         dispatch.moveElevator(constants.elevatorPositionTop);
@@ -180,7 +175,8 @@ public class BlueWarehouse extends LinearOpMode {
         dispatch.turnAbsPID(90,0.2);
         dispatch.constantHeading(1,8,0,0.001,0,0.0003);
         dispatch.turnAbsPID(90,0.2);
-        dispatch.constantHeading(1,0,-25,0.001,0,0.0003);
+        dispatch.constantHeading(1,0,-48,true,0.001,0,0.0003);
+        dispatch.constantHeading(1,0,-20,2,0.001,0,0.0003);
 
 
         phoneCam.stopStreaming();

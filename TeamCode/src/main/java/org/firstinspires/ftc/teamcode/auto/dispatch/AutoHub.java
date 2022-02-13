@@ -789,12 +789,12 @@ public class AutoHub {
 
         if (finishedIntake && (runtime.seconds() - startRunTime) > 2){
             spinIntake(0.01);
-        } else if (colors.red >= 0.07 && colors.green >= 0.055 && colors.blue >= 0.02 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 4) {
+        } else if (colors.red >= 0.07 && colors.green >= 0.055 && colors.blue >= 0.02 || ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 5.7) {
             spinIntake(0);
             finishedIntake = true;
             startRunTime = runtime.seconds();
         }
-        if (colors.red < 0.07 && colors.green < 0.055 && colors.blue < 0.02 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) > 4){
+        if (colors.red < 0.07 && colors.green < 0.055 && colors.blue < 0.02 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) > 5.7){
             finishedIntake = false;
         }
 

@@ -74,10 +74,10 @@ public class BlueWarehouse extends LinearOpMode {
             case RIGHT: {
                 //power on lift
                 dispatch.moveElevator(constants.elevatorPositionTop);
-                sleep(750);
+                sleep(800);
                 // move to drop
                 dispatch.spinIntake(0.1);
-                dispatch.variableHeading(0.5,7,15,2);
+                dispatch.variableHeading(0.5,7.5,16.5,2);
                 dispatch.spinIntake(0);
 
                 //out-take
@@ -121,7 +121,7 @@ public class BlueWarehouse extends LinearOpMode {
 
         }
         //Cycle 1
-        dispatch.constantHeading(1,-7,45,0.00,0,0.000);
+        dispatch.constantHeading(1,-7,40,0.00,0,0.000);
         AutoHub.over = false;
         AutoHub.checkOver = false;
         AutoHub.checkOver2 = false;
@@ -142,15 +142,15 @@ public class BlueWarehouse extends LinearOpMode {
         AutoHub.over = false;
         AutoHub.checkOver = false;
         AutoHub.checkOver2 = false;
-        dispatch.variableHeading(0.75,-25.5,13.5,2);
-        dispatch.spinIntake(-1,600);
+        dispatch.variableHeading(0.75,-24.5,14,2);
+        dispatch.spinIntake(-1,750);
         dispatch.variableHeading(0.75,-25 ,-6.5,2);
         dispatch.moveElevator(constants.elevatorPositionDown);
         dispatch.turnAbsPID(90,.2);
         dispatch.constantHeading(1,7,0,0.001,0,0.0003);
         dispatch.constantHeading(1,0,-17,0.001,0,0.0003);
         dispatch.turnAbsPID(-90,1);
-        dispatch.constantHeading(1,0,12,0.001,0,0.0003);
+        dispatch.constantHeading(.5,0,8,0.001,0,0.0003);
 
 
 
@@ -167,16 +167,16 @@ public class BlueWarehouse extends LinearOpMode {
         AutoHub.over = false;
         AutoHub.checkOver = false;
         AutoHub.checkOver2 = false;
-        dispatch.constantHeading(0.75,9,40,true,0.001,0,0.0003);
-        dispatch.variableHeading(.75,-25,12.5,2);
-        dispatch.spinIntake(-1,600);
+        dispatch.constantHeading(0.5,9,32,true,0.001,0,0.0003);
+        dispatch.variableHeading(.75,-24,14,2);
+        dispatch.spinIntake(-1,750);
         dispatch.variableHeading(.75,-24 ,-6.5,2);
         dispatch.moveElevator(constants.elevatorPositionDown);
         dispatch.turnAbsPID(90,0.2);
         dispatch.constantHeading(1,8,0,0.001,0,0.0003);
         dispatch.turnAbsPID(90,0.2);
-        dispatch.constantHeading(1,0,-48,true,0.001,0,0.0003);
-        dispatch.constantHeading(1,0,-20,2,0.001,0,0.0003);
+        dispatch.constantHeading(1,0,-40,true,0.001,0,0.0003);
+        dispatch.constantHeading(1,0,-12,2,0.001,0,0.0003);
 
 
         phoneCam.stopStreaming();

@@ -80,7 +80,7 @@ public class RedWarehouse extends LinearOpMode {
                 sleep(1000);
                 // move to drop
                 dispatch.spinIntake(0.1);
-                dispatch.variableHeading(0.55,-6,15.5, 2);
+                dispatch.variableHeading(0.55,-6.5,15.5, 2);
                 dispatch.spinIntake(0);
 
                 //out-take
@@ -119,8 +119,6 @@ public class RedWarehouse extends LinearOpMode {
                 //dispatch.constantHeading(0.5, 0, 17, 0.001,0,0.0003);
                 //delete later
                 //dispatch.constantHeading(0.75,0,23,0.001,0,0.0003);
-
-
             }
         }
         //Cycle 1
@@ -128,19 +126,21 @@ public class RedWarehouse extends LinearOpMode {
         dispatch.spinIntake(1);
         dispatch.constantHeading(1,0,22,0.001,0,0.0003);
         if (!AutoHub.finishedIntake)
-            dispatch.variableHeading(.7, -4, 0, .4);
+            dispatch.variableHeading(.7, -5.5, 0, .7);
         if (!AutoHub.finishedIntake)
-            dispatch.variableHeading(.7, 4, 0, .4);
-        dispatch.spinIntake(-.2, 100);
-        dispatch.turnAbsPID(90,1);
+            dispatch.variableHeading(.7, 5.5, 0, .7);
         dispatch.constantHeading(1, 0, -8, .001, 0, .0003);
+        AutoHub.finishedIntake = false;
         dispatch.spinIntake(.15);
         AutoHub.finishedIntake = false;
+        AutoHub.over = false;
+        AutoHub.checkOver = false;
+        AutoHub.checkOver2 = false;
         dispatch.turnAbsPID(270,1);
         dispatch.constantHeading(.75,-20,0,0.001,0,0.0003);
         dispatch.moveElevator(constants.elevatorPositionTop);
-        dispatch.constantHeading(0.75,-5,20,true,0.001,0,0.0003);
-        dispatch.variableHeading(0.75,26.5,8.75,2 );
+        dispatch.constantHeading(0.75,-5,25,true,0.001,0,0.0003);
+        dispatch.variableHeading(0.75,26,9,2 );
         dispatch.spinIntake(-1,700);
         dispatch.variableHeading(0.75,23 ,-5,2);
         dispatch.moveElevator(constants.elevatorPositionDown);
@@ -152,7 +152,7 @@ public class RedWarehouse extends LinearOpMode {
 
         //Cycle 2
         dispatch.spinIntake(1);
-        dispatch.constantHeading(1, 0, 8, .001, 0, .0003);
+        dispatch.constantHeading(.75, 0, 10, .001, 0, .0003);
         if (!AutoHub.finishedIntake)
             dispatch.variableHeading(.7, -5, 0, .4);
         if (!AutoHub.finishedIntake)
@@ -162,11 +162,12 @@ public class RedWarehouse extends LinearOpMode {
         AutoHub.over = false;
         AutoHub.checkOver = false;
         AutoHub.checkOver2 = false;
+        dispatch.spinIntake(.2);
         dispatch.turnAbsPID(-90,1);
         dispatch.constantHeading(1,-25,0,0.001,0,0.0003);
         dispatch.moveElevator(constants.elevatorPositionTop);
         dispatch.constantHeading(0.75,-9,30,true,0.001,0,0.0003);
-        dispatch.variableHeading(0.75,25,8,2);
+        dispatch.variableHeading(0.75,24.5,8.8,2);
         dispatch.spinIntake(-1,700);
         dispatch.variableHeading(0.75,23 ,-5,2);
         dispatch.moveElevator(constants.elevatorPositionDown);

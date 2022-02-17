@@ -18,7 +18,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
+/* delete
 package org.firstinspires.ftc.teamcode.teleop.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -35,7 +35,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
  * This version of the internal camera example uses EasyOpenCV's interface to the
  * original Android camera API
  */
-
+/* delete
 @Disabled
 @TeleOp (name = "Check HSV Color Block", group = "CV")
 public class CheckHSVofBlock extends LinearOpMode
@@ -54,6 +54,7 @@ public class CheckHSVofBlock extends LinearOpMode
          * the RC phone). If no camera monitor is desired, use the alternate
          * single-parameter constructor instead (commented out below)
          */
+/* delete
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId","id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
         TestBlockDetection detector = new TestBlockDetection(telemetry);
@@ -83,7 +84,7 @@ public class CheckHSVofBlock extends LinearOpMode
          * of a frame from the camera. Note that switching pipelines on-the-fly
          * (while a streaming session is in flight) *IS* supported.
          */
-        phoneCam.setPipeline(detector);
+        //phoneCam.setPipeline(detector);
 
         /*
          * Open the connection to the camera device. New in v1.4.0 is the ability
@@ -94,6 +95,7 @@ public class CheckHSVofBlock extends LinearOpMode
          *
          * If you really want to open synchronously, the old method is still available.
          */
+                /* delete
         phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override
@@ -110,6 +112,7 @@ public class CheckHSVofBlock extends LinearOpMode
                  * For a rear facing camera or a webcam, rotation is defined assuming the camera is facing
                  * away from the user.
                  */
+                /* delete
                 phoneCam.startStreaming(1280, 720, OpenCvCameraRotation.SIDEWAYS_RIGHT);
             }
 
@@ -119,6 +122,7 @@ public class CheckHSVofBlock extends LinearOpMode
                 /*
                  * This will be called if the camera could not be opened
                  */
+                /* delete
             }
         });
 
@@ -128,6 +132,7 @@ public class CheckHSVofBlock extends LinearOpMode
         /*
          * Wait for the user to press start on the Driver Station
          */
+                /*
         waitForStart();
 
         while (opModeIsActive())
@@ -135,6 +140,7 @@ public class CheckHSVofBlock extends LinearOpMode
             /*
              * Send some stats to the telemetry
              */
+                /*
             if (gamepad1.a){
                 counter += 1;
                 detector.fluctuateHSV(counter);
@@ -155,7 +161,9 @@ public class CheckHSVofBlock extends LinearOpMode
              * excess CPU cycles for no reason. (By default, telemetry is only sent to the DS at 4Hz
              * anyway). Of course in a real OpMode you will likely not want to do this.
              */
+                /*
             sleep(100);
         }
     }
 }
+*/

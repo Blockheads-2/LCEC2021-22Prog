@@ -133,7 +133,7 @@ public class BlueWarehouse extends LinearOpMode {
         dispatch.constantHeading(.7, 0, -9, 0.001,0,0.0003);
         AutoHub.finishedIntake = false;
         dispatch.turnAbsPID(87,1);
-        dispatch.constantHeading(.5,25,0,true,0.001,0,0.0003);
+        dispatch.constantHeading(.5,25,0,0.001,0,0.0003);
         AutoHub.over = false;
         AutoHub.checkOver = false;
         AutoHub.checkOver2 = false;

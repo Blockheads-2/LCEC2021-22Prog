@@ -1,28 +1,52 @@
 package org.firstinspires.ftc.teamcode.auto.dispatch;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import static android.os.SystemClock.sleep;
 
-import org.firstinspires.ftc.teamcode.auto.dispatch.AutoHub;
+import android.app.Activity;
+import android.graphics.Color;
+import android.view.View;
+
+import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
+import com.qualcomm.robotcore.hardware.SwitchableLight;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.common.Constants;
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
+
+import org.firstinspires.ftc.teamcode.common.pid.TurnPIDController;
+import org.firstinspires.ftc.teamcode.common.positioning.MathConstHead;
+import org.firstinspires.ftc.teamcode.common.positioning.MathSpline;
 
 
 @Autonomous(name = "Test Route", group = "Routes")
-@Disabled
+//@Disabled
 public class TestRoute extends LinearOpMode {
     AutoHub dispatch;
-
+    HardwareDrive robot;
     @Override
     public void runOpMode() throws InterruptedException {
+        robot = new HardwareDrive();
         dispatch = new AutoHub(this);
 
         waitForStart();
 
-        dispatch.constantHeading(0.2,25,0,true,0.001,0,0.0003);
-        dispatch.constantHeading(0.75,9,40,true,0.001,0,0.0003);
-        dispatch.variableHeading(0.75,-35,10,2);
-
-
+        dispatch.changeColorSensorState(false);
+        sleep(3000);
+        dispatch.changeColorSensorState(true);
+        sleep(3000);
     }
 }

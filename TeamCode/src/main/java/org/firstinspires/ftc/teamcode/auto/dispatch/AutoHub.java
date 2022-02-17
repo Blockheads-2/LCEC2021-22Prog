@@ -789,12 +789,12 @@ public class AutoHub {
 
         if (finishedIntake && (runtime.seconds() - startRunTime) > 2){
             spinIntake(0.01);
-        } else if (colors.red >= 0.07 && colors.green >= 0.055 && colors.blue >= 0.02 || ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 5.7) {
+        } else if (colors.red >= 0.07 && colors.green >= 0.055 && colors.blue >= 0.02 || ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 5.0) {
             spinIntake(0);
             finishedIntake = true;
             startRunTime = runtime.seconds();
         }
-        if (colors.red < 0.07 && colors.green < 0.055 && colors.blue < 0.02 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) > 5.7){
+        if (colors.red < 0.07 && colors.green < 0.055 && colors.blue < 0.02 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) > 5.0){
             finishedIntake = false;
         }
 
@@ -805,7 +805,7 @@ public class AutoHub {
         NormalizedRGBA floorColors = robot.colorFloorSensor.getNormalizedColors();
         robot.colorFloorSensor.setGain(3);
         robot.colorFloorSensor2.setGain(3);
-        checkOver = floorColors.alpha >= 0.3 || floorColors.red >= 0.0090 || floorColors.green >= 0.0096 || floorColors.blue >= 0.0096 ;
+        checkOver = floorColors.alpha >= 0.3 && floorColors.red >= 0.0090 && floorColors.green >= 0.0096 && floorColors.blue >= 0.0096 ;
 
 
         linearOpMode.telemetry.addData("RED", floorColors.red);
@@ -815,7 +815,7 @@ public class AutoHub {
 
         NormalizedRGBA floorColors2 = robot.colorFloorSensor2.getNormalizedColors();
 
-        checkOver2 = floorColors2.alpha >= 0.3 || floorColors2.red >= 0.0090 || floorColors2.green >= 0.0096 || floorColors2.blue >= 0.0096 ;
+        checkOver2 = floorColors2.alpha >= 0.3 && floorColors2.red >= 0.0090 && floorColors2.green >= 0.0096 && floorColors2.blue >= 0.0096 ;
 
 
         linearOpMode.telemetry.addData("RED2", floorColors2.red);
@@ -826,6 +826,16 @@ public class AutoHub {
 
 
         return checkOver || checkOver2;
+    }
+
+    void changeColorSensorState(boolean state){
+        if (state){
+            ((SwitchableLight)robot.colorSensor).enableLight(true);
+        }
+        else{
+            ((SwitchableLight)robot.colorSensor).enableLight(false);
+
+        }
     }
 
 }

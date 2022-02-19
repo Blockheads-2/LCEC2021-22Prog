@@ -33,7 +33,7 @@ import org.firstinspires.ftc.teamcode.common.positioning.MathSpline;
 
 
 @Autonomous(name = "Test Route", group = "Routes")
-@Disabled
+//@Disabled
 public class TestRoute extends LinearOpMode {
     AutoHub dispatch;
     HardwareDrive robot;

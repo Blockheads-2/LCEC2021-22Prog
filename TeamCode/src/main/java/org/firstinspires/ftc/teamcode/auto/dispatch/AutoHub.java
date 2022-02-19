@@ -751,12 +751,12 @@ public class AutoHub {
         robot.colorSensor.setGain(3);
 
         //In
-        if (finishedIntake &&(runtime.milliseconds() - startRunTime) > 500){
+        if (finishedIntake && ((runtime.seconds() - startRunTime) > 2)){
             spinIntake(0.1);
-        } else if (((colors.alpha >= 0.025 && colors.red >= 0.01 && colors.green >= 0.01 && colors.blue >= 0.007) || (((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 8.8)) && !finishedIntake) {
+        } else if ((colors.alpha >= 0.025 && colors.red >= 0.01 && colors.green >= 0.01 && colors.blue >= 0.007) || (((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 8.8)) {
             spinIntake(0);
             finishedIntake = true;
-            startRunTime = runtime.milliseconds();
+            startRunTime = runtime.seconds();
         }
 
         //Empty
@@ -769,13 +769,13 @@ public class AutoHub {
 
     public boolean detectFloor() {
         NormalizedRGBA floorColors = robot.colorFloorSensor.getNormalizedColors();
-        NormalizedRGBA floorColors2 = robot.colorFloorSensor2.getNormalizedColors();
-
         robot.colorFloorSensor.setGain(3);
         robot.colorFloorSensor2.setGain(3);
+        checkOver = floorColors.alpha >= 0.25 && floorColors.red >= 0.0090 && floorColors.green >= 0.0090 && floorColors.blue >= 0.0090 ;
 
-        checkOver = floorColors.alpha >= 0.4;
-        checkOver2 = floorColors2.alpha >= 0.4;
+        NormalizedRGBA floorColors2 = robot.colorFloorSensor2.getNormalizedColors();
+
+        checkOver2 = floorColors2.alpha >= 0.25 && floorColors2.red >= 0.0090 && floorColors2.green >= 0.0090 && floorColors2.blue >= 0.0090 ;
 
 
         return checkOver || checkOver2;

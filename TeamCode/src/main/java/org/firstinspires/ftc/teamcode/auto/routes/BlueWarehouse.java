@@ -131,7 +131,6 @@ public class BlueWarehouse extends LinearOpMode {
             dispatch.variableHeading(.7, 4, 0, .4);
         if (!AutoHub.finishedIntake)
             dispatch.variableHeading(.7, -4, 0, .4);
-        dispatch.turnAbsPID(-90,1);
         dispatch.constantHeading(.7, 0, -9, 0.001,0,0.0003);
         AutoHub.finishedIntake = false;
         dispatch.turnAbsPID(87,1);
@@ -144,7 +143,6 @@ public class BlueWarehouse extends LinearOpMode {
         AutoHub.over = false;
         AutoHub.checkOver = false;
         AutoHub.checkOver2 = false;
-        dispatch.spinIntake(0);
         dispatch.variableHeading(0.75,-24.5,14,2);
         dispatch.spinIntake(-1,750);
         dispatch.variableHeading(0.75,-25 ,-6.5,2);
@@ -163,7 +161,6 @@ public class BlueWarehouse extends LinearOpMode {
             dispatch.variableHeading(.7, 4, 0, .4);
         if (!AutoHub.finishedIntake)
             dispatch.variableHeading(.7, -4, 0, .4);
-        dispatch.turnAbsPID(-90,1);
         dispatch.constantHeading(.7, 0, -9, 0.001,0,0.0003);
         dispatch.turnAbsPID(90,1);
         dispatch.constantHeading(1,25,0,0.001,0,0.0003);
@@ -172,7 +169,6 @@ public class BlueWarehouse extends LinearOpMode {
         AutoHub.checkOver = false;
         AutoHub.checkOver2 = false;
         dispatch.constantHeading(0.5,9,32,true,0.001,0,0.0003);
-        dispatch.spinIntake(0);
         dispatch.variableHeading(.75,-24,14,2);
         dispatch.spinIntake(-1,750);
         dispatch.variableHeading(.75,-24 ,-6.5,2);

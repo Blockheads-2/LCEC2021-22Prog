@@ -750,17 +750,17 @@ public class AutoHub {
 
         robot.colorSensor.setGain(3);
 
-
-
-
-        if (finishedIntake && (runtime.seconds() - startRunTime) > 2){
+        //In
+        if (finishedIntake && ((runtime.seconds() - startRunTime) > 2)){
             spinIntake(0.1);
-        } else if (colors.red >= 0.07 && colors.green >= 0.055 && colors.blue >= 0.02 || ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 4.8) {
+        } else if ((colors.alpha >= 0.25 && colors.red >= 0.07 && colors.green >= 0.055 && colors.blue >= 0.02) || (((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 4)) {
             spinIntake(0);
             finishedIntake = true;
             startRunTime = runtime.seconds();
         }
-        if (colors.red < 0.07 && colors.green < 0.055 && colors.blue < 0.02 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) > 4.8){
+
+        //Empty
+        if ((colors.alpha < 0.25 && colors.red < 0.07 && colors.green < 0.055 && colors.blue < 0.02) || (((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) > 4)){
             finishedIntake = false;
         }
 
@@ -771,38 +771,14 @@ public class AutoHub {
         NormalizedRGBA floorColors = robot.colorFloorSensor.getNormalizedColors();
         robot.colorFloorSensor.setGain(3);
         robot.colorFloorSensor2.setGain(3);
-        checkOver = floorColors.alpha >= 0.3 && floorColors.red >= 0.0090 && floorColors.green >= 0.0096 && floorColors.blue >= 0.0096 ;
-
-
-        linearOpMode.telemetry.addData("RED", floorColors.red);
-        linearOpMode.telemetry.addData("GREEN", floorColors.green);
-        linearOpMode.telemetry.addData("BLUE", floorColors.blue);
-        linearOpMode.telemetry.addData("Alpha", "%.3f", floorColors.alpha);
+        checkOver = floorColors.alpha >= 0.25 && floorColors.red >= 0.0090 && floorColors.green >= 0.0090 && floorColors.blue >= 0.0090 ;
 
         NormalizedRGBA floorColors2 = robot.colorFloorSensor2.getNormalizedColors();
 
-        checkOver2 = floorColors2.alpha >= 0.3 && floorColors2.red >= 0.0090 && floorColors2.green >= 0.0096 && floorColors2.blue >= 0.0096 ;
-
-
-        linearOpMode.telemetry.addData("RED2", floorColors2.red);
-        linearOpMode.telemetry.addData("GREEN2", floorColors2.green);
-        linearOpMode.telemetry.addData("BLUE2", floorColors2.blue);
-        linearOpMode.telemetry.addData("Alpha2", "%.3f", floorColors2.alpha);
-        linearOpMode.telemetry.update();
+        checkOver2 = floorColors2.alpha >= 0.25 && floorColors2.red >= 0.0090 && floorColors2.green >= 0.0090 && floorColors2.blue >= 0.0090 ;
 
 
         return checkOver || checkOver2;
     }
-
-    void changeColorSensorState(boolean state){
-        if (state){
-            ((SwitchableLight)robot.colorSensor).enableLight(true);
-        }
-        else{
-            ((SwitchableLight)robot.colorSensor).enableLight(false);
-
-        }
-    }
-
 }
 

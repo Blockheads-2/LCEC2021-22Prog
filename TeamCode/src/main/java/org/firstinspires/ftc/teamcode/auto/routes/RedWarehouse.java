@@ -130,6 +130,7 @@ public class RedWarehouse extends LinearOpMode {
             dispatch.variableHeading(.7, -5.5, 0, .7);
         if (!AutoHub.finishedIntake)
             dispatch.variableHeading(.7, 5.5, 0, .7);
+        dispatch.turnAbsPID(90,1);
         dispatch.constantHeading(1, 0, -12, .001, 0, .0003);
         AutoHub.finishedIntake = false;
         dispatch.spinIntake(.15);
@@ -159,6 +160,7 @@ public class RedWarehouse extends LinearOpMode {
             dispatch.variableHeading(.7, -5, 0, .75);
         if (!AutoHub.finishedIntake)
             dispatch.variableHeading(.7, 5, 0, .75);
+        dispatch.turnAbsPID(90,1);
         dispatch.constantHeading(1,0,-10,0.001,0,0.003);
         AutoHub.finishedIntake = false;
         AutoHub.over = false;
@@ -174,7 +176,7 @@ public class RedWarehouse extends LinearOpMode {
         dispatch.variableHeading(0.75,22 ,-5,2);
         dispatch.moveElevator(constants.elevatorPositionDown);
         dispatch.turnAbsPID(-90,0.1);
-        dispatch.constantHeading(1,-15,0,0.001,0,0.0003);
+        dispatch.constantHeading(1,-20,0,0.001,0,0.0003);
         dispatch.constantHeading(1,-2,-28,2, 0.001,0,0.0003);
         phoneCam.stopStreaming();
         telemetry.update();

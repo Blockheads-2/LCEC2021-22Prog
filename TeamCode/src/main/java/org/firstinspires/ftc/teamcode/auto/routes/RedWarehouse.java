@@ -125,11 +125,12 @@ public class RedWarehouse extends LinearOpMode {
         dispatch.constantHeading(.75,5,23,0.001,0,0.0003);
         dispatch.spinIntake(1);
         dispatch.constantHeading(1,0,22,0.001,0,0.0003);
+        dispatch.constantHeading(.5,0,5,0.001,0,0.0003);
         if (!AutoHub.finishedIntake)
             dispatch.variableHeading(.7, -5.5, 0, .7);
         if (!AutoHub.finishedIntake)
             dispatch.variableHeading(.7, 5.5, 0, .7);
-        dispatch.constantHeading(1, 0, -8, .001, 0, .0003);
+        dispatch.constantHeading(1, 0, -12, .001, 0, .0003);
         AutoHub.finishedIntake = false;
         dispatch.spinIntake(.15);
         AutoHub.finishedIntake = false;
@@ -142,12 +143,12 @@ public class RedWarehouse extends LinearOpMode {
         dispatch.constantHeading(0.75,-5,25,true,0.001,0,0.0003);
         dispatch.variableHeading(0.75,26,9,2 );
         dispatch.spinIntake(-1,700);
-        dispatch.variableHeading(0.75,23 ,-5,2);
+        dispatch.variableHeading(0.75,20 ,-5,2);
         dispatch.moveElevator(constants.elevatorPositionDown);
         dispatch.turnAbsPID(-90,0.1);
-        dispatch.constantHeading(.5, -5, 0, 0.001,0,0.0003);
+        dispatch.constantHeading(.5, -6, 0, 0.001,0,0.0003);
         dispatch.constantHeading(.75,-20,0,true,0.001,0,0.0003);
-        dispatch.constantHeading(1,-3,-20,0.001,0,0.0003);
+        dispatch.constantHeading(1,-3,-23,0.001,0,0.0003);
         dispatch.turnAbsPID(90,1);
 
 
@@ -157,7 +158,7 @@ public class RedWarehouse extends LinearOpMode {
         if (!AutoHub.finishedIntake)
             dispatch.variableHeading(.7, -5, 0, .75);
         if (!AutoHub.finishedIntake)
-            dispatch.variableHeading(.7, 6, 0, .75);
+            dispatch.variableHeading(.7, 5, 0, .75);
         dispatch.constantHeading(1,0,-10,0.001,0,0.003);
         AutoHub.finishedIntake = false;
         AutoHub.over = false;
@@ -168,13 +169,12 @@ public class RedWarehouse extends LinearOpMode {
         dispatch.constantHeading(1,-25,0,0.001,0,0.0003);
         dispatch.moveElevator(constants.elevatorPositionTop);
         dispatch.constantHeading(0.75,-9,30,true,0.001,0,0.0003);
-        dispatch.variableHeading(0.75,24.5,8.8,2);
+        dispatch.variableHeading(0.75,26,9,2);
         dispatch.spinIntake(-1,700);
         dispatch.variableHeading(0.75,22 ,-5,2);
         dispatch.moveElevator(constants.elevatorPositionDown);
         dispatch.turnAbsPID(-90,0.1);
-        dispatch.constantHeading(.75,0,6,0.001,0,0.0003);
-        dispatch.constantHeading(1,-8,0,0.001,0,0.0003);
+        dispatch.constantHeading(1,-15,0,0.001,0,0.0003);
         dispatch.constantHeading(1,-2,-28,2, 0.001,0,0.0003);
         phoneCam.stopStreaming();
         telemetry.update();

@@ -191,7 +191,7 @@ public class RedCarousel extends LinearOpMode {
                 dispatch.moveElevator(constants.elevatorPositionTop);
 
                 // move to drop
-                dispatch.spinIntake(0.1);
+                dispatch.spinIntake(0.3);
                 dispatch.constantHeading(0.6,-20,20,0.001,0,0.0003);
                 dispatch.turnAbsPID(0,1);
                 dispatch.variableHeading(0.6,20,1.7,1.5);

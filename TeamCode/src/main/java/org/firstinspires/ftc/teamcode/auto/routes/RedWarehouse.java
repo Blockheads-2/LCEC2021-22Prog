@@ -60,7 +60,7 @@ public class RedWarehouse extends LinearOpMode {
                 sleep(1000);
                 // move to drop
                 dispatch.spinIntake(0.1);
-                dispatch.variableHeading(0.5,-6.75,15,2);
+                dispatch.variableHeading(0.5,-7,16,2);
                 dispatch.spinIntake(0);
 
                 //out-take
@@ -106,7 +106,7 @@ public class RedWarehouse extends LinearOpMode {
                 dispatch.moveElevator(constants.elevatorPositionTop - 200);
                 sleep(1000);
                 // move to drop
-                dispatch.variableHeading(0.5,-5,12,2);
+                dispatch.variableHeading(0.5,-6,13,2);
 
                 //out-take
                 dispatch.spinIntake(-1, 1000);
@@ -141,7 +141,7 @@ public class RedWarehouse extends LinearOpMode {
         dispatch.constantHeading(.75,-20,0,0.001,0,0.0003);
         dispatch.moveElevator(constants.elevatorPositionTop);
         dispatch.constantHeading(0.75,-5,25,true,0.001,0,0.0003);
-        dispatch.variableHeading(0.75,26,9,2 );
+        dispatch.variableHeading(0.75,28,9,2 );
         dispatch.spinIntake(-1,700);
         dispatch.variableHeading(0.75,20 ,-5,2);
         dispatch.moveElevator(constants.elevatorPositionDown);
@@ -169,7 +169,7 @@ public class RedWarehouse extends LinearOpMode {
         dispatch.constantHeading(1,-25,0,0.001,0,0.0003);
         dispatch.moveElevator(constants.elevatorPositionTop);
         dispatch.constantHeading(0.75,-9,30,true,0.001,0,0.0003);
-        dispatch.variableHeading(0.75,26,9,2);
+        dispatch.variableHeading(0.75,28,9,2);
         dispatch.spinIntake(-1,700);
         dispatch.variableHeading(0.75,22 ,-5,2);
         dispatch.moveElevator(constants.elevatorPositionDown);

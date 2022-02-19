@@ -44,9 +44,8 @@ public class TestRoute extends LinearOpMode {
 
         waitForStart();
 
-        dispatch.changeColorSensorState(false);
-        sleep(3000);
-        dispatch.changeColorSensorState(true);
-        sleep(3000);
+        dispatch.turnAbsPID(90,1);
+        dispatch.constantHeading(1,1,1,0,0,0);
+
     }
 }

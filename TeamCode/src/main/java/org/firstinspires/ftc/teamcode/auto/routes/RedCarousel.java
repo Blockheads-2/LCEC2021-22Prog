@@ -188,27 +188,6 @@ public class RedCarousel extends LinearOpMode {
                 break;
             }
             case MID: {
-                /*dispatch.moveElevator(constants.elevatorPositionTop);
-                sleep(1000);
-                dispatch.constantHeading(.5, 0, 4, .001, 0, .0003);
-                dispatch.constantHeading(.5, 10, 0, .001, 0, .0003);
-                dispatch.variableHeading(.5, 7, 12.5, 10);
-                dispatch.spinIntake(-1,2000);
-                dispatch.constantHeading(.5, 0, -4, 0.001,0,0.0003);
-                dispatch.turnAbsPID(90, 1);
-                dispatch.moveElevator(constants.elevatorPositionDown);
-                dispatch.constantHeading(.5, 8, 0, 0.001,0,0.0003);
-                dispatch.constantHeading(.5, 0, -40, 0.001,0,0.0003);
-                //dispatch.moveElevator(constants.elevatorPositionDown);
-                dispatch.constantHeading(.4, 12, 0, .001, 0, .0003);
-                dispatch.spinCarousel(-1000);
-                dispatch.constantHeading(0.1,6,0, 4, 0.001,0,0.0003);
-                dispatch.spinCarousel(0);
-                dispatch.turnAbsPID(90, 1);
-                dispatch.constantHeading(0.5,0,-5,0.001,0,0.0003);
-                dispatch.constantHeading(0.5,-22,0,0.001,0,0.0003);
-                dispatch.constantHeading(0.3,0,-10,0.001,0,0.0003);
-                 */
                 dispatch.moveElevator(constants.elevatorPositionTop);
 
                 // move to drop

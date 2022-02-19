@@ -27,11 +27,11 @@ public class BlueWarehouseDetection extends OpenCvPipeline {
     */
 
     static final Rect RIGHT_ROI = new Rect(
-            new Point(550, 400),
-            new Point(800, 600));
+            new Point(500, 350),
+            new Point(750, 650));
     static final Rect MID_ROI = new Rect(
-            new Point(50,400),
-            new Point(350,600));
+            new Point(0,300),
+            new Point(250,500));
 
 
     static double PERCENT_COLOR_THRESHOLD = 0.4;

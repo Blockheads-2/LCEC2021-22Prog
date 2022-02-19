@@ -661,9 +661,6 @@ public class AutoHub {
     public void turnAbsPID(double absDegrees, double timeOut){
         turnMath(-absDegrees, timeOut);
     }
-    public void turnLeft(double absDegrees, double timeOut){
-        turnLeftMath(-absDegrees, timeOut);
-    }
     void turnMath(double targetAngle, double timeoutS) {
         TurnPIDController pid = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
         linearOpMode.telemetry.setMsTransmissionInterval(50);
@@ -694,37 +691,6 @@ public class AutoHub {
 
         constantHeading(1,0,0,0,0,0); //Brakes
     }
-    void turnLeftMath(double targetAngle, double timeoutS) {
-        TurnPIDController pid = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
-        linearOpMode.telemetry.setMsTransmissionInterval(50);
-        // Checking lastSlope to make sure that it's not oscillating when it quits
-        runtime.reset();
-        while ((runtime.seconds() < timeoutS) && (Math.abs(getAbsoluteAngle() - targetAngle) > 0.25 || pid.getLastSlope() > 0.15)) {
-            double motorPower = pid.update(getAbsoluteAngle());
-            robot.lf.setPower(-motorPower);
-            robot.rf.setPower(motorPower);
-            robot.lb.setPower(-motorPower);
-            robot.rb.setPower(motorPower);
-
-            detectColor();
-
-            checkButton();
-
-            linearOpMode.telemetry.addData("Current Angle", getAbsoluteAngle());
-            linearOpMode.telemetry.addData("Target Angle", targetAngle);
-            linearOpMode.telemetry.addData("Slope", pid.getLastSlope());
-            linearOpMode.telemetry.addData("Power", motorPower);
-            linearOpMode.telemetry.update();
-        }
-        robot.lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-
-        constantHeading(1,0,0,0,0,0); //Brakes
-    }
-
     //Peripheral Movements
     public void spinCarousel(double velocity){
         robot.duckWheel.setVelocity(velocity);
@@ -788,13 +754,13 @@ public class AutoHub {
 
 
         if (finishedIntake && (runtime.seconds() - startRunTime) > 2){
-            spinIntake(0.01);
-        } else if (colors.red >= 0.07 && colors.green >= 0.055 && colors.blue >= 0.02 || ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 5.0) {
+            spinIntake(0.1);
+        } else if (colors.red >= 0.07 && colors.green >= 0.055 && colors.blue >= 0.02 || ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 4.8) {
             spinIntake(0);
             finishedIntake = true;
             startRunTime = runtime.seconds();
         }
-        if (colors.red < 0.07 && colors.green < 0.055 && colors.blue < 0.02 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) > 5.0){
+        if (colors.red < 0.07 && colors.green < 0.055 && colors.blue < 0.02 && ((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) > 4.8){
             finishedIntake = false;
         }
 

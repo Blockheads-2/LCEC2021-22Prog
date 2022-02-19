@@ -74,7 +74,7 @@ public class BlueWarehouse extends LinearOpMode {
             case RIGHT: {
                 //power on lift
                 dispatch.moveElevator(constants.elevatorPositionTop);
-                sleep(800);
+                sleep(1000);
                 // move to drop
                 dispatch.spinIntake(0.1);
                 dispatch.variableHeading(0.5,7.5,16.5,2);
@@ -98,14 +98,14 @@ public class BlueWarehouse extends LinearOpMode {
             case MID: {
                 //power on lift
                 dispatch.moveElevator(constants.elevatorPositionTop - 200);
-                sleep(750);
+                sleep(800);
                 // move to drop
                 dispatch.spinIntake(0.1);
-                dispatch.variableHeading(0.75,5,12,2);
+                dispatch.variableHeading(0.75,6,12,2);
                 dispatch.spinIntake(0);
 
                 //out-take
-                dispatch.spinIntake(-1, 2000);
+                dispatch.spinIntake(-1, 1000);
                 dispatch.constantHeading(0.75,0,-5,0.001,0,0.0003);
                 dispatch.moveElevator(constants.elevatorPositionDown);
                 dispatch.turnAbsPID(0,0.5);
@@ -121,11 +121,12 @@ public class BlueWarehouse extends LinearOpMode {
 
         }
         //Cycle 1
-        dispatch.constantHeading(1,-7,40,0.00,0,0.000);
+        dispatch.constantHeading(1,-7,42,0.00,0,0.000);
         AutoHub.over = false;
         AutoHub.checkOver = false;
         AutoHub.checkOver2 = false;
         dispatch.spinIntake(1);
+        sleep(350);
         if (!AutoHub.finishedIntake)
             dispatch.variableHeading(.7, 4, 0, .4);
         if (!AutoHub.finishedIntake)
@@ -176,7 +177,7 @@ public class BlueWarehouse extends LinearOpMode {
         dispatch.constantHeading(1,8,0,0.001,0,0.0003);
         dispatch.turnAbsPID(90,0.2);
         dispatch.constantHeading(1,0,-40,true,0.001,0,0.0003);
-        dispatch.constantHeading(1,0,-12,2,0.001,0,0.0003);
+        dispatch.constantHeading(1,0,-16,2,0.001,0,0.0003);
 
 
         phoneCam.stopStreaming();

@@ -56,24 +56,24 @@ public class RedWarehouse extends LinearOpMode {
 
         switch (detector.getLocation()) {
             case LEFT: {
-                dispatch.moveElevator(constants.elevatorPositionBottom);
+                dispatch.moveElevator(constants.elevatorPositionBottom - 250);
                 sleep(1000);
                 // move to drop
                 dispatch.spinIntake(0.1);
-                dispatch.variableHeading(0.5,-5.25,16.75,2);
+                dispatch.variableHeading(0.5,-6.75,15,2);
                 dispatch.spinIntake(0);
 
                 //out-take
-                dispatch.spinIntake(-1, 1000);
+                dispatch.spinIntake(-1, 750);
                 dispatch.constantHeading(0.5,0,-5,0.001,0,0.0003);
                 dispatch.moveElevator(constants.elevatorPositionDown);
                 dispatch.turnAbsPID(0,0.5);
-                dispatch.constantHeading(0.3,0,-18,0.001,0,0.0003);
+                dispatch.constantHeading(0.7,0,-18,0.001,0,0.0003);
                 dispatch.turnAbsPID(90, 1);
-                dispatch.constantHeading(0.2,5,0,0.001,0,0.0003);
+                dispatch.constantHeading(0.7,8,0,0.001,0,0.0003);
                 //delete later
                 //dispatch.constantHeading(0.75,0,23,0.001,0,0.0003);
-
+                break;
             }
             case RIGHT: {
                 dispatch.moveElevator(constants.elevatorPositionTop);
@@ -145,8 +145,9 @@ public class RedWarehouse extends LinearOpMode {
         dispatch.variableHeading(0.75,23 ,-5,2);
         dispatch.moveElevator(constants.elevatorPositionDown);
         dispatch.turnAbsPID(-90,0.1);
-        dispatch.constantHeading(1,-20,0,true,0.001,0,0.0003);
-        dispatch.constantHeading(1,-2,-20,0.001,0,0.0003);
+        dispatch.constantHeading(.5, -5, 0, 0.001,0,0.0003);
+        dispatch.constantHeading(.75,-20,0,true,0.001,0,0.0003);
+        dispatch.constantHeading(1,-3,-20,0.001,0,0.0003);
         dispatch.turnAbsPID(90,1);
 
 
@@ -154,9 +155,9 @@ public class RedWarehouse extends LinearOpMode {
         dispatch.spinIntake(1);
         dispatch.constantHeading(.75, 0, 10, .001, 0, .0003);
         if (!AutoHub.finishedIntake)
-            dispatch.variableHeading(.7, -5, 0, .4);
+            dispatch.variableHeading(.7, -5, 0, .75);
         if (!AutoHub.finishedIntake)
-            dispatch.variableHeading(.7, 5, 0, .4);
+            dispatch.variableHeading(.7, 6, 0, .75);
         dispatch.constantHeading(1,0,-10,0.001,0,0.003);
         AutoHub.finishedIntake = false;
         AutoHub.over = false;
@@ -169,11 +170,12 @@ public class RedWarehouse extends LinearOpMode {
         dispatch.constantHeading(0.75,-9,30,true,0.001,0,0.0003);
         dispatch.variableHeading(0.75,24.5,8.8,2);
         dispatch.spinIntake(-1,700);
-        dispatch.variableHeading(0.75,23 ,-5,2);
+        dispatch.variableHeading(0.75,22 ,-5,2);
         dispatch.moveElevator(constants.elevatorPositionDown);
         dispatch.turnAbsPID(-90,0.1);
+        dispatch.constantHeading(.75,0,6,0.001,0,0.0003);
         dispatch.constantHeading(1,-8,0,0.001,0,0.0003);
-        dispatch.constantHeading(1,-2,-22,2, 0.001,0,0.0003);
+        dispatch.constantHeading(1,-2,-28,2, 0.001,0,0.0003);
         phoneCam.stopStreaming();
         telemetry.update();
     }

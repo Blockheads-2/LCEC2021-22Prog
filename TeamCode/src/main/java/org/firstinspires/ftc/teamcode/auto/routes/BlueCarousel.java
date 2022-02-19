@@ -66,7 +66,7 @@ public class BlueCarousel extends LinearOpMode{
                 dispatch.constantHeading(0.2,0,-9,4,0.001,0,0.0003);
                 dispatch.spinCarousel(0);
                 dispatch.constantHeading(0.5,5,0,0.001,0,0.0003);
-                dispatch.constantHeading(0.3,0,24,0.001,0,0.0003);
+                dispatch.constantHeading(0.3,0,22,0.001,0,0.0003);
                 dispatch.turnAbsPID(-90,1);
 
                 break;
@@ -88,7 +88,7 @@ public class BlueCarousel extends LinearOpMode{
                 dispatch.constantHeading(0.2,0,-9,4,0.001,0,0.0003);
                 dispatch.spinCarousel(0);
                 dispatch.constantHeading(0.5,5,0,0.001,0,0.0003);
-                dispatch.constantHeading(0.3,0,24,0.001,0,0.0003);
+                dispatch.constantHeading(0.3,0,22,0.001,0,0.0003);
                 dispatch.turnAbsPID(-90,1);
                 /*
                 // move to drop
@@ -143,7 +143,7 @@ public class BlueCarousel extends LinearOpMode{
                 dispatch.constantHeading(0.2,0,-9,4,0.001,0,0.0003);
                 dispatch.spinCarousel(0);
                 dispatch.constantHeading(0.5,5,0,0.001,0,0.0003);
-                dispatch.constantHeading(0.3,0,24,0.001,0,0.0003);
+                dispatch.constantHeading(0.3,0,22,0.001,0,0.0003);
                 dispatch.turnAbsPID(-90,1);
 
                 /*

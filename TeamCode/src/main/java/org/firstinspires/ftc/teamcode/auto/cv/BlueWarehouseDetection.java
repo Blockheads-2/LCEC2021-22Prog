@@ -27,8 +27,8 @@ public class BlueWarehouseDetection extends OpenCvPipeline {
     */
 
     static final Rect RIGHT_ROI = new Rect(
-            new Point(500, 350),
-            new Point(750, 650));
+            new Point(500, 300),
+            new Point(750, 500));
     static final Rect MID_ROI = new Rect(
             new Point(0,300),
             new Point(250,500));
@@ -41,7 +41,7 @@ public class BlueWarehouseDetection extends OpenCvPipeline {
     @Override
     public Mat processFrame(Mat input) {
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
-        Scalar lowHSV = new Scalar(40, 50, 70);
+        Scalar lowHSV = new Scalar(40, 40, 42);
         Scalar highHSV = new Scalar(50, 255, 255);
 
         Core.inRange(mat, lowHSV, highHSV, mat);

@@ -127,9 +127,9 @@ public class RedWarehouse extends LinearOpMode {
         dispatch.constantHeading(1,0,22,0.001,0,0.0003);
         dispatch.constantHeading(.5,0,5,0.001,0,0.0003);
         if (!AutoHub.finishedIntake)
-            dispatch.variableHeading(.7, -5.5, 0, .7);
+            dispatch.turn(-10);
         if (!AutoHub.finishedIntake)
-            dispatch.variableHeading(.7, 5.5, 0, .7);
+            dispatch.turn(10);
         dispatch.constantHeading(1, 0, -12, .001, 0, .0003);
         AutoHub.finishedIntake = false;
         dispatch.spinIntake(.15);
@@ -141,9 +141,9 @@ public class RedWarehouse extends LinearOpMode {
         dispatch.constantHeading(.75,-20,0,0.001,0,0.0003);
         dispatch.moveElevator(constants.elevatorPositionTop);
         dispatch.constantHeading(0.75,-5,25,true,0.001,0,0.0003);
-        dispatch.variableHeading(0.75,26,9,2 );
+        dispatch.variableHeading(0.75,26,10,2 );
         dispatch.spinIntake(-1,700);
-        dispatch.variableHeading(0.75,20 ,-5,2);
+        dispatch.variableHeading(0.75,24 ,-9,2); // 18 -5
         dispatch.moveElevator(constants.elevatorPositionDown);
         dispatch.turnAbsPID(-90,0.1);
         dispatch.constantHeading(.5, -6, 0, 0.001,0,0.0003);
@@ -156,9 +156,9 @@ public class RedWarehouse extends LinearOpMode {
         dispatch.spinIntake(1);
         dispatch.constantHeading(.75, 0, 10, .001, 0, .0003);
         if (!AutoHub.finishedIntake)
-            dispatch.variableHeading(.7, -5, 0, .75);
+            dispatch.turn(-10);
         if (!AutoHub.finishedIntake)
-            dispatch.variableHeading(.7, 5, 0, .75);
+            dispatch.turn(10);
         dispatch.constantHeading(1,0,-10,0.001,0,0.003);
         AutoHub.finishedIntake = false;
         AutoHub.over = false;
@@ -169,9 +169,9 @@ public class RedWarehouse extends LinearOpMode {
         dispatch.constantHeading(1,-25,0,0.001,0,0.0003);
         dispatch.moveElevator(constants.elevatorPositionTop);
         dispatch.constantHeading(0.75,-9,30,true,0.001,0,0.0003);
-        dispatch.variableHeading(0.75,26,9,2);
+        dispatch.variableHeading(0.75,26,10,2);
         dispatch.spinIntake(-1,700);
-        dispatch.variableHeading(0.75,22 ,-5,2);
+        dispatch.variableHeading(0.75,24 ,-9,2); //18 -5
         dispatch.moveElevator(constants.elevatorPositionDown);
         dispatch.turnAbsPID(-90,0.1);
         dispatch.constantHeading(1,-15,0,0.001,0,0.0003);

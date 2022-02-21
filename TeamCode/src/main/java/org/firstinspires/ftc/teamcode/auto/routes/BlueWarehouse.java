@@ -53,7 +53,7 @@ public class BlueWarehouse extends LinearOpMode {
                 sleep(750);
                 // move to drop
                 dispatch.spinIntake(0.1);
-                dispatch.variableHeading(0.65,8.5,14,2);
+                dispatch.variableHeading(0.65,8.5,13,2);
                 dispatch.spinIntake(0);
 
                 //out-take
@@ -139,11 +139,11 @@ public class BlueWarehouse extends LinearOpMode {
         AutoHub.checkOver = false;
         AutoHub.checkOver2 = false;
         dispatch.moveElevator(constants.elevatorPositionTop);
-        dispatch.constantHeading(0.5,9,40,true,0.001,0,0.0003);
+        dispatch.constantHeading(0.5,9,30,true,0.001,0,0.0003);
         AutoHub.over = false;
         AutoHub.checkOver = false;
         AutoHub.checkOver2 = false;
-        dispatch.variableHeading(0.75,-24.5,14,2);
+        dispatch.variableHeading(0.75,-26,10,2); //24.5 14
         dispatch.spinIntake(-1,750);
         dispatch.variableHeading(0.75,-25 ,-6.5,2);
         dispatch.moveElevator(constants.elevatorPositionDown);
@@ -169,7 +169,7 @@ public class BlueWarehouse extends LinearOpMode {
         AutoHub.checkOver = false;
         AutoHub.checkOver2 = false;
         dispatch.constantHeading(0.5,9,32,true,0.001,0,0.0003);
-        dispatch.variableHeading(.75,-24,14,2);
+        dispatch.variableHeading(.75,-26,10,2);
         dispatch.spinIntake(-1,750);
         dispatch.variableHeading(.75,-24 ,-6.5,2);
         dispatch.moveElevator(constants.elevatorPositionDown);
@@ -177,7 +177,7 @@ public class BlueWarehouse extends LinearOpMode {
         dispatch.constantHeading(1,8,0,0.001,0,0.0003);
         dispatch.turnAbsPID(90,0.2);
         dispatch.constantHeading(1,0,-40,true,0.001,0,0.0003);
-        dispatch.constantHeading(1,0,-16,2,0.001,0,0.0003);
+        dispatch.constantHeading(0.5,0,-16,2,0.001,0,0.0003);
 
 
         phoneCam.stopStreaming();

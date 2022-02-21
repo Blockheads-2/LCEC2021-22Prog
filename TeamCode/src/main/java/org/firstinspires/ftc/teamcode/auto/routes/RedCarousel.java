@@ -104,6 +104,7 @@ public class RedCarousel extends LinearOpMode {
         switch (detector.getLocation()) {
             case LEFT: {
 
+                dispatch.spinIntake(0.2);
                 dispatch.moveElevator(constants.elevatorPositionBottom-150);
                 sleep(1000);
                 dispatch.variableHeading(.5, 15.0, 16.5, 10);
@@ -156,6 +157,7 @@ public class RedCarousel extends LinearOpMode {
             }
             case RIGHT: {
                 //power on lift
+                dispatch.spinIntake(0.2);
                 dispatch.moveElevator(constants.elevatorPositionTop);
 
                 // move to drop
@@ -188,6 +190,7 @@ public class RedCarousel extends LinearOpMode {
                 break;
             }
             case MID: {
+                dispatch.spinIntake(0.2);
                 dispatch.moveElevator(constants.elevatorPositionTop);
 
                 // move to drop

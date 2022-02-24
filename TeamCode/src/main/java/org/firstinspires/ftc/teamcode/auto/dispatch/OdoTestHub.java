@@ -50,12 +50,15 @@ public class OdoTestHub {
     private double currAngle = 0.0;
 
     static final double     COUNTS_PER_MOTOR_REV    = 537.7;    // eg: TETRIX Motor Encoder
-    static final double     COUNTS_REV_ODO          = 200;
+    static final double     COUNTS_REV_ODO          = 8192;
     static final double     MAX_VELOCITY_DT         = 2700;
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   =  (96.0/25.4);     // For figuring circumference
+    static final double     ODO_DIAMETER_INCHES     = 1.5;
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
+    static final double     COUNTS_PER_INCH_ODO     = (COUNTS_REV_ODO * DRIVE_GEAR_REDUCTION) /
+            (ODO_DIAMETER_INCHES * 3.1415);
     static final double     DISTANCE_MID_ODO        = 5.314; 
   
   
@@ -201,16 +204,15 @@ public class OdoTestHub {
     }
   
     public void odometryPathing(double speed, double xPose, double yPose, double timeOutS){
-      int FleftEncoderTarget;
+              
+        
+        int FleftEncoderTarget;
         int FrightEncoderTarget;
         int BleftEncoderTarget;
         int BrightEncoderTarget;
 
         double leftDistance;
         double rightDistance;
-        double deltaTheta;
-        double deltaTime;
-        double zeta;
 
         // Ensure that the opmode is still active
         if (linearOpMode.opModeIsActive()) {
@@ -219,15 +221,9 @@ public class OdoTestHub {
 
             mathSpline.setFinalPose(xPose,yPose);
 
-            leftDistance = mathSpline.returnLDistance() * COUNTS_PER_INCH;
-            rightDistance = mathSpline.returnRDistance() * COUNTS_PER_INCH;
-            deltaTheta = mathSpline.returnTheta();
-            deltaTime = leftDistance / (mathSpline.returnLPower() * constants.clicksPerInch);
-            zeta = deltaTheta/deltaTime;
-
-            double startingAngle = getAbsoluteAngle();
-            double targetAngle;
-
+            leftDistance = mathSpline.returnLDistance() * COUNTS_REV_ODO;
+            rightDistance = mathSpline.returnRDistance() * COUNTS_REV_ODO;
+           
             if ((yPose >= 0 && xPose < 0) || (yPose < 0 && xPose >= 0)){
                 FleftEncoderTarget = robot.lf.getCurrentPosition() - (int) leftDistance;
                 FrightEncoderTarget = robot.rf.getCurrentPosition() - (int) rightDistance;
@@ -262,11 +258,7 @@ public class OdoTestHub {
 
                 checkButton();
                 detectColor();
-
-                TurnPIDController pidTurn = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
-
-                double angleCorrection = pidTurn.update(getAbsoluteAngle());
-
+                
                 robot.lf.setVelocity(speed * mathSpline.returnLPower());
                 robot.rf.setVelocity(speed * mathSpline.returnRPower());
                 robot.lb.setVelocity(speed * mathSpline.returnLPower());

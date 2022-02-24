@@ -201,56 +201,7 @@ public class OdoTestHub {
     }
   
     public void odometryPathing(double speed, double xPose, double yPose, double timeOutS){
-      int leftEncoderTarget;
-      int rightEncoderTarget;
-      int BleftEncoderTarget;
-      int BrightEncoderTarget;
-      
-      
-      if (linearOpMode.opModeIsActive()) {
-        
-        speed = speed * MAX_VELOCITY_DT; 
-        
-        mathSpline.setFinalPose(xPose,yPose);
-        
-        leftDistance = mathSpline.returnLDistance() * COUNTS_PER_INCH;
-        rightDistance = mathSpline.returnRDistance() * COUNTS_PER_INCH;
-        deltaTheta = mathSpline.returnTheta();
-        
-        if ((yPose >= 0 && xPose < 0) || (yPose < 0 && xPose >= 0)){
-                leftEncoderTarget = robot.lf.getCurrentPosition() - (int) leftDistance;
-                rightEncoderTarget = robot.rf.getCurrentPosition() - (int) rightDistance;
-                BleftEncoderTarget = robot.lb.getCurrentPosition() - (int) leftDistance;
-                BrightEncoderTarget = robot.rb.getCurrentPosition() - (int) rightDistance;
-            }
-            else {
-                FleftEncoderTarget = robot.lf.getCurrentPosition() + (int) leftDistance;
-                FrightEncoderTarget = robot.rf.getCurrentPosition() + (int) rightDistance;
-                BleftEncoderTarget = robot.lb.getCurrentPosition() + (int) leftDistance;
-                BrightEncoderTarget = robot.rb.getCurrentPosition() + (int) rightDistance;
-            }
-
-            robot.lf.setTargetPosition(FleftEncoderTarget);
-            robot.lb.setTargetPosition(BleftEncoderTarget);
-            robot.rf.setTargetPosition(FrightEncoderTarget);
-            robot.rb.setTargetPosition(BrightEncoderTarget);
-
-            // Turn On RUN_TO_POSITION
-            robot.lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // reset the timeout time and start motion.
-            runtime.reset();
-
-            
-
-      }
-      
-    }
-    public void variableHeading(double speed, double xPose, double yPose) {
-        int FleftEncoderTarget;
+      int FleftEncoderTarget;
         int FrightEncoderTarget;
         int BleftEncoderTarget;
         int BrightEncoderTarget;
@@ -260,7 +211,6 @@ public class OdoTestHub {
         double deltaTheta;
         double deltaTime;
         double zeta;
-        double timeoutS;
 
         // Ensure that the opmode is still active
         if (linearOpMode.opModeIsActive()) {
@@ -277,8 +227,6 @@ public class OdoTestHub {
 
             double startingAngle = getAbsoluteAngle();
             double targetAngle;
-
-            timeoutS = (mathSpline.returnDistance() * constants.clicksPerInch) / speed;
 
             if ((yPose >= 0 && xPose < 0) || (yPose < 0 && xPose >= 0)){
                 FleftEncoderTarget = robot.lf.getCurrentPosition() - (int) leftDistance;
@@ -315,7 +263,6 @@ public class OdoTestHub {
                 checkButton();
                 detectColor();
 
-
                 TurnPIDController pidTurn = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
 
                 double angleCorrection = pidTurn.update(getAbsoluteAngle());
@@ -325,7 +272,7 @@ public class OdoTestHub {
                 robot.lb.setVelocity(speed * mathSpline.returnLPower());
                 robot.rb.setVelocity(speed * mathSpline.returnRPower());
 
-                linearOpMode.telemetry.addData("Time", timeoutS);
+
             }
 
             // Stop all motion;
@@ -339,9 +286,10 @@ public class OdoTestHub {
             robot.rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
-    }
-    public void constantHeading(double speed, double xPose, double yPose, double timeoutS, double kP, double kI, double kD) {
+        }  
+      }
+ }
+public void constantHeading(double speed, double xPose, double yPose, double timeoutS, double kP, double kI, double kD) {
         mathConstHead.setFinalPose(xPose,yPose);
 
         double targetAngle = getAbsoluteAngle();

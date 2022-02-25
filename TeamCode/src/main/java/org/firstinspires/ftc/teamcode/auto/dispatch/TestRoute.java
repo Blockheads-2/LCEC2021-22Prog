@@ -43,9 +43,6 @@ public class TestRoute extends LinearOpMode {
         dispatch = new AutoHub(this);
 
         waitForStart();
-
-        dispatch.turnAbsPID(90,1);
-        dispatch.constantHeading(1,1,1,0,0,0);
-
+        
     }
 }

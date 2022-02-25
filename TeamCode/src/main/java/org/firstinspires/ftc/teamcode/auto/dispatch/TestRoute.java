@@ -32,7 +32,7 @@ import org.firstinspires.ftc.teamcode.common.positioning.MathConstHead;
 import org.firstinspires.ftc.teamcode.common.positioning.MathSpline;
 
 
-@Autonomous(name = "Test Route", group = "Routes")
+@Autonomous(name = "Test Route", group = "Test")
 //@Disabled
 public class TestRoute extends LinearOpMode {
     AutoHub dispatch;

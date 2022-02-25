@@ -29,6 +29,8 @@ public class CoreDetection extends OpenCvPipeline {
 
 
     static double PERCENT_COLOR_THRESHOLD = 0.4;
+    private int lowHue = 40;
+    private int highHue = 50;
 
 
     public CoreDetection (Telemetry t) { telemetry = t; }
@@ -81,5 +83,24 @@ public class CoreDetection extends OpenCvPipeline {
 
     public Location getLocation() {
         return location;
+    }
+
+    public void changeHue(int counter){
+        highHue += counter;
+        lowHue += counter;
+    }
+
+    public int getLowHue(){
+        return lowHue;
+    }
+    public int getHighHue(){
+        return highHue;
+    }
+
+    public boolean isSeen(){
+        if (getLocation() == CoreDetection.Location.MID){
+            return true;
+        }
+        return false;
     }
 }

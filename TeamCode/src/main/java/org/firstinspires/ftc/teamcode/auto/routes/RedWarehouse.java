@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.auto.cv.CoreDetection;
 import org.firstinspires.ftc.teamcode.auto.dispatch.AutoHub;
+import org.firstinspires.ftc.teamcode.common.Button;
 import org.firstinspires.ftc.teamcode.common.Constants;
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
 import org.firstinspires.ftc.teamcode.common.positioning.MathConstHead;
@@ -24,6 +25,9 @@ public class RedWarehouse extends LinearOpMode {
     OpenCvCamera phoneCam;
     AutoHub dispatch;
     Constants constants = new Constants();
+
+    Button updateValueDecrease = new Button();
+    Button updateValueIncrease = new Button();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -50,6 +54,19 @@ public class RedWarehouse extends LinearOpMode {
             }
         });
 
+
+        while (!opModeIsActive()) { //checks if play hasn't been pressed (in init stage)
+            updateValueDecrease.update(gamepad1.a);
+            updateValueIncrease.update(gamepad1.b);
+            if (updateValueIncrease.is(Button.State.TAP)) {
+                detector.changeHue(1);
+            }
+
+            if (updateValueDecrease.is(Button.State.TAP)) {
+
+                detector.changeHue(-1);
+            }
+        }
 
         waitForStart();
 

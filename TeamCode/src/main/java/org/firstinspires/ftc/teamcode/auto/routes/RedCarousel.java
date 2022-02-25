@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.auto.cv.CoreDetection;
 import org.firstinspires.ftc.teamcode.auto.dispatch.AutoHub;
+import org.firstinspires.ftc.teamcode.common.Button;
 import org.firstinspires.ftc.teamcode.common.Constants;
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
 import org.firstinspires.ftc.teamcode.common.positioning.MathConstHead;
@@ -57,6 +58,9 @@ public class RedCarousel extends LinearOpMode {
     Constants constants = new Constants();
     MathSpline mathSpline = new MathSpline();
     MathConstHead mathConstHead = new MathConstHead();
+
+    Button updateValueDecrease = new Button();
+    Button updateValueIncrease = new Button();
 
     double degreeConversion = constants.degree;
 
@@ -96,6 +100,19 @@ public class RedCarousel extends LinearOpMode {
                 telemetry.update();
             }
         });
+
+        while (!opModeIsActive()) { //checks if play hasn't been pressed (in init stage)
+            updateValueDecrease.update(gamepad1.a);
+            updateValueIncrease.update(gamepad1.b);
+            if (updateValueIncrease.is(Button.State.TAP)) {
+                detector.changeHue(1);
+            }
+
+            if (updateValueDecrease.is(Button.State.TAP)) {
+
+                detector.changeHue(-1);
+            }
+        }
 
 
         waitForStart();

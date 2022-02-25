@@ -15,6 +15,8 @@ import org.openftc.easyopencv.OpenCvPipeline;
 public class Duck_Detection extends OpenCvPipeline {
     Telemetry telemetry;
     Mat mat = new Mat();
+    private int lowHue = 40;
+    private int highHue = 50;
     public enum Location {
         LEFT,
         RIGHT,
@@ -24,8 +26,8 @@ public class Duck_Detection extends OpenCvPipeline {
     private Location location;
 
     static final Rect MID_ROI = new Rect(
-            new Point(750, 400),
-            new Point(950, 600));
+            new Point(700, 300),
+            new Point(1000, 500));
     static final Rect LEFT_ROI = new Rect( //You don't matter
             new Point(140,400),
             new Point(420,600));
@@ -38,8 +40,8 @@ public class Duck_Detection extends OpenCvPipeline {
     @Override
     public Mat processFrame(Mat input) {
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
-        Scalar lowHSV = new Scalar(23, 30, 42);
-        Scalar highHSV = new Scalar(32, 255, 255);
+        Scalar lowHSV = new Scalar(lowHue, 30, 42); //hue = 40
+        Scalar highHSV = new Scalar(highHue, 255, 255); //hue = 50
 
         Core.inRange(mat, lowHSV, highHSV, mat);
 
@@ -63,10 +65,14 @@ public class Duck_Detection extends OpenCvPipeline {
             location = Location.LEFT;
             telemetry.addData("Duck Location", "left");
         }
-        else{
+        else {
             location = Location.RIGHT;
             telemetry.addData("Duck Location", "right");
         }
+
+        telemetry.addData("Hue Low", getLowHue());
+        telemetry.addData("Hue High", getHighHue());
+        telemetry.addData("Block Seen", isSeen());
         telemetry.update();
 
         Imgproc.cvtColor(mat, mat, Imgproc.COLOR_GRAY2RGB);
@@ -83,4 +89,27 @@ public class Duck_Detection extends OpenCvPipeline {
     public Location getLocation() {
         return location;
     }
+
+    public void changeHue(int counter){
+        highHue += counter;
+        lowHue += counter;
+    }
+
+    public int getLowHue(){
+        return lowHue;
+    }
+    public int getHighHue(){
+        return highHue;
+    }
+
+    public boolean isSeen(){
+        if (getLocation() == Location.MID){
+            return true;
+        }
+        return false;
+    }
 }
+
+
+    //Scalar lowHSV = new Scalar(23, 30, 42);
+    //Scalar highHSV = new Scalar(32, 255, 255);

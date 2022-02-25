@@ -229,8 +229,8 @@ public class BaseDrive extends OpMode{
 
 
         if (lifterBottomButton.is(Button.State.TAP)){
-                if (position >= (constants.elevatorPositionBottom - 10)) {
-                    robot.lifter.setTargetPosition(constants.elevatorPositionDown - 200);
+                if (position >= (constants.elevatorPositionBottom - 260)) {
+                    robot.lifter.setTargetPosition(constants.elevatorPositionDown - 250);
                     robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.lifter.setPower(1);
                 }

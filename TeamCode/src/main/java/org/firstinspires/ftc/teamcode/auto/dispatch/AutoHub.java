@@ -183,10 +183,11 @@ public class AutoHub {
             }
 
             // Stop all motion;
-            robot.lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            robot.rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            robot.lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            robot.rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.lf.setPower(0);
+            robot.rf.setPower(0);
+            robot.lb.setPower(0);
+            robot.rb.setPower(0);
+           
 
             // Turn off RUN_TO_POSITION
             robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -275,10 +276,10 @@ public class AutoHub {
             }
 
             // Stop all motion;
-            robot.lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            robot.rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            robot.lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            robot.rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.lf.setPower(0);
+            robot.rf.setPower(0);
+            robot.lb.setPower(0);
+            robot.rb.setPower(0);
 
             // Turn off RUN_TO_POSITION
             robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -691,7 +692,9 @@ public class AutoHub {
 
         constantHeading(1,0,0,0,0,0); //Brakes
     }
+    
     //Peripheral Movements
+    
     public void spinCarousel(double velocity){
         robot.duckWheel.setVelocity(velocity);
     }
@@ -709,10 +712,13 @@ public class AutoHub {
     }
     public void spinIntake(double power, long spinTime){
         robot.spin.setPower(power);
-        robot.lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        
+        // Stop all motion;
+            robot.lf.setPower(0);
+            robot.rf.setPower(0);
+            robot.lb.setPower(0);
+            robot.rb.setPower(0);
+        
         sleep(spinTime);
         robot.spin.setPower(0);
     }
@@ -720,7 +726,7 @@ public class AutoHub {
         robot.lifter.setTargetPosition(elevatorPosition);
         robot.lifter.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        robot.lifter.setPower(0.8);
+        robot.lifter.setPower(1);
     }
     public void breakPoint(){
         while (!linearOpMode.gamepad1.a) {

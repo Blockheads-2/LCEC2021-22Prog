@@ -72,6 +72,10 @@ public class BlueWarehouseDetection extends OpenCvPipeline {
             location = Location.LEFT;
             telemetry.addData("Duck Location", "left");
         }
+
+        telemetry.addData("Hue Low", getLowHue());
+        telemetry.addData("Hue High", getHighHue());
+        telemetry.addData("Block Seen", isSeen());
         telemetry.update();
 
         Imgproc.cvtColor(mat, mat, Imgproc.COLOR_GRAY2RGB);

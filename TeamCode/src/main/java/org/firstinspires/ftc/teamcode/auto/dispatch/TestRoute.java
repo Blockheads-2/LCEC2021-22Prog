@@ -43,6 +43,13 @@ public class TestRoute extends LinearOpMode {
         dispatch = new AutoHub(this);
 
         waitForStart();
+<<<<<<< Updated upstream
         
+=======
+
+        dispatch.constantHeading(0.2,0,100,0,0,0);
+
+
+>>>>>>> Stashed changes
     }
 }

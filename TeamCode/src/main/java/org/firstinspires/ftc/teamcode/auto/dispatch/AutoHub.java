@@ -344,8 +344,15 @@ public class AutoHub {
                 robot.rb.setVelocity((speed * constants.maxVelocityDT * ratioAddPose) + (speed * angleCorrection * constants.maxVelocityDT));
 
                 // Display it for the driver.
-                linearOpMode.telemetry.addData("Left Velocity: ", robot.lb.getVelocity());
-                linearOpMode.telemetry.addData("Right Velocity: ", robot.rb.getVelocity());
+                linearOpMode.telemetry.addData("lf", speed * constants.maxVelocityDT * ratioAddPose);
+                linearOpMode.telemetry.addData("rf",speed * constants.maxVelocityDT * ratioSubPose);
+                linearOpMode.telemetry.addData("Left Fromt Velocity: ", robot.lf.getVelocity());
+                linearOpMode.telemetry.addData("Right Front Velocity: ", robot.rf.getVelocity());
+
+                linearOpMode.telemetry.addData("Left Bck Velocity: ", robot.lb.getVelocity());
+                linearOpMode.telemetry.addData("Right Back Velocity: ", robot.rb.getVelocity());
+                linearOpMode.telemetry.addData("sub pose", subtractPose);
+                linearOpMode.telemetry.addData("add pose", addPose);
                 linearOpMode.telemetry.update();
             }
 

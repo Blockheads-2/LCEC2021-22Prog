@@ -63,6 +63,18 @@ public class MeasureDistance extends OpMode{
     HardwareDrive robot = new HardwareDrive();
     Constants constants = new Constants();
 
+    static final double     COUNTS_PER_MOTOR_REV    = 537.7;    // eg: TETRIX Motor Encoder
+    static final double     COUNTS_REV_ODO          = 8110;
+    static final double     MAX_VELOCITY_DT         = 2700;
+    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
+    static final double     WHEEL_DIAMETER_INCHES   =  (96.0/25.4);     // For figuring circumference
+    static final double     ODO_DIAMETER_INCHES     = 1.5;
+    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_INCHES * 3.1415);
+    static final double     COUNTS_PER_INCH_ODO     = (COUNTS_REV_ODO * DRIVE_GEAR_REDUCTION) /
+            (ODO_DIAMETER_INCHES * 3.1415);
+    static final double     DISTANCE_MID_ODO        = 5.314;
+
     @Override
     public void init() {
         robot.init(hardwareMap);
@@ -91,9 +103,9 @@ public class MeasureDistance extends OpMode{
 
     void UpdateTelemetry(){
         telemetry.addData("LF", robot.lf.getCurrentPosition() / constants.clicksPerInch);
-        telemetry.addData("LB", robot.lb.getCurrentPosition() / constants.clicksPerInch);
+        telemetry.addData("LB", robot.lb.getCurrentPosition() / COUNTS_PER_INCH_ODO);
         telemetry.addData("RF", robot.rf.getCurrentPosition() / constants.clicksPerInch);
-        telemetry.addData("RB", robot.rb.getCurrentPosition() / constants.clicksPerInch);
+        telemetry.addData("RB", robot.rb.getCurrentPosition() / COUNTS_REV_ODO);
         telemetry.update();
     }
 

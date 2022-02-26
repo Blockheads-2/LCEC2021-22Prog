@@ -74,7 +74,6 @@ public class RedWarehouse extends LinearOpMode {
         switch (detector.getLocation()) {
             case LEFT: {
                 dispatch.moveElevator(constants.elevatorPositionBottom - 250);
-                sleep(1000);
                 // move to drop
                 dispatch.spinIntake(0.1);
                 dispatch.variableHeading(0.5,-6.75,15,2);

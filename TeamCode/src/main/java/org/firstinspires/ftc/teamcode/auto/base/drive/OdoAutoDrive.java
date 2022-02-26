@@ -336,7 +336,6 @@ public class OdoAutoDrive extends LinearOpMode {
 
             while (opModeIsActive() && (runtime.seconds() < timeoutS)) {
 
-
                 double angleCorrection = pidTurn.update(getAbsoluteAngle());
 
                 robot.lf.setVelocity((speed * constants.maxVelocityDT * ratioAddPose) - (speed * angleCorrection * Math.signum(ratioAddPose) * constants.maxVelocityDT));

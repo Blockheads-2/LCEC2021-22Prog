@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.common.Button;
 
 
 @Autonomous(name = "Camera Merge", group = "Test")
-//@Disabled
+@Disabled
 public class TestCameraRoute extends LinearOpMode{
 
     OpenCvCamera phoneCam;

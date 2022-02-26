@@ -56,7 +56,7 @@ import org.firstinspires.ftc.teamcode.common.HardwareDrive;
  */
 
 @TeleOp(name="Pull String", group="Test")
-@Disabled
+//@Disabled
 public class PullString extends OpMode{
 
     /* Declare OpMode members. */
@@ -99,6 +99,11 @@ public class PullString extends OpMode{
         telemetry.addData("A", "RF");
         telemetry.addData("X", "LB");
         telemetry.addData("Y", "RB");
+
+        telemetry.addData("Left Front", robot.lf.getVelocity());
+        telemetry.addData("Right Front", robot.rf.getVelocity());
+        telemetry.addData("Left Back", robot.lb.getVelocity());
+        telemetry.addData("Right Back", robot.rb.getVelocity());
         telemetry.update();
     }
 

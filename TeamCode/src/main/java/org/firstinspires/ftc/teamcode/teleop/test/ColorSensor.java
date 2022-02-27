@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.hardware.SwitchableLight;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @TeleOp(name = "Sensor: Color", group = "Sensor")
-@Disabled
+//@Disabled
 public class ColorSensor extends LinearOpMode {
 
     /** The colorSensor field will contain a reference to our color sensor hardware object */
@@ -67,7 +67,7 @@ public class ColorSensor extends LinearOpMode {
         // colors will report at or near 1, and you won't be able to determine what color you are
         // actually looking at. For this reason, it's better to err on the side of a lower gain
         // (but always greater than  or equal to 1).
-        float gain = 2;
+        float gain = 3;
 
         // Once per loop, we will update this hsvValues array. The first element (0) will contain the
         // hue, the second element (1) will contain the saturation, and the third element (2) will

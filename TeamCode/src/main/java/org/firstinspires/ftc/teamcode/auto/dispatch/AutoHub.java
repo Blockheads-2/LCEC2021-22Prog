@@ -183,10 +183,10 @@ public class AutoHub {
             }
 
             // Stop all motion;
-            robot.lf.setPower(0);
-            robot.rf.setPower(0);
-            robot.lb.setPower(0);
-            robot.rb.setPower(0);
+            robot.lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
            
 
             // Turn off RUN_TO_POSITION
@@ -276,10 +276,10 @@ public class AutoHub {
             }
 
             // Stop all motion;
-            robot.lf.setPower(0);
-            robot.rf.setPower(0);
-            robot.lb.setPower(0);
-            robot.rb.setPower(0);
+            robot.lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
             // Turn off RUN_TO_POSITION
             robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -357,10 +357,11 @@ public class AutoHub {
             }
 
             // Stop all motion;
-            robot.lf.setPower(0);
-            robot.rf.setPower(0);
-            robot.lb.setPower(0);
-            robot.rb.setPower(0);
+
+            robot.lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
             // Turn off RUN_TO_POSITION
             robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -434,10 +435,10 @@ public class AutoHub {
 
 
             // Stop all motion;
-            robot.lf.setPower(0);
-            robot.rf.setPower(0);
-            robot.lb.setPower(0);
-            robot.rb.setPower(0);
+            robot.lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
             // Turn off RUN_TO_POSITION
             robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -512,10 +513,10 @@ public class AutoHub {
 
 
             // Stop all motion;
-            robot.lf.setPower(0);
-            robot.rf.setPower(0);
-            robot.lb.setPower(0);
-            robot.rb.setPower(0);
+            robot.lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
             // Turn off RUN_TO_POSITION
             robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -590,10 +591,10 @@ public class AutoHub {
 
             // Stop all motion;
             if (stop) {
-                robot.lf.setPower(0);
-                robot.rf.setPower(0);
-                robot.lb.setPower(0);
-                robot.rb.setPower(0);
+                robot.lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
 
             // Turn off RUN_TO_POSITION

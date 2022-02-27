@@ -91,8 +91,10 @@ public class BaseDrive extends OpMode{
 
     void UpdateTelemetry(){
 
-        telemetry.addData("lifter position", robot.lifter.getCurrentPosition());
-        telemetry.addData("Carousel Velocity", robot.duckWheel.getVelocity());
+        telemetry.addData("X", gamepad1.left_stick_x);
+        telemetry.addData("Y", -gamepad1.left_stick_y);
+        telemetry.addData("R", gamepad1.right_stick_x);
+        telemetry.addData("Arm Position", robot.lifter.getCurrentPosition());
 
       //  telemetry.addData("Touch Sensor", robot.digitalTouch.getState());
         telemetry.update();

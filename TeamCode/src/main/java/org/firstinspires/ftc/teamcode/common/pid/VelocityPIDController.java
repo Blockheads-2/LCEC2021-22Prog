@@ -15,7 +15,7 @@ public class VelocityPIDController {
     public double controller(double currentVelocity) {
         // P
         double error = targetVelocity - currentVelocity;
-        
+
         // I
         i = 0;
 

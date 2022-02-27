@@ -27,6 +27,7 @@ import org.firstinspires.ftc.teamcode.common.Constants;
 import org.firstinspires.ftc.teamcode.common.HardwareDrive;
 
 import org.firstinspires.ftc.teamcode.common.pid.TurnPIDController;
+import org.firstinspires.ftc.teamcode.common.pid.VelocityPIDController;
 import org.firstinspires.ftc.teamcode.common.positioning.MathConstHead;
 import org.firstinspires.ftc.teamcode.common.positioning.MathSpline;
 
@@ -165,19 +166,17 @@ public class AutoHub {
             while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS) && robot.lf.isBusy() && robot.rf.isBusy()
                     && robot.lb.isBusy() && robot.rb.isBusy()) {
 
-                targetAngle = startingAngle + zeta * (runtime.milliseconds() + 1);
-
                 checkButton();
                 detectColor();
 
-                TurnPIDController pidTurn = new TurnPIDController(targetAngle, 0.01, 0, 0.003);
-
-                double angleCorrection = pidTurn.update(getAbsoluteAngle());
-
-                robot.lf.setVelocity(speed * mathSpline.returnLPower());
-                robot.rf.setVelocity(speed * mathSpline.returnRPower());
-                robot.lb.setVelocity(speed * mathSpline.returnLPower());
-                robot.rb.setVelocity(speed * mathSpline.returnRPower());
+                VelocityPIDController lfController = new VelocityPIDController(speed * mathSpline.returnLPower(), 0.001,0,0);
+                VelocityPIDController rfController = new VelocityPIDController(speed * mathSpline.returnRPower(), 0.001,0,0);
+                VelocityPIDController lbController = new VelocityPIDController(speed * mathSpline.returnLPower(), 0.001,0,0);
+                VelocityPIDController rbController = new VelocityPIDController(speed * mathSpline.returnRPower(), 0.001,0,0);
+                robot.lf.setVelocity(speed * mathSpline.returnLPower() + speed * lfController.controller(robot.lf.getVelocity()));
+                robot.rf.setVelocity(speed * mathSpline.returnRPower() + speed * rfController.controller(robot.rf.getVelocity()));
+                robot.lb.setVelocity(speed * mathSpline.returnLPower() + speed * lbController.controller(robot.lb.getVelocity()));
+                robot.rb.setVelocity(speed * mathSpline.returnRPower() + speed * rbController.controller(robot.rb.getVelocity()));
 
 
             }

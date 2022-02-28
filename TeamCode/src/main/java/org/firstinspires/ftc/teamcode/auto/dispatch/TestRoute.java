@@ -44,7 +44,7 @@ public class TestRoute extends LinearOpMode {
 
         waitForStart();
 
-        dispatch.constVarHead(0.6,40,40,90,4);
+        dispatch.variableHeading(0.6,24,24,4);
 
     }
 }

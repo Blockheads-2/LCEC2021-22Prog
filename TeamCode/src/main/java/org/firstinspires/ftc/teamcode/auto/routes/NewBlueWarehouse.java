@@ -72,7 +72,9 @@ public class NewBlueWarehouse extends LinearOpMode {
 
                 //out-take
                 dispatch.spinIntake(-1, 550);
-                dispatch.variableHeading(0.75,-20,-38,1.8);
+
+                dispatch.variableHeading(1,-20 ,-33,2);
+
                 dispatch.moveElevator(constants.elevatorPositionDown);
                 dispatch.constantHeading(1,8,0,0,0,0);
                 dispatch.constantHeading(1,4,-12,0,0,0);
@@ -153,8 +155,8 @@ public class NewBlueWarehouse extends LinearOpMode {
         dispatch.spinIntake(0.2);
         dispatch.constantHeading(1,-5,-30,true,0.001,0,0.0003);
         dispatch.constantHeading(1,0,-10, 0.001, 0, 0.0003);
-        dispatch.constantHeading(1, 25,-18, 0.001, 0, 0.0003);
-        dispatch.turnAbsPID(60, 0.5);
+        dispatch.constantHeading(1, 28,-10, 0.001, 0, 0.0003);
+        dispatch.turnAbsPID(50, 0.7);
         dispatch.spinIntake(0);
         dispatch.spinIntake(-1,2000);
         phoneCam.stopStreaming();

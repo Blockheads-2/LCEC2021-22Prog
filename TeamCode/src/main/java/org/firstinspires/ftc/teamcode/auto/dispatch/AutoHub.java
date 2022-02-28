@@ -167,16 +167,10 @@ public class AutoHub {
                     && robot.lb.isBusy() && robot.rb.isBusy()) {
 
                 checkButton();
-                detectColor();
-
-                VelocityPIDController lfController = new VelocityPIDController(speed * mathSpline.returnLPower(), 0.001,0,0);
-                VelocityPIDController rfController = new VelocityPIDController(speed * mathSpline.returnRPower(), 0.001,0,0);
-                VelocityPIDController lbController = new VelocityPIDController(speed * mathSpline.returnLPower(), 0.001,0,0);
-                VelocityPIDController rbController = new VelocityPIDController(speed * mathSpline.returnRPower(), 0.001,0,0);
-                robot.lf.setVelocity(speed * mathSpline.returnLPower() + speed * lfController.controller(robot.lf.getVelocity()));
-                robot.rf.setVelocity(speed * mathSpline.returnRPower() + speed * rfController.controller(robot.rf.getVelocity()));
-                robot.lb.setVelocity(speed * mathSpline.returnLPower() + speed * lbController.controller(robot.lb.getVelocity()));
-                robot.rb.setVelocity(speed * mathSpline.returnRPower() + speed * rbController.controller(robot.rb.getVelocity()));
+                robot.lf.setVelocity(speed * mathSpline.returnLPower());
+                robot.rf.setVelocity(speed * mathSpline.returnRPower());
+                robot.lb.setVelocity(speed * mathSpline.returnLPower());
+                robot.rb.setVelocity(speed * mathSpline.returnRPower());
 
 
             }
@@ -843,9 +837,9 @@ public class AutoHub {
 
         //In
         if (finishedIntake && ((runtime.milliseconds() - startRunTime) > 500)){
-            spinIntake(0.05);
+            spinIntake(0.1);
         } else if ((((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 8.8)) {
-            spinIntake(0);
+            spinIntake(0.05);
             finishedIntake = true;
             startRunTime = runtime.milliseconds();
         }

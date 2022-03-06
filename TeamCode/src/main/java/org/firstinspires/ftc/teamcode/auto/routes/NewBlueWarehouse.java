@@ -68,16 +68,26 @@ public class NewBlueWarehouse extends LinearOpMode {
                 dispatch.moveElevator(constants.elevatorPositionBottom - 200);
                 // move to drop
                 dispatch.spinIntake(0.1);
-                dispatch.variableHeading(0.65,8.3,14.3,2);
+                dispatch.variableHeading(0.65,8.3,15.8,2);
 
                 //out-take
                 dispatch.spinIntake(-1, 550);
+<<<<<<< Updated upstream
 
                 dispatch.variableHeading(1,-20 ,-33,2);
 
+=======
+<<<<<<< HEAD
+                dispatch.variableHeading(0.75,-15,-12,2.2);
+=======
+
+                dispatch.variableHeading(1,-20 ,-33,2);
+
+>>>>>>> 1d658878f4598b22f1f0b8881df63e8ce6d03189
+>>>>>>> Stashed changes
                 dispatch.moveElevator(constants.elevatorPositionDown);
-                dispatch.constantHeading(1,8,0,0,0,0);
-                dispatch.constantHeading(1,4,-12,0,0,0);
+                dispatch.constantHeading(1,20,0,0,0,0);
+                dispatch.constantHeading(1,0,-20,0,0,0);
                 dispatch.turnAbsPID(-90,1);
                 dispatch.spinIntake(1);
                 dispatch.constantHeading(1,0,8,0,0,0);
@@ -103,9 +113,7 @@ public class NewBlueWarehouse extends LinearOpMode {
                 dispatch.constantHeading(0.75,0,-18,0.001,0,0.0003);
                 dispatch.turnAbsPID(-90, 1);
                 dispatch.constantHeading(0.75,-5,0,0.001,0,0.0003);
-                //dispatch.constantHeading(1, 0, 23, 0.001,0,0.0003);
-                //delete this line later
-                //dispatch.constantHeading(1,0,23,0.001,0,0.0003);
+
 
 
                 break;
@@ -136,6 +144,32 @@ public class NewBlueWarehouse extends LinearOpMode {
 
         }
         //Cycle 1
+<<<<<<< HEAD
+        for (int i = 0; i < 3; i++) {
+            dispatch.spinIntake(1);
+            if (!AutoHub.finishedIntake)
+                dispatch.turnPID(10, 0.5);
+            if (!AutoHub.finishedIntake)
+                dispatch.turnPID(-10, 0.5);
+            dispatch.constantHeading(1, 0, -9, 0.001, 0, 0.0003);
+            AutoHub.finishedIntake = false;
+
+
+            dispatch.constantHeading(1, -20, 0, 0.001, 0, 0.0003);
+            dispatch.moveElevator(constants.elevatorPositionTop);
+            dispatch.spinIntake(0.2);
+            dispatch.constantHeading(1, -5, -25, true, 0.001, 0, 0.0003);
+            dispatch.constantHeading(1, 0, -5, 0.001, 0, 0.0003);
+            dispatch.constantHeading(1, 25, -18, 0.001, 0, 0.0003);
+            dispatch.turnAbsPID(14, 1);
+            dispatch.spinIntake(-1, 750);
+            dispatch.turnAbsPID(-90, 1);
+            dispatch.moveElevator(constants.elevatorPositionDown);
+            dispatch.constantHeading(1, -25, 18, 0.001, 0, 0.0003);
+            dispatch.constantHeading(1, 0, 35, true, 0, 0, 0);
+        }
+
+=======
         AutoHub.over = false;
         AutoHub.checkOver = false;
         AutoHub.checkOver2 = false;
@@ -159,6 +193,7 @@ public class NewBlueWarehouse extends LinearOpMode {
         dispatch.turnAbsPID(50, 0.7);
         dispatch.spinIntake(0);
         dispatch.spinIntake(-1,2000);
+>>>>>>> 1d658878f4598b22f1f0b8881df63e8ce6d03189
         phoneCam.stopStreaming();
         telemetry.update();
     }

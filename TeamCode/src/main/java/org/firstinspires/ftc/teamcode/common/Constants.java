@@ -6,7 +6,7 @@ public class Constants {
 
     //Elevator Motor Positions
     public int elevatorPositionDown = 0; //Rest
-    public int elevatorPositionTop = 3370; //Extended
+    public int elevatorPositionTop = 3350; //Extended
     public int elevatorPositionMid = 2700;
     public int elevatorPositionBottom = 1980;
     public int elevatorAcrossDrop = 2500;

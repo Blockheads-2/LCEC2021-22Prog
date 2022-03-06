@@ -841,21 +841,17 @@ public class AutoHub {
 
         //In
         if (finishedIntake && ((runtime.milliseconds() - startRunTime) > 500)){
-<<<<<<< Updated upstream
             spinIntake(0.1);
         } else if ((((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 8.8)) {
             spinIntake(0.05);
-=======
-<<<<<<< HEAD
+
             spinIntake(0.05);
         } else if ((((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 5.5)) {
             spinIntake(0);
-=======
             spinIntake(0.1);
         } else if ((((DistanceSensor) robot.colorSensor).getDistance(DistanceUnit.CM) <= 8.8)) {
             spinIntake(0.05);
->>>>>>> 1d658878f4598b22f1f0b8881df63e8ce6d03189
->>>>>>> Stashed changes
+
             finishedIntake = true;
             startRunTime = runtime.milliseconds();
         }

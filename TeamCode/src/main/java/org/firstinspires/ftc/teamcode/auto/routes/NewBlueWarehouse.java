@@ -73,18 +73,13 @@ public class NewBlueWarehouse extends LinearOpMode {
                 //out-take
                 dispatch.spinIntake(-1, 550);
 
-                dispatch.variableHeading(1,-20 ,-33,2);
-
-                dispatch.variableHeading(0.75,-15,-12,2.2);
-
-                dispatch.variableHeading(1,-20 ,-33,2);
-
+                //dispatch.variableHeading(1,-25 ,-33,2);
+                dispatch.turnAbsPID(-90,0.5);
                 dispatch.moveElevator(constants.elevatorPositionDown);
-                dispatch.constantHeading(1,20,0,0,0,0);
-                dispatch.constantHeading(1,0,-20,0,0,0);
-                dispatch.turnAbsPID(-90,1);
+                dispatch.constantHeading(1,-45,0,0,0,0);
                 dispatch.spinIntake(1);
-                dispatch.constantHeading(1,0,8,0,0,0);
+                dispatch.constantHeading(1,-3,32,0,0,0);
+                dispatch.constantHeading(0.75,0,6,0,0,0);
 
 
                 break;
@@ -159,9 +154,12 @@ public class NewBlueWarehouse extends LinearOpMode {
             dispatch.turnAbsPID(-90, 1);
             dispatch.moveElevator(constants.elevatorPositionDown);
             dispatch.constantHeading(1, -25, 18, 0.001, 0, 0.0003);
-            dispatch.constantHeading(1, 0, 35, true, 0, 0, 0);
+            dispatch.constantHeading(1, 0, 35+(i*3), true, 0.001, 0, 0.0003);
+            if(AutoHub.over){
+                dispatch.constantHeading(1, 0, 12+(i*3), 0.001, 0, 0.0003);
+            }
         }
-
+        /*
         AutoHub.over = false;
         AutoHub.checkOver = false;
         AutoHub.checkOver2 = false;
@@ -187,5 +185,6 @@ public class NewBlueWarehouse extends LinearOpMode {
         dispatch.spinIntake(-1,2000);
         phoneCam.stopStreaming();
         telemetry.update();
+        */
     }
 }

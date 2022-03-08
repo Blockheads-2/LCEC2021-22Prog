@@ -68,18 +68,18 @@ public class NewBlueWarehouse extends LinearOpMode {
                 dispatch.moveElevator(constants.elevatorPositionBottom - 200);
                 // move to drop
                 dispatch.spinIntake(0.1);
-                dispatch.variableHeading(0.65,8.3,15.8,2);
+                dispatch.variableHeading(0.65,8.3,15.2,2);
 
                 //out-take
                 dispatch.spinIntake(-1, 550);
 
                 //dispatch.variableHeading(1,-25 ,-33,2);
-                dispatch.turnAbsPID(-90,0.5);
+                dispatch.turnAbsPID(-90,0.6);
                 dispatch.moveElevator(constants.elevatorPositionDown);
-                dispatch.constantHeading(1,-45,0,0,0,0);
+                dispatch.constantHeading(1,-45,0,0.001,0,0.0003);
                 dispatch.spinIntake(1);
-                dispatch.constantHeading(1,-3,32,0,0,0);
-                dispatch.constantHeading(0.75,0,6,0,0,0);
+                dispatch.constantHeading(1,-4,32,0.001,0,0.0003);
+                dispatch.constantHeading(0.75,0,6,0.001,0,0.0003);
 
 
                 break;
@@ -146,17 +146,17 @@ public class NewBlueWarehouse extends LinearOpMode {
             dispatch.constantHeading(1, -20, 0, 0.001, 0, 0.0003);
             dispatch.moveElevator(constants.elevatorPositionTop);
             dispatch.spinIntake(0.2);
-            dispatch.constantHeading(1, -5, -25, true, 0.001, 0, 0.0003);
-            dispatch.constantHeading(1, 0, -5, 0.001, 0, 0.0003);
-            dispatch.constantHeading(1, 25, -18, 0.001, 0, 0.0003);
+            dispatch.constantHeading(1, -5, -22-(i*3), true, 0.001, 0, 0.0003);
+            dispatch.constantHeading(1, 0, -15, 0.001, 0, 0.0003);
+            dispatch.constantHeading(1, 25, 0, 0.001, 0, 0.0003);
             dispatch.turnAbsPID(14, 1);
             dispatch.spinIntake(-1, 750);
             dispatch.turnAbsPID(-90, 1);
             dispatch.moveElevator(constants.elevatorPositionDown);
-            dispatch.constantHeading(1, -25, 18, 0.001, 0, 0.0003);
-            dispatch.constantHeading(1, 0, 35+(i*3), true, 0.001, 0, 0.0003);
+            dispatch.constantHeading(1, -29, 18, 0.001, 0, 0.0003);
+            dispatch.constantHeading(1, 0, 40+(i*4), true, 0.001, 0, 0.0003);
             if(AutoHub.over){
-                dispatch.constantHeading(1, 0, 12+(i*3), 0.001, 0, 0.0003);
+                dispatch.constantHeading(1, 0, 12+(i*6), 0.001, 0, 0.0003);
             }
         }
         /*

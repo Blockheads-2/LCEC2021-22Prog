@@ -507,8 +507,6 @@ public class AutoHub {
 
             }
 
-
-
             // Stop all motion;
             robot.lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             robot.rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -583,8 +581,6 @@ public class AutoHub {
                 linearOpMode.telemetry.update();
 
             }
-
-
 
             // Stop all motion;
             if (stop) {
@@ -832,8 +828,6 @@ public class AutoHub {
         }
     }
     public void detectColor() {
-
-
         // Get the normalized colors from the sensor
         NormalizedRGBA colors = robot.colorSensor.getNormalizedColors();
 

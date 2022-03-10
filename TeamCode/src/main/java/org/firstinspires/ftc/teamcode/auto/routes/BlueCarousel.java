@@ -69,9 +69,9 @@ public class BlueCarousel extends LinearOpMode{
     waitForStart();
         switch (detector.getLocation()) {
             case LEFT: {
-                dispatch.moveElevator(constants.elevatorPositionBottom + 100);
+                dispatch.moveElevator(constants.elevatorPositionBottom - 500);
                 sleep(1000);
-                dispatch.variableHeading(.5, -6, 14, 2);
+                dispatch.variableHeading(.5, -6.25, 16.75, 2);
                 dispatch.spinIntake(-1,2000);
                 dispatch.constantHeading(.5, 0, -8, 0.001,0,0.0003);
                 dispatch.turnAbsPID(270, 1);

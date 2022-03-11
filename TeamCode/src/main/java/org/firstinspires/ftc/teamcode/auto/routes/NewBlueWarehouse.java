@@ -72,10 +72,8 @@ public class NewBlueWarehouse extends LinearOpMode {
 
                 //out-take
                 dispatch.spinIntake(-1, 1000);
-                if (AutoHub.finishedIntake){
-                    dispatch.spinIntake(1, 750);
+                    dispatch.spinIntake(1, 500);
                     dispatch.spinIntake(-1, 750);
-                }
 
                 //dispatch.variableHeading(1,-25 ,-33,2);
                 dispatch.turnAbsPID(-90,0.6);
@@ -95,11 +93,13 @@ public class NewBlueWarehouse extends LinearOpMode {
                 sleep(1000);
                 // move to drop
                 dispatch.spinIntake(0.1);
-                dispatch.variableHeading(0.5,7.5,16.5,2);
+                dispatch.variableHeading(0.5,8,17,2);
                 dispatch.spinIntake(0);
 
                 //out-take
-                dispatch.spinIntake(-1, 2000);
+                dispatch.spinIntake(-1, 1500);
+                dispatch.spinIntake(1, 500);
+                dispatch.spinIntake(-1, 1000);
                 dispatch.constantHeading(0.75,0,-5,0.001,0,0.0003);
                 dispatch.turnAbsPID(-90,0.6);
                 dispatch.moveElevator(constants.elevatorPositionDown);
@@ -123,6 +123,8 @@ public class NewBlueWarehouse extends LinearOpMode {
 
                 //out-take
                 dispatch.spinIntake(-1, 1000);
+                dispatch.spinIntake(1, 500);
+                dispatch.spinIntake(-1, 1000);
                 dispatch.constantHeading(0.75,0,-5,0.001,0,0.0003);
                 dispatch.turnAbsPID(-90,0.6);
                 dispatch.moveElevator(constants.elevatorPositionDown);
@@ -140,7 +142,6 @@ public class NewBlueWarehouse extends LinearOpMode {
         }
         //Cycle 1
         for (int i = 0; i < 2; i++) {
-            dispatch.spinIntake(1);
             if (!AutoHub.finishedIntake)
                 dispatch.turnPID(15, 0.5);
             if (!AutoHub.finishedIntake)
@@ -171,7 +172,8 @@ public class NewBlueWarehouse extends LinearOpMode {
             }
             */
             dispatch.constantHeading(1, -3, 50+(3*i), 0.001, 0, 0.0003);
-            dispatch.constantHeading(.5, 0, 12, 0.001, 0, 0.0003);
+            dispatch.spinIntake(1);
+            dispatch.constantHeading(.3, 0, 11, 0.001, 0, 0.0003);
         }
         dispatch.spinIntake(1);
         if (!AutoHub.finishedIntake)

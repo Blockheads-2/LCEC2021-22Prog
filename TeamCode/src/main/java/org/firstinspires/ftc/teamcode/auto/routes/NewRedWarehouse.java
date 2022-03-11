@@ -166,8 +166,10 @@ public class NewRedWarehouse extends LinearOpMode {
                 dispatch.constantHeading(1, 0, 22+(i*4), 0.001, 0, 0.0003);
             }
             */
-            dispatch.constantHeading(.75, 8, 50+(3*i), 0.001, 0, 0.0003);
-            dispatch.constantHeading(.75, 3, 20 - (2*i), 0.001, 0, 0.0003);
+            dispatch.constantHeading(1, 8, 50+(3*i), 0.001, 0, 0.0003);
+            dispatch.constantHeading(.75, 3, 10, 0.001, 0, 0.0003);
+            dispatch.spinIntake(1);
+            dispatch.constantHeading(.3, 0, 5, 0.001, 0, 0.0003);
         }
         dispatch.spinIntake(1);
         dispatch.turnPID(-15, 0.5);
